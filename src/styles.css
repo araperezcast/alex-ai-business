@@ -199,3 +199,11 @@
 @utility animate-marquee {
   animation: marquee 40s linear infinite;
 }
+
+@utility text-gradient-brand {
+  background-image: linear-gradient(90deg, #0048FF, #07D6A0);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}

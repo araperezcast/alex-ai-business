@@ -149,12 +149,10 @@ function Perks() {
         <p className="mt-16 text-xs font-bold tracking-[0.18em] text-muted-foreground uppercase">
           Enterprise insurance perks
         </p>
-        <h2 className="mt-5 max-w-4xl text-3xl leading-snug font-extrabold tracking-tight sm:text-4xl">
-          <span className="text-brand">Build a custom commercial insurance program</span>
+        <h2 className="text-gradient-brand mt-5 max-w-4xl text-3xl leading-snug font-extrabold tracking-tight sm:text-4xl">
+          Build a custom commercial insurance program
           <br />
-          <span className="text-emerald">
-            backed by Alex AI&apos;s multi-carrier underwriting and dedicated service.
-          </span>
+          backed by Alex AI&apos;s multi-carrier underwriting and dedicated service.
         </h2>
 
         <div className="mt-14 grid gap-8 md:grid-cols-2 lg:grid-cols-4">
@@ -175,9 +173,8 @@ function Bento() {
     <section className="bg-polar px-6 py-20">
       <div className="mx-auto max-w-6xl">
         <div className="text-center">
-          <h2 className="text-3xl font-extrabold tracking-tight sm:text-4xl">
-            <span className="text-brand">Built for Arizona&apos;s </span>
-            <span className="text-emerald">Core Industries</span>
+          <h2 className="text-gradient-brand text-3xl font-extrabold tracking-tight sm:text-4xl">
+            Built for Arizona&apos;s Core Industries
           </h2>
           <p className="mt-3 text-sm text-muted-foreground">
             Institutional-grade coverage tailored to your operational reality.
@@ -393,10 +390,10 @@ function Advantage() {
     <section className="bg-polar px-6 py-24">
       <div className="mx-auto grid max-w-6xl gap-14 lg:grid-cols-2 lg:items-center">
         <div>
-          <h2 className="text-3xl font-extrabold tracking-tight sm:text-4xl">
-            <span className="text-brand">Technology is the Advantage.</span>
+          <h2 className="text-gradient-brand text-3xl font-extrabold tracking-tight sm:text-4xl">
+            Technology is the Advantage.
             <br />
-            <span className="text-emerald">Insurance is the Business.</span>
+            Insurance is the Business.
           </h2>
           <ul className="mt-10 space-y-8">
             {advantages.map((a) => (
