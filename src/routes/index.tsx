@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
-import gradientGlow from "@/assets/hero-gradient.png.asset.json";
+import { Nebula } from "@/components/nebula";
 import carrierLogos from "@/assets/logos.png.asset.json";
 import alexLogo from "@/assets/alex-logo.png.asset.json";
 import {
@@ -464,12 +464,7 @@ function Testimonial() {
   return (
     <section className="bg-background px-6 py-16">
       <div className="bg-navy-deep group relative mx-auto max-w-6xl overflow-hidden rounded-2xl p-10 sm:p-14">
-        <img
-          src={gradientGlow.url}
-          alt=""
-          aria-hidden
-          className="nebula pointer-events-none absolute top-1/2 left-1/2 w-[90%] max-w-[1100px] -translate-x-1/2 -translate-y-1/2 opacity-60 mix-blend-screen"
-        />
+        <Nebula intensity={0.75} />
         <div className="relative">
           <span className="inline-flex items-center gap-2 rounded-full bg-emerald/20 px-4 py-1.5 text-xs font-bold text-emerald">
             <span className="size-2 rounded-full bg-emerald" /> 53+ Top-Tier US Carriers Connected
@@ -502,12 +497,7 @@ function QuoteForm() {
 
   return (
     <section id="quote" className="bg-navy-deep group relative overflow-hidden px-6 py-24">
-      <img
-        src={gradientGlow.url}
-        alt=""
-        aria-hidden
-        className="nebula pointer-events-none absolute top-1/2 left-1/2 w-[90%] max-w-[1100px] -translate-x-1/2 -translate-y-1/2 opacity-50 mix-blend-screen"
-      />
+      <Nebula intensity={0.65} />
       <div className="relative mx-auto grid max-w-6xl gap-14 lg:grid-cols-2 lg:items-center">
         <div>
           <p className="text-xs font-bold tracking-[0.18em] text-white/50 uppercase">
