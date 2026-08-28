@@ -101,14 +101,16 @@ function Hero() {
         </div>
       </div>
       <div className="relative overflow-hidden pb-8">
-        <div className="flex gap-4 px-6 [mask-image:linear-gradient(90deg,transparent,black_8%,black_92%,transparent)]">
-          {carriers.map((c, i) => (
-            <div
-              key={`${c}-${i}`}
-              className="flex h-16 min-w-44 shrink-0 items-center justify-center rounded-2xl border border-white/10 bg-white/5 px-6 text-sm font-semibold tracking-wide text-white/70"
-            >
-              {c}
-            </div>
+        <div className="animate-marquee flex w-max [mask-image:linear-gradient(90deg,transparent,black_8%,black_92%,transparent)]">
+          {[0, 1].map((copy) => (
+            <img
+              key={copy}
+              src={carrierLogos.url}
+              alt="Carrier partners: Nirvana, RLI Transportation, Canal Insurance, Chubb, Sentry, Northland Insurance"
+              aria-hidden={copy === 1}
+              className="h-16 w-auto shrink-0"
+              draggable={false}
+            />
           ))}
         </div>
       </div>
