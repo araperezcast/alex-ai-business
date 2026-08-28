@@ -1,8 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
-import glowBlue from "@/assets/glow-92-1.png.asset.json";
-import glowTeal from "@/assets/glow-97.png.asset.json";
-import glowViolet from "@/assets/glow-89.png.asset.json";
+import gradientGlow from "@/assets/gradient.png.asset.json";
 import {
   Accordion,
   AccordionContent,
@@ -94,16 +92,10 @@ function Hero() {
     <section className="bg-navy-deep relative overflow-hidden">
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
         <img
-          src={glowViolet.url}
+          src={gradientGlow.url}
           alt=""
           aria-hidden
-          className="absolute top-1/2 left-1/2 w-[70%] max-w-[900px] -translate-x-1/2 -translate-y-1/2 opacity-60"
-        />
-        <img
-          src={glowBlue.url}
-          alt=""
-          aria-hidden
-          className="absolute top-1/2 left-1/2 w-[60%] max-w-[800px] -translate-x-1/2 -translate-y-1/2 opacity-70"
+          className="absolute top-1/2 left-1/2 w-[90%] max-w-[1100px] -translate-x-1/2 -translate-y-1/2 opacity-70 mix-blend-screen"
         />
       </div>
       <div className="relative mx-auto max-w-5xl px-6 pt-32 pb-20 text-center">
@@ -489,10 +481,10 @@ function Testimonial() {
     <section className="bg-background px-6 py-16">
       <div className="bg-navy-deep relative mx-auto max-w-6xl overflow-hidden rounded-2xl p-10 sm:p-14">
         <img
-          src={glowTeal.url}
+          src={gradientGlow.url}
           alt=""
           aria-hidden
-          className="pointer-events-none absolute top-1/2 left-1/2 w-[75%] max-w-[900px] -translate-x-1/2 -translate-y-1/2 opacity-55"
+          className="pointer-events-none absolute top-1/2 left-1/2 w-[90%] max-w-[1100px] -translate-x-1/2 -translate-y-1/2 opacity-60 mix-blend-screen"
         />
         <div className="relative">
           <span className="inline-flex items-center gap-2 rounded-full bg-emerald/20 px-4 py-1.5 text-xs font-bold text-emerald">
@@ -527,10 +519,10 @@ function QuoteForm() {
   return (
     <section id="quote" className="bg-navy-deep relative overflow-hidden px-6 py-24">
       <img
-        src={glowBlue.url}
+        src={gradientGlow.url}
         alt=""
         aria-hidden
-        className="pointer-events-none absolute top-1/2 left-1/2 w-[70%] max-w-[900px] -translate-x-1/2 -translate-y-1/2 opacity-40"
+        className="pointer-events-none absolute top-1/2 left-1/2 w-[90%] max-w-[1100px] -translate-x-1/2 -translate-y-1/2 opacity-50 mix-blend-screen"
       />
       <div className="relative mx-auto grid max-w-6xl gap-14 lg:grid-cols-2 lg:items-center">
         <div>
