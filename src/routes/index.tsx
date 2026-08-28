@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
-import gradientGlow from "@/assets/gradient.png.asset.json";
+import gradientGlow from "@/assets/hero-gradient.png.asset.json";
 import {
   Accordion,
   AccordionContent,
