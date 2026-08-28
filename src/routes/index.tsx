@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import gradientGlow from "@/assets/hero-gradient.png.asset.json";
+import carrierLogos from "@/assets/logos.png.asset.json";
 import {
   Accordion,
   AccordionContent,
@@ -56,17 +57,6 @@ export const Route = createFileRoute("/")({
   component: Home,
 });
 
-const carriers = [
-  "NIRVANA",
-  "RLI TRANSPORTATION",
-  "Canal Insurance",
-  "acuity",
-  "Sentry",
-  "Northland",
-  "eMAXX",
-  "NIRVANA",
-  "RLI TRANSPORTATION",
-];
 
 function GradientButton({
   children,
@@ -95,7 +85,7 @@ function Hero() {
           src={gradientGlow.url}
           alt=""
           aria-hidden
-          className="absolute top-1/2 left-1/2 w-[90%] max-w-[1100px] -translate-x-1/2 -translate-y-1/2 opacity-70 mix-blend-screen"
+          className="absolute top-1/2 left-1/2 h-full w-full -translate-x-1/2 -translate-y-1/2 object-cover opacity-70 mix-blend-screen"
         />
       </div>
       <div className="relative mx-auto max-w-5xl px-6 pt-32 pb-20 text-center">
@@ -111,14 +101,16 @@ function Hero() {
         </div>
       </div>
       <div className="relative overflow-hidden pb-8">
-        <div className="flex gap-4 px-6 [mask-image:linear-gradient(90deg,transparent,black_8%,black_92%,transparent)]">
-          {carriers.map((c, i) => (
-            <div
-              key={`${c}-${i}`}
-              className="flex h-16 min-w-44 shrink-0 items-center justify-center rounded-2xl border border-white/10 bg-white/5 px-6 text-sm font-semibold tracking-wide text-white/70"
-            >
-              {c}
-            </div>
+        <div className="animate-marquee flex w-max [mask-image:linear-gradient(90deg,transparent,black_8%,black_92%,transparent)]">
+          {[0, 1].map((copy) => (
+            <img
+              key={copy}
+              src={carrierLogos.url}
+              alt="Carrier partners: Nirvana, RLI Transportation, Canal Insurance, Chubb, Sentry, Northland Insurance"
+              aria-hidden={copy === 1}
+              className="h-16 w-auto shrink-0"
+              draggable={false}
+            />
           ))}
         </div>
       </div>
