@@ -230,3 +230,52 @@
   -webkit-text-fill-color: transparent;
   color: transparent;
 }
+
+/* --- Nebula: independent drifting glow layers --- */
+@keyframes nebula-a {
+  0%   { transform: translate(-50%, -50%) scale(1)    rotate(0deg); }
+  50%  { transform: translate(-46%, -54%) scale(1.14) rotate(6deg); }
+  100% { transform: translate(-50%, -50%) scale(1)    rotate(0deg); }
+}
+@keyframes nebula-b {
+  0%   { transform: translate(-50%, -50%) scale(1.05) rotate(0deg); }
+  50%  { transform: translate(-55%, -47%) scale(0.92) rotate(-8deg); }
+  100% { transform: translate(-50%, -50%) scale(1.05) rotate(0deg); }
+}
+@keyframes nebula-c {
+  0%   { transform: translate(-50%, -50%) scale(0.95) rotate(0deg); }
+  50%  { transform: translate(-52%, -56%) scale(1.2)  rotate(10deg); }
+  100% { transform: translate(-50%, -50%) scale(0.95) rotate(0deg); }
+}
+@keyframes nebula-d {
+  0%   { transform: translate(-50%, -50%) scale(1.1)  rotate(0deg); }
+  50%  { transform: translate(-45%, -45%) scale(0.98) rotate(-5deg); }
+  100% { transform: translate(-50%, -50%) scale(1.1)  rotate(0deg); }
+}
+
+.nebula-layer {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  will-change: transform, opacity;
+  transition: opacity 1.2s ease;
+  mix-blend-mode: screen;
+  pointer-events: none;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  animation-play-state: running;
+}
+.nebula-layer.l-a { animation-name: nebula-a; animation-duration: 26s; }
+.nebula-layer.l-b { animation-name: nebula-b; animation-duration: 34s; }
+.nebula-layer.l-c { animation-name: nebula-c; animation-duration: 30s; }
+.nebula-layer.l-d { animation-name: nebula-d; animation-duration: 40s; }
+
+.group:hover .nebula-layer.l-a { animation-duration: 12s; }
+.group:hover .nebula-layer.l-b { animation-duration: 16s; }
+.group:hover .nebula-layer.l-c { animation-duration: 14s; }
+.group:hover .nebula-layer.l-d { animation-duration: 18s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .nebula-layer { animation: none !important; }
+}
