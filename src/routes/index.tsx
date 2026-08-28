@@ -393,10 +393,10 @@ function Advantage() {
     <section className="bg-polar px-6 py-24">
       <div className="mx-auto grid max-w-6xl gap-14 lg:grid-cols-2 lg:items-center">
         <div>
-          <h2 className="text-3xl font-extrabold tracking-tight sm:text-4xl">
-            <span className="text-brand">Technology is the Advantage.</span>
+          <h2 className="text-gradient-brand text-3xl font-extrabold tracking-tight sm:text-4xl">
+            Technology is the Advantage.
             <br />
-            <span className="text-emerald">Insurance is the Business.</span>
+            Insurance is the Business.
           </h2>
           <ul className="mt-10 space-y-8">
             {advantages.map((a) => (
