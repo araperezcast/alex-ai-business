@@ -92,7 +92,20 @@ function GradientButton({
 function Hero() {
   return (
     <section className="bg-navy-deep relative overflow-hidden">
-      <div className="hero-glow pointer-events-none absolute inset-0" />
+      <div className="pointer-events-none absolute inset-0 overflow-hidden">
+        <img
+          src={glowViolet.url}
+          alt=""
+          aria-hidden
+          className="absolute top-1/2 left-1/2 w-[70%] max-w-[900px] -translate-x-1/2 -translate-y-1/2 opacity-60"
+        />
+        <img
+          src={glowBlue.url}
+          alt=""
+          aria-hidden
+          className="absolute top-1/2 left-1/2 w-[60%] max-w-[800px] -translate-x-1/2 -translate-y-1/2 opacity-70"
+        />
+      </div>
       <div className="relative mx-auto max-w-5xl px-6 pt-32 pb-20 text-center">
         <h1 className="text-4xl leading-tight font-extrabold tracking-tight text-white sm:text-5xl md:text-6xl">
           Build a more efficient insurance program with Alex AI.
