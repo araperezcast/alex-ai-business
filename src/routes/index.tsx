@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import gradientGlow from "@/assets/hero-gradient.png.asset.json";
 import carrierLogos from "@/assets/logos.png.asset.json";
+import alexLogo from "@/assets/alex-logo.png.asset.json";
 import {
   Accordion,
   AccordionContent,
@@ -646,8 +647,11 @@ function Footer() {
     <footer className="bg-navy-deep border-t border-white/10 px-6 py-16">
       <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-4">
         <div>
-          <p className="text-3xl font-extrabold tracking-tight text-white">alex</p>
-          <p className="text-xs font-bold tracking-[0.3em] text-white/70">INSURTECH</p>
+          <img
+            src={alexLogo.url}
+            alt="Alex AI Insurtech"
+            className="h-16 w-auto object-contain mix-blend-screen"
+          />
           <p className="mt-5 max-w-xs text-sm text-white/60">
             Smart insurance for modern life. Powered by intelligence, driven by humans.
           </p>
