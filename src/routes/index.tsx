@@ -507,12 +507,12 @@ function QuoteForm() {
   const [consent, setConsent] = useState(false);
 
   return (
-    <section id="quote" className="bg-navy-deep relative overflow-hidden px-6 py-24">
+    <section id="quote" className="bg-navy-deep group relative overflow-hidden px-6 py-24">
       <img
         src={gradientGlow.url}
         alt=""
         aria-hidden
-        className="pointer-events-none absolute top-1/2 left-1/2 w-[90%] max-w-[1100px] -translate-x-1/2 -translate-y-1/2 opacity-50 mix-blend-screen"
+        className="nebula pointer-events-none absolute top-1/2 left-1/2 w-[90%] max-w-[1100px] -translate-x-1/2 -translate-y-1/2 opacity-50 mix-blend-screen"
       />
       <div className="relative mx-auto grid max-w-6xl gap-14 lg:grid-cols-2 lg:items-center">
         <div>
