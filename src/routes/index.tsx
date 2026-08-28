@@ -525,8 +525,14 @@ function QuoteForm() {
   const [consent, setConsent] = useState(false);
 
   return (
-    <section id="quote" className="bg-navy-deep px-6 py-24">
-      <div className="mx-auto grid max-w-6xl gap-14 lg:grid-cols-2 lg:items-center">
+    <section id="quote" className="bg-navy-deep relative overflow-hidden px-6 py-24">
+      <img
+        src={glowBlue.url}
+        alt=""
+        aria-hidden
+        className="pointer-events-none absolute top-1/2 left-1/2 w-[70%] max-w-[900px] -translate-x-1/2 -translate-y-1/2 opacity-40"
+      />
+      <div className="relative mx-auto grid max-w-6xl gap-14 lg:grid-cols-2 lg:items-center">
         <div>
           <p className="text-xs font-bold tracking-[0.18em] text-white/50 uppercase">
             Connect with our team
