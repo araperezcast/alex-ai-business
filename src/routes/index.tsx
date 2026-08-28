@@ -1,5 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
+import glowBlue from "@/assets/glow-92-1.png.asset.json";
+import glowTeal from "@/assets/glow-97.png.asset.json";
+import glowViolet from "@/assets/glow-89.png.asset.json";
 import {
   Accordion,
   AccordionContent,
@@ -89,7 +92,20 @@ function GradientButton({
 function Hero() {
   return (
     <section className="bg-navy-deep relative overflow-hidden">
-      <div className="hero-glow pointer-events-none absolute inset-0" />
+      <div className="pointer-events-none absolute inset-0 overflow-hidden">
+        <img
+          src={glowViolet.url}
+          alt=""
+          aria-hidden
+          className="absolute top-1/2 left-1/2 w-[70%] max-w-[900px] -translate-x-1/2 -translate-y-1/2 opacity-60"
+        />
+        <img
+          src={glowBlue.url}
+          alt=""
+          aria-hidden
+          className="absolute top-1/2 left-1/2 w-[60%] max-w-[800px] -translate-x-1/2 -translate-y-1/2 opacity-70"
+        />
+      </div>
       <div className="relative mx-auto max-w-5xl px-6 pt-32 pb-20 text-center">
         <h1 className="text-4xl leading-tight font-extrabold tracking-tight text-white sm:text-5xl md:text-6xl">
           Build a more efficient insurance program with Alex AI.
@@ -472,7 +488,12 @@ function Testimonial() {
   return (
     <section className="bg-background px-6 py-16">
       <div className="bg-navy-deep relative mx-auto max-w-6xl overflow-hidden rounded-2xl p-10 sm:p-14">
-        <div className="hero-glow pointer-events-none absolute -right-1/4 bottom-[-40%] h-[120%] w-[90%]" />
+        <img
+          src={glowTeal.url}
+          alt=""
+          aria-hidden
+          className="pointer-events-none absolute top-1/2 left-1/2 w-[75%] max-w-[900px] -translate-x-1/2 -translate-y-1/2 opacity-55"
+        />
         <div className="relative">
           <span className="inline-flex items-center gap-2 rounded-full bg-emerald/20 px-4 py-1.5 text-xs font-bold text-emerald">
             <span className="size-2 rounded-full bg-emerald" /> 53+ Top-Tier US Carriers Connected
@@ -504,8 +525,14 @@ function QuoteForm() {
   const [consent, setConsent] = useState(false);
 
   return (
-    <section id="quote" className="bg-navy-deep px-6 py-24">
-      <div className="mx-auto grid max-w-6xl gap-14 lg:grid-cols-2 lg:items-center">
+    <section id="quote" className="bg-navy-deep relative overflow-hidden px-6 py-24">
+      <img
+        src={glowBlue.url}
+        alt=""
+        aria-hidden
+        className="pointer-events-none absolute top-1/2 left-1/2 w-[70%] max-w-[900px] -translate-x-1/2 -translate-y-1/2 opacity-40"
+      />
+      <div className="relative mx-auto grid max-w-6xl gap-14 lg:grid-cols-2 lg:items-center">
         <div>
           <p className="text-xs font-bold tracking-[0.18em] text-white/50 uppercase">
             Connect with our team
