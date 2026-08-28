@@ -233,24 +233,36 @@
 
 /* --- Nebula: independent drifting glow layers --- */
 @keyframes nebula-a {
-  0%   { transform: translate(-50%, -50%) scale(1)    rotate(0deg); }
-  50%  { transform: translate(-46%, -54%) scale(1.14) rotate(6deg); }
-  100% { transform: translate(-50%, -50%) scale(1)    rotate(0deg); }
+  0%   { transform: translate(-50%, -50%) scale(1)    rotate(0deg); opacity: calc(var(--peak) * 0.65); }
+  50%  { transform: translate(-46%, -54%) scale(1.1)  rotate(6deg); opacity: var(--peak); }
+  100% { transform: translate(-50%, -50%) scale(1)    rotate(0deg); opacity: calc(var(--peak) * 0.65); }
 }
 @keyframes nebula-b {
-  0%   { transform: translate(-50%, -50%) scale(1.05) rotate(0deg); }
-  50%  { transform: translate(-55%, -47%) scale(0.92) rotate(-8deg); }
-  100% { transform: translate(-50%, -50%) scale(1.05) rotate(0deg); }
+  0%   { transform: translate(-50%, -50%) scale(1.05) rotate(0deg); opacity: var(--peak); }
+  50%  { transform: translate(-55%, -47%) scale(0.9)  rotate(-8deg); opacity: calc(var(--peak) * 0.6); }
+  100% { transform: translate(-50%, -50%) scale(1.05) rotate(0deg); opacity: var(--peak); }
 }
 @keyframes nebula-c {
-  0%   { transform: translate(-50%, -50%) scale(0.95) rotate(0deg); }
-  50%  { transform: translate(-52%, -56%) scale(1.2)  rotate(10deg); }
-  100% { transform: translate(-50%, -50%) scale(0.95) rotate(0deg); }
+  0%   { transform: translate(-50%, -50%) scale(0.95) rotate(0deg); opacity: calc(var(--peak) * 0.7); }
+  50%  { transform: translate(-52%, -56%) scale(1.12) rotate(10deg); opacity: var(--peak); }
+  100% { transform: translate(-50%, -50%) scale(0.95) rotate(0deg); opacity: calc(var(--peak) * 0.7); }
 }
 @keyframes nebula-d {
-  0%   { transform: translate(-50%, -50%) scale(1.1)  rotate(0deg); }
-  50%  { transform: translate(-45%, -45%) scale(0.98) rotate(-5deg); }
-  100% { transform: translate(-50%, -50%) scale(1.1)  rotate(0deg); }
+  0%   { transform: translate(-50%, -50%) scale(1.1)  rotate(0deg); opacity: calc(var(--peak) * 0.75); }
+  50%  { transform: translate(-45%, -45%) scale(0.92) rotate(-5deg); opacity: var(--peak); }
+  100% { transform: translate(-50%, -50%) scale(1.1)  rotate(0deg); opacity: calc(var(--peak) * 0.75); }
+}
+
+/* Cursor-following wrapper: eased in JS, so no transition needed here */
+.nebula-shift {
+  position: absolute;
+  inset: 0;
+  will-change: transform;
+  transform: translate3d(
+    calc(var(--nx, 0) * var(--pull, 0px)),
+    calc(var(--ny, 0) * var(--pull, 0px)),
+    0
+  );
 }
 
 .nebula-layer {
@@ -259,23 +271,21 @@
   left: 50%;
   transform: translate(-50%, -50%);
   will-change: transform, opacity;
-  transition: opacity 1.2s ease;
+  filter: blur(40px) saturate(1.15);
   mix-blend-mode: screen;
   pointer-events: none;
+  opacity: var(--peak);
   animation-timing-function: ease-in-out;
   animation-iteration-count: infinite;
   animation-play-state: running;
 }
-.nebula-layer.l-a { animation-name: nebula-a; animation-duration: 26s; }
-.nebula-layer.l-b { animation-name: nebula-b; animation-duration: 34s; }
-.nebula-layer.l-c { animation-name: nebula-c; animation-duration: 30s; }
-.nebula-layer.l-d { animation-name: nebula-d; animation-duration: 40s; }
-
-.group:hover .nebula-layer.l-a { animation-duration: 12s; }
-.group:hover .nebula-layer.l-b { animation-duration: 16s; }
-.group:hover .nebula-layer.l-c { animation-duration: 14s; }
-.group:hover .nebula-layer.l-d { animation-duration: 18s; }
+.nebula-layer.l-a { animation-name: nebula-a; animation-duration: 11s; }
+.nebula-layer.l-b { animation-name: nebula-b; animation-duration: 17s; }
+.nebula-layer.l-c { animation-name: nebula-c; animation-duration: 23s; }
+.nebula-layer.l-d { animation-name: nebula-d; animation-duration: 31s; }
 
 @media (prefers-reduced-motion: reduce) {
   .nebula-layer { animation: none !important; }
+  .nebula-shift { transform: none !important; }
 }
+

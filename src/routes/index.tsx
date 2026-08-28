@@ -81,7 +81,7 @@ function GradientButton({
 function Hero() {
   return (
     <section className="bg-navy-deep group relative flex min-h-screen flex-col justify-center overflow-hidden">
-      <Nebula intensity={0.9} />
+      <Nebula intensity={0.9} interactive />
       <div className="relative mx-auto max-w-5xl px-6 pt-32 pb-20 text-center">
 
         <h1 className="text-4xl leading-tight font-extrabold tracking-tight text-white sm:text-5xl md:text-6xl">
