@@ -488,7 +488,12 @@ function Testimonial() {
   return (
     <section className="bg-background px-6 py-16">
       <div className="bg-navy-deep relative mx-auto max-w-6xl overflow-hidden rounded-2xl p-10 sm:p-14">
-        <div className="hero-glow pointer-events-none absolute -right-1/4 bottom-[-40%] h-[120%] w-[90%]" />
+        <img
+          src={glowTeal.url}
+          alt=""
+          aria-hidden
+          className="pointer-events-none absolute top-1/2 left-1/2 w-[75%] max-w-[900px] -translate-x-1/2 -translate-y-1/2 opacity-55"
+        />
         <div className="relative">
           <span className="inline-flex items-center gap-2 rounded-full bg-emerald/20 px-4 py-1.5 text-xs font-bold text-emerald">
             <span className="size-2 rounded-full bg-emerald" /> 53+ Top-Tier US Carriers Connected
