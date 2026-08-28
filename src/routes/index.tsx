@@ -80,13 +80,13 @@ function GradientButton({
 
 function Hero() {
   return (
-    <section className="bg-navy-deep relative overflow-hidden">
+    <section className="bg-navy-deep group relative overflow-hidden">
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
         <img
           src={gradientGlow.url}
           alt=""
           aria-hidden
-          className="absolute top-1/2 left-1/2 h-full w-full -translate-x-1/2 -translate-y-1/2 object-cover opacity-70 mix-blend-screen"
+          className="nebula absolute top-1/2 left-1/2 h-full w-full -translate-x-1/2 -translate-y-1/2 object-cover opacity-70 mix-blend-screen"
         />
       </div>
       <div className="relative mx-auto max-w-5xl px-6 pt-32 pb-20 text-center">
