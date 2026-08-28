@@ -469,12 +469,12 @@ function Advantage() {
 function Testimonial() {
   return (
     <section className="bg-background px-6 py-16">
-      <div className="bg-navy-deep relative mx-auto max-w-6xl overflow-hidden rounded-2xl p-10 sm:p-14">
+      <div className="bg-navy-deep group relative mx-auto max-w-6xl overflow-hidden rounded-2xl p-10 sm:p-14">
         <img
           src={gradientGlow.url}
           alt=""
           aria-hidden
-          className="pointer-events-none absolute top-1/2 left-1/2 w-[90%] max-w-[1100px] -translate-x-1/2 -translate-y-1/2 opacity-60 mix-blend-screen"
+          className="nebula pointer-events-none absolute top-1/2 left-1/2 w-[90%] max-w-[1100px] -translate-x-1/2 -translate-y-1/2 opacity-60 mix-blend-screen"
         />
         <div className="relative">
           <span className="inline-flex items-center gap-2 rounded-full bg-emerald/20 px-4 py-1.5 text-xs font-bold text-emerald">
