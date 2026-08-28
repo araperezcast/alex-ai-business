@@ -1,8 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
-import glowBlue from "@/assets/glow-92-1.png.asset.json";
-import glowTeal from "@/assets/glow-97.png.asset.json";
-import glowViolet from "@/assets/glow-89.png.asset.json";
+import gradientGlow from "@/assets/gradient.png.asset.json";
 import {
   Accordion,
   AccordionContent,
