@@ -200,6 +200,29 @@
   animation: marquee 40s linear infinite;
 }
 
+/* Subtle nebula drift for the hero glow on hover */
+@keyframes nebula-drift {
+  0% {
+    transform: translate(-50%, -50%) scale(1) rotate(0deg);
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.12) rotate(4deg);
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1) rotate(0deg);
+  }
+}
+
+.nebula {
+  transition: transform 1s ease;
+  will-change: transform;
+}
+
+.group:hover > .nebula-wrap .nebula,
+.group:hover .nebula {
+  animation: nebula-drift 9s ease-in-out infinite;
+}
+
 @utility text-gradient-brand {
   background-image: linear-gradient(90deg, #0048FF, #07D6A0);
   background-clip: text;
