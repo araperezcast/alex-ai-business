@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import gradientGlow from "@/assets/hero-gradient.png.asset.json";
+import carrierLogos from "@/assets/logos.png.asset.json";
 import {
   Accordion,
   AccordionContent,
@@ -56,17 +57,6 @@ export const Route = createFileRoute("/")({
   component: Home,
 });
 
-const carriers = [
-  "NIRVANA",
-  "RLI TRANSPORTATION",
-  "Canal Insurance",
-  "acuity",
-  "Sentry",
-  "Northland",
-  "eMAXX",
-  "NIRVANA",
-  "RLI TRANSPORTATION",
-];
 
 function GradientButton({
   children,
