@@ -29,6 +29,7 @@ import {
   QuoteCaptureModal,
 } from "@/components/admin-modules";
 import { PortalLogin } from "@/components/portal-login";
+import { SiteFooter } from "@/components/site-footer";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
