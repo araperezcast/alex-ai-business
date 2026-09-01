@@ -1,4 +1,4 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
   Activity,
@@ -148,7 +148,6 @@ const ADMIN_MODULES: NavItem[] = [
 ];
 
 function PortalPage() {
-  const navigate = useNavigate();
   const { rows, addOperation, markPaid, sendProposals } = useOperations();
   const [tab, setTab] = useState<Status | "all">("all");
   const [query, setQuery] = useState("");
@@ -163,7 +162,7 @@ function PortalPage() {
 
   useEffect(() => {
     setSession(loadSession());
-  }, [navigate]);
+  }, []);
 
   const selected = useMemo(
     () => rows.find((r) => r.id === selectedId) ?? null,
@@ -237,34 +236,34 @@ function PortalPage() {
             const count =
               m.key === "operations" ? counts.all : m.key === "proposals" ? counts.quoted : null;
             return (
-              <button
+              <NavButton
                 key={m.key}
+                item={m}
+                active={view === m.key}
+                count={count}
                 onClick={() => {
                   setView(m.key);
                   setSidebarOpen(false);
                 }}
-                className={cn(
-                  "flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors",
-                  view === m.key
-                    ? "bg-[#0D1527] text-white"
-                    : "text-slate-600 hover:bg-slate-100 hover:text-[#0D1527]",
-                )}
-              >
-                <m.icon className="size-4.5 shrink-0" />
-                <span className="flex-1 text-left">{m.label}</span>
-                {count !== null && (
-                  <span
-                    className={cn(
-                      "rounded-full px-2 py-0.5 text-xs tabular-nums",
-                      view === m.key ? "bg-white/15 text-white" : "bg-slate-100 text-slate-500",
-                    )}
-                  >
-                    {count}
-                  </span>
-                )}
-              </button>
+              />
             );
           })}
+
+          <p className="px-3 pt-6 pb-2 text-[11px] font-bold uppercase tracking-[0.18em] text-slate-400">
+            Admin · Alex AI Desk
+          </p>
+          {ADMIN_MODULES.map((m) => (
+            <NavButton
+              key={m.key}
+              item={m}
+              active={view === m.key}
+              count={m.key === "admin-queue" ? counts.pending : null}
+              onClick={() => {
+                setView(m.key);
+                setSidebarOpen(false);
+              }}
+            />
+          ))}
         </nav>
 
         <div className="border-t border-slate-200 p-4">
@@ -418,9 +417,26 @@ function PortalPage() {
               onSelect={(op) => setSelectedId(op.id)}
             />
           )}
+
+          {view === "admin-queue" && (
+            <QueueView rows={rows} onQuote={(op) => setQuoteTargetId(op.id)} />
+          )}
+          {view === "admin-pulse" && <PulseView rows={rows} />}
+          {view === "admin-catalogs" && <CatalogsView rows={rows} />}
         </main>
       </div>
 
+      <QuoteCaptureModal
+        operation={rows.find((r) => r.id === quoteTargetId) ?? null}
+        onOpenChange={(o) => !o && setQuoteTargetId(null)}
+        onSend={(id, quotes) => {
+          sendProposals(id, quotes);
+          setQuoteTargetId(null);
+          toast.success("Proposal sent to Grupo Joffroy", {
+            description: "Corporate PDF generated and published to the client portal.",
+          });
+        }}
+      />
       <NewRequestModal open={newOpen} onOpenChange={setNewOpen} onSubmit={handleAdd} />
       <QuotesModal
         operation={selected}
@@ -431,6 +447,43 @@ function PortalPage() {
         }}
       />
     </div>
+  );
+}
+
+function NavButton({
+  item,
+  active,
+  count,
+  onClick,
+}: {
+  item: NavItem;
+  active: boolean;
+  count: number | null;
+  onClick: () => void;
+}) {
+  return (
+    <button
+      onClick={onClick}
+      className={cn(
+        "flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors",
+        active
+          ? "bg-[#0D1527] text-white"
+          : "text-slate-600 hover:bg-slate-100 hover:text-[#0D1527]",
+      )}
+    >
+      <item.icon className="size-4.5 shrink-0" />
+      <span className="flex-1 text-left">{item.label}</span>
+      {count !== null && (
+        <span
+          className={cn(
+            "rounded-full px-2 py-0.5 text-xs tabular-nums",
+            active ? "bg-white/15 text-white" : "bg-slate-100 text-slate-500",
+          )}
+        >
+          {count}
+        </span>
+      )}
+    </button>
   );
 }
 
