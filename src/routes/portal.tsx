@@ -232,6 +232,8 @@ function PortalPage() {
     toast.success("Payment confirmed — COI issued in under 90 seconds");
   }
 
+  if (!authed) return <PortalLogin onSuccess={() => setAuthed(true)} />;
+
   return (
     <div className="min-h-screen bg-[#F8FAFC] text-[#0D1527]">
       <header className="sticky top-0 z-30 border-b border-slate-200 bg-white/90 backdrop-blur">
@@ -249,10 +251,21 @@ function PortalPage() {
             <span className="hidden rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-500 sm:block">
               joffroy.alexai.cloud
             </span>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={signOut}
+              className="text-slate-500 hover:text-[#0D1527]"
+            >
+              <LogOut className="mr-1.5 size-4" /> Sign out
+            </Button>
             <div className="flex size-9 items-center justify-center rounded-full bg-[#514690] text-xs font-bold text-white">
               GJ
             </div>
           </div>
+        </div>
+      </header>
+
         </div>
       </header>
 
