@@ -182,6 +182,18 @@ function PortalPage() {
   const [query, setQuery] = useState("");
   const [newOpen, setNewOpen] = useState(false);
   const [selected, setSelected] = useState<Operation | null>(null);
+  const [authed, setAuthed] = useState(false);
+
+  useEffect(() => {
+    if (sessionStorage.getItem(PORTAL_SESSION_KEY) === "1") setAuthed(true);
+  }, []);
+
+  function signOut() {
+    sessionStorage.removeItem(PORTAL_SESSION_KEY);
+    setAuthed(false);
+    toast.success("Session closed");
+  }
+
 
   const filtered = useMemo(
     () =>
