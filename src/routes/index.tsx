@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { Nebula } from "@/components/nebula";
 import carrierLogos from "@/assets/logos.png.asset.json";
