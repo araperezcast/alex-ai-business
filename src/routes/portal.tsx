@@ -476,7 +476,7 @@ function PortalPage() {
                   </div>
                   <Button
                     onClick={() => setNewOpen(true)}
-                    className="bg-[#1A56DB] text-white hover:bg-[#1A56DB]/90"
+                    className="bg-gradient-to-r from-[#0048FF] to-[#07D6A0] text-white hover:opacity-90"
                   >
                     + New Operation / Pedimento
                   </Button>
