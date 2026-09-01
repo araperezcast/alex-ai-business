@@ -1,13 +1,13 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
   ArrowRight,
   CheckCircle2,
   ClipboardList,
   Download,
+  ExternalLink,
   FileText,
   LayoutDashboard,
-  Lock,
   LogOut,
   Menu,
   Search,
@@ -19,8 +19,10 @@ import { toast } from "sonner";
 
 import alexLogo from "@/assets/alex-logo.png.asset.json";
 import joffroyLogo from "@/assets/joffroy-logo.png.asset.json";
+import { PortalLogin } from "@/components/portal-login";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   Dialog,
   DialogContent,
@@ -47,6 +49,16 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { cn } from "@/lib/utils";
+import { clearSession, loadSession, type Session } from "@/lib/portal-auth";
+import { downloadCOIPDF, downloadProposalPDF } from "@/lib/portal-pdf";
+import {
+  formatDate,
+  usd,
+  useOperations,
+  VERTICALS,
+  type Operation,
+  type Status,
+} from "@/lib/portal-store";
 
 export const Route = createFileRoute("/portal")({
   head: () => ({
@@ -73,187 +85,11 @@ export const Route = createFileRoute("/portal")({
   component: PortalPage,
 });
 
-const PORTAL_SESSION_KEY = "joffroy-portal-session";
-const DEMO_EMAIL = "operaciones@joffroy.com";
-const DEMO_PASSWORD = "joffroy2026";
-
-function PortalLogin({ onSuccess }: { onSuccess: () => void }) {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState(false);
-
-  function submit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    if (email.trim().toLowerCase() === DEMO_EMAIL && password === DEMO_PASSWORD) {
-      sessionStorage.setItem(PORTAL_SESSION_KEY, "1");
-      setError(false);
-      toast.success("Welcome back to the Grupo Joffroy client portal");
-      onSuccess();
-    } else {
-      setError(true);
-    }
-  }
-
-  return (
-    <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-[#0D1527] px-6 py-16">
-      <div className="pointer-events-none absolute left-1/2 top-1/2 size-[900px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgba(26,86,219,0.35),transparent_65%)] blur-3xl" />
-      <div className="relative w-full max-w-md">
-        <div className="mb-8 flex items-center justify-center gap-3">
-          <img
-            src={joffroyLogo.url}
-            alt="Grupo Joffroy"
-            className="h-6 w-auto brightness-0 invert"
-          />
-          <span className="text-white/30">×</span>
-          <img src={alexLogo.url} alt="Alex AI Insurtech" className="h-5 w-auto opacity-90" />
-        </div>
-
-        <div className="rounded-2xl border border-slate-200 bg-white p-8 shadow-2xl">
-          <div className="flex size-11 items-center justify-center rounded-xl bg-blue-50 text-[#1A56DB]">
-            <Lock className="size-5" />
-          </div>
-          <h1 className="mt-5 text-xl font-bold tracking-tight text-[#0D1527]">
-            Sign in to the B2B Portal
-          </h1>
-          <p className="mt-1 text-sm text-slate-500">
-            Access is restricted to authorized Grupo Joffroy operations staff.
-          </p>
-
-          <form onSubmit={submit} className="mt-6 space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="portal-email">Work email</Label>
-              <Input
-                id="portal-email"
-                type="email"
-                autoComplete="username"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="operaciones@joffroy.com"
-                className="border-slate-200"
-                required
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="portal-password">Password</Label>
-              <Input
-                id="portal-password"
-                type="password"
-                autoComplete="current-password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="border-slate-200"
-                required
-              />
-            </div>
-            {error && (
-              <p className="text-sm font-medium text-red-600">
-                Incorrect credentials. Please try again.
-              </p>
-            )}
-            <Button
-              type="submit"
-              className="w-full bg-gradient-to-r from-[#0048FF] to-[#07D6A0] text-white hover:opacity-90"
-            >
-              Sign in
-            </Button>
-          </form>
-
-          <p className="mt-6 rounded-xl bg-slate-50 p-3 text-xs text-slate-500">
-            Demo access — email <span className="font-semibold">operaciones@joffroy.com</span> ·
-            password <span className="font-semibold">joffroy2026</span>
-          </p>
-        </div>
-
-        <p className="mt-6 text-center text-xs text-white/40">
-          joffroy.alexai.cloud · Protected operations environment
-        </p>
-      </div>
-    </div>
-  );
-}
-
-type Status = "pending" | "quoted" | "paid";
-
-type Operation = {
-  id: string;
-  vertical: string;
-  origin: string;
-  destination: string;
-  value: number;
-  status: Status;
-};
-
-const VERTICALS = [
-  "Maquiladora & Manufacturing",
-  "Mining & Extraction",
-  "Automotive Import",
-  "Agribusiness & Perishables (Reefer Breakdown)",
-  "Chemicals & Hazmat",
-  "Logistics, 3PL & Transfers",
-];
-
-const INITIAL: Operation[] = [
-  {
-    id: "#PED-2026-8841",
-    vertical: "Agribusiness & Perishables",
-    origin: "Nogales, SON",
-    destination: "Phoenix, AZ",
-    value: 185000,
-    status: "quoted",
-  },
-  {
-    id: "#PED-2026-8837",
-    vertical: "Maquiladora & Manufacturing",
-    origin: "Tijuana, BC",
-    destination: "San Diego, CA",
-    value: 412500,
-    status: "paid",
-  },
-  {
-    id: "#PED-2026-8829",
-    vertical: "Chemicals & Hazmat",
-    origin: "Ciudad Juárez, CHIH",
-    destination: "El Paso, TX",
-    value: 96400,
-    status: "pending",
-  },
-  {
-    id: "#PED-2026-8812",
-    vertical: "Mining & Extraction",
-    origin: "Hermosillo, SON",
-    destination: "Tucson, AZ",
-    value: 748000,
-    status: "quoted",
-  },
-  {
-    id: "#PED-2026-8804",
-    vertical: "Automotive Import",
-    origin: "Monterrey, NL",
-    destination: "Laredo, TX",
-    value: 265900,
-    status: "paid",
-  },
-  {
-    id: "#PED-2026-8798",
-    vertical: "Logistics, 3PL & Transfers",
-    origin: "Mexicali, BC",
-    destination: "Calexico, CA",
-    value: 54300,
-    status: "pending",
-  },
-];
-
-const usd = (n: number) =>
-  n.toLocaleString("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 });
-
 const STATUS_META: Record<Status, { label: string; className: string }> = {
-  pending: {
-    label: "Pending",
-    className: "bg-amber-50 text-amber-700 ring-1 ring-amber-200",
-  },
+  pending: { label: "Pending", className: "bg-amber-50 text-amber-700 ring-1 ring-amber-200" },
   quoted: { label: "Quoted", className: "bg-blue-50 text-blue-700 ring-1 ring-blue-200" },
   paid: {
-    label: "Paid / Active",
+    label: "Paid / Issued",
     className: "bg-emerald-50 text-emerald-700 ring-1 ring-emerald-200",
   },
 };
@@ -280,39 +116,64 @@ const TABS: { key: Status | "all"; label: string }[] = [
   { key: "paid", label: "COIs Issued / Active" },
 ];
 
+type ModuleKey = "dashboard" | "operations" | "proposals";
+
+const MODULES: { key: ModuleKey; label: string; icon: typeof LayoutDashboard }[] = [
+  { key: "dashboard", label: "Dashboard", icon: LayoutDashboard },
+  { key: "operations", label: "Operations / Pedimentos", icon: ClipboardList },
+  { key: "proposals", label: "Proposals", icon: FileText },
+];
 
 function PortalPage() {
-  const [rows, setRows] = useState<Operation[]>(INITIAL);
+  const navigate = useNavigate();
+  const { rows, addOperation, markPaid } = useOperations();
   const [tab, setTab] = useState<Status | "all">("all");
   const [query, setQuery] = useState("");
+  const [from, setFrom] = useState("");
+  const [to, setTo] = useState("");
   const [newOpen, setNewOpen] = useState(false);
-  const [selected, setSelected] = useState<Operation | null>(null);
-  const [authed, setAuthed] = useState(false);
+  const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [session, setSession] = useState<Session | null>(null);
   const [view, setView] = useState<ModuleKey>("dashboard");
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   useEffect(() => {
-    if (sessionStorage.getItem(PORTAL_SESSION_KEY) === "1") setAuthed(true);
-  }, []);
+    const s = loadSession();
+    if (s?.role === "alex") {
+      navigate({ to: "/admin" });
+      return;
+    }
+    setSession(s);
+  }, [navigate]);
+
+  const selected = useMemo(
+    () => rows.find((r) => r.id === selectedId) ?? null,
+    [rows, selectedId],
+  );
 
   function signOut() {
-    sessionStorage.removeItem(PORTAL_SESSION_KEY);
-    setAuthed(false);
+    clearSession();
+    setSession(null);
     toast.success("Session closed");
   }
 
-
   const filtered = useMemo(
     () =>
-      rows.filter(
-        (r) =>
-          (tab === "all" || r.status === tab) &&
-          (query.trim() === "" ||
-            `${r.id} ${r.vertical} ${r.origin} ${r.destination}`
-              .toLowerCase()
-              .includes(query.toLowerCase())),
-      ),
-    [rows, tab, query],
+      rows.filter((r) => {
+        if (tab !== "all" && r.status !== tab) return false;
+        if (
+          query.trim() &&
+          !`${r.id} ${r.vertical} ${r.origin} ${r.destination}`
+            .toLowerCase()
+            .includes(query.toLowerCase())
+        )
+          return false;
+        const created = new Date(r.createdAt).getTime();
+        if (from && created < new Date(from).getTime()) return false;
+        if (to && created > new Date(to).getTime() + 86_400_000) return false;
+        return true;
+      }),
+    [rows, tab, query, from, to],
   );
 
   const counts = useMemo(
@@ -325,22 +186,17 @@ function PortalPage() {
     [rows],
   );
 
-  function addOperation(op: Operation) {
-    setRows((prev) => [op, ...prev]);
+  function handleAdd(op: Operation) {
+    addOperation(op);
     setNewOpen(false);
     toast.success("Operation submitted for underwriting", {
-      description: `${op.id} is now in the carrier appetite queue.`,
+      description: `${op.id} is now in the Alex AI carrier appetite queue.`,
     });
   }
 
-  function markPaid(id: string) {
-    setRows((prev) => prev.map((r) => (r.id === id ? { ...r, status: "paid" } : r)));
-    setSelected((s) => (s && s.id === id ? { ...s, status: "paid" } : s));
-    toast.success("Payment confirmed — COI issued in under 90 seconds");
+  if (!session) {
+    return <PortalLogin onSuccess={(s) => (s.role === "alex" ? navigate({ to: "/admin" }) : setSession(s))} />;
   }
-
-  if (!authed) return <PortalLogin onSuccess={() => setAuthed(true)} />;
-
 
   return (
     <div className="flex min-h-screen bg-[#F8FAFC] text-[#0D1527]">
@@ -360,11 +216,7 @@ function PortalPage() {
         <nav className="flex-1 space-y-1 overflow-y-auto px-3 py-4">
           {MODULES.map((m) => {
             const count =
-              m.key === "operations"
-                ? counts.all
-                : m.key === "proposals"
-                  ? counts.quoted
-                  : null;
+              m.key === "operations" ? counts.all : m.key === "proposals" ? counts.quoted : null;
             return (
               <button
                 key={m.key}
@@ -426,6 +278,7 @@ function PortalPage() {
             </span>
           </div>
           <div className="flex items-center gap-3">
+            <span className="hidden text-xs text-slate-500 sm:block">{session.email}</span>
             <Button
               variant="ghost"
               size="sm"
@@ -443,20 +296,16 @@ function PortalPage() {
         <main className="flex-1 px-4 py-8 sm:px-6 lg:px-8">
           {view === "dashboard" && (
             <DashboardView
-              counts={counts}
               rows={rows}
               onNew={() => setNewOpen(true)}
-              onSelect={setSelected}
-              onNavigate={(v, t) => {
-                setView(v);
-                if (t) setTab(t);
-              }}
+              onSelect={(op) => setSelectedId(op.id)}
+              onNavigate={(v) => setView(v)}
             />
           )}
 
           {view === "operations" && (
             <>
-              <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+              <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
                 <div>
                   <p className="text-xs font-bold tracking-[0.18em] text-[#1A56DB] uppercase">
                     Grupo Joffroy · Client Portal
@@ -465,30 +314,62 @@ function PortalPage() {
                     Operations &amp; Customs Clearance
                   </h1>
                   <p className="mt-1 text-sm text-slate-500">
-                    Manage Grupo Joffroy freight operations: register pedimentos, review
-                    multi-carrier proposals, and issue COIs instantly.
+                    Register pedimentos, review multi-carrier proposals, and issue COIs instantly.
                   </p>
                 </div>
-                <div className="flex flex-col gap-3 sm:flex-row">
-                  <div className="relative">
-                    <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-slate-400" />
-                    <Input
-                      value={query}
-                      onChange={(e) => setQuery(e.target.value)}
-                      placeholder="Search by Pedimento ID, Manifest, or City"
-                      className="w-full border-slate-200 bg-white pl-9 sm:w-80"
-                    />
-                  </div>
-                  <Button
-                    onClick={() => setNewOpen(true)}
-                    className="bg-gradient-to-r from-[#0048FF] to-[#07D6A0] text-white hover:opacity-90"
-                  >
-                    + New Operation / Pedimento
-                  </Button>
-                </div>
+                <Button
+                  onClick={() => setNewOpen(true)}
+                  className="bg-gradient-to-r from-[#0048FF] to-[#07D6A0] text-white hover:opacity-90"
+                >
+                  + New Operation / Pedimento
+                </Button>
               </div>
 
-              <div className="mt-8 flex flex-wrap gap-2 border-b border-slate-200 pb-px">
+              <div className="mt-6 flex flex-wrap items-end gap-3 rounded-2xl border border-slate-200 bg-white p-4">
+                <div className="relative min-w-[240px] flex-1">
+                  <Label className="text-xs text-slate-500">Search</Label>
+                  <Search className="pointer-events-none absolute left-3 top-[34px] size-4 text-slate-400" />
+                  <Input
+                    value={query}
+                    onChange={(e) => setQuery(e.target.value)}
+                    placeholder="Pedimento ID, manifest, vertical or city"
+                    className="mt-1 border-slate-200 pl-9"
+                  />
+                </div>
+                <div>
+                  <Label className="text-xs text-slate-500">From</Label>
+                  <Input
+                    type="date"
+                    value={from}
+                    onChange={(e) => setFrom(e.target.value)}
+                    className="mt-1 border-slate-200"
+                  />
+                </div>
+                <div>
+                  <Label className="text-xs text-slate-500">To</Label>
+                  <Input
+                    type="date"
+                    value={to}
+                    onChange={(e) => setTo(e.target.value)}
+                    className="mt-1 border-slate-200"
+                  />
+                </div>
+                {(query || from || to) && (
+                  <Button
+                    variant="ghost"
+                    onClick={() => {
+                      setQuery("");
+                      setFrom("");
+                      setTo("");
+                    }}
+                    className="text-slate-500"
+                  >
+                    Clear filters
+                  </Button>
+                )}
+              </div>
+
+              <div className="mt-6 flex flex-wrap gap-2 border-b border-slate-200 pb-px">
                 {TABS.map((t) => (
                   <button
                     key={t.key}
@@ -508,37 +389,31 @@ function PortalPage() {
                 ))}
               </div>
 
-              <OperationsTable rows={filtered} onSelect={setSelected} />
+              <OperationsTable rows={filtered} onSelect={(op) => setSelectedId(op.id)} />
             </>
           )}
 
           {view === "proposals" && (
             <ProposalsView
               rows={rows.filter((r) => r.status === "quoted")}
-              onSelect={setSelected}
+              onSelect={(op) => setSelectedId(op.id)}
             />
           )}
-
         </main>
       </div>
 
-      <NewRequestModal open={newOpen} onOpenChange={setNewOpen} onSubmit={addOperation} />
+      <NewRequestModal open={newOpen} onOpenChange={setNewOpen} onSubmit={handleAdd} />
       <QuotesModal
         operation={selected}
-        onOpenChange={(o) => !o && setSelected(null)}
-        onPaid={markPaid}
+        onOpenChange={(o) => !o && setSelectedId(null)}
+        onPaid={(id, carrier) => {
+          markPaid(id, carrier);
+          toast.success("Payment confirmed — COI issued in under 90 seconds");
+        }}
       />
     </div>
   );
 }
-
-type ModuleKey = "dashboard" | "operations" | "proposals";
-
-const MODULES: { key: ModuleKey; label: string; icon: typeof LayoutDashboard }[] = [
-  { key: "dashboard", label: "Dashboard", icon: LayoutDashboard },
-  { key: "operations", label: "Operations / Pedimentos", icon: ClipboardList },
-  { key: "proposals", label: "Proposals", icon: FileText },
-];
 
 function OperationsTable({
   rows,
@@ -548,25 +423,25 @@ function OperationsTable({
   onSelect: (op: Operation) => void;
 }) {
   return (
-    <div className="mt-6 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+    <div className="mt-6 overflow-x-auto rounded-2xl border border-slate-200 bg-white shadow-sm">
       <Table>
         <TableHeader>
           <TableRow className="bg-slate-50/80 hover:bg-slate-50/80">
-            <TableHead className="text-xs font-semibold uppercase tracking-wide text-slate-500">
-              Pedimento / Manifest ID
-            </TableHead>
-            <TableHead className="text-xs font-semibold uppercase tracking-wide text-slate-500">
-              Risk Vertical
-            </TableHead>
-            <TableHead className="text-xs font-semibold uppercase tracking-wide text-slate-500">
-              Route
-            </TableHead>
-            <TableHead className="text-xs font-semibold uppercase tracking-wide text-slate-500">
-              Insured Cargo Value
-            </TableHead>
-            <TableHead className="text-xs font-semibold uppercase tracking-wide text-slate-500">
-              Status
-            </TableHead>
+            {[
+              "Pedimento / Manifest ID",
+              "Risk Vertical",
+              "Route",
+              "Insured Cargo Value",
+              "Date",
+              "Status",
+            ].map((h) => (
+              <TableHead
+                key={h}
+                className="text-xs font-semibold uppercase tracking-wide text-slate-500"
+              >
+                {h}
+              </TableHead>
+            ))}
             <TableHead className="text-right text-xs font-semibold uppercase tracking-wide text-slate-500">
               Actions
             </TableHead>
@@ -578,13 +453,16 @@ function OperationsTable({
               <TableCell className="font-semibold">{r.id}</TableCell>
               <TableCell className="text-slate-600">{r.vertical}</TableCell>
               <TableCell className="text-slate-600">
-                <span className="inline-flex items-center gap-2">
+                <span className="inline-flex items-center gap-2 whitespace-nowrap">
                   {r.origin}
                   <ArrowRight className="size-3.5 text-slate-400" />
                   {r.destination}
                 </span>
               </TableCell>
               <TableCell className="font-medium tabular-nums">{usd(r.value)} USD</TableCell>
+              <TableCell className="whitespace-nowrap text-slate-500">
+                {formatDate(r.createdAt)}
+              </TableCell>
               <TableCell>
                 <StatusBadge status={r.status} />
               </TableCell>
@@ -607,7 +485,7 @@ function OperationsTable({
                       <Button
                         variant="outline"
                         size="sm"
-                        onClick={() => toast.success(`Proposal (PDF) downloaded for ${r.id}`)}
+                        onClick={() => downloadProposalPDF(r)}
                         className="border-slate-200"
                       >
                         <Download className="mr-1.5 size-3.5" /> Proposal
@@ -615,9 +493,7 @@ function OperationsTable({
                       <Button
                         variant="outline"
                         size="sm"
-                        onClick={() =>
-                          toast.success(`Certificate of Insurance downloaded for ${r.id}`)
-                        }
+                        onClick={() => downloadCOIPDF(r)}
                         className="border-emerald-200 bg-emerald-50 text-emerald-700 hover:bg-emerald-100 hover:text-emerald-800"
                       >
                         <Download className="mr-1.5 size-3.5" /> COI
@@ -626,12 +502,11 @@ function OperationsTable({
                   )}
                 </div>
               </TableCell>
-
             </TableRow>
           ))}
           {rows.length === 0 && (
             <TableRow>
-              <TableCell colSpan={6} className="py-16 text-center text-sm text-slate-500">
+              <TableCell colSpan={7} className="py-16 text-center text-sm text-slate-500">
                 No operations match your filters.
               </TableCell>
             </TableRow>
@@ -643,17 +518,15 @@ function OperationsTable({
 }
 
 function DashboardView({
-  counts,
   rows,
   onNew,
   onSelect,
   onNavigate,
 }: {
-  counts: { all: number; pending: number; quoted: number; paid: number };
   rows: Operation[];
   onNew: () => void;
   onSelect: (op: Operation) => void;
-  onNavigate: (view: ModuleKey, tab?: Status | "all") => void;
+  onNavigate: (view: ModuleKey) => void;
 }) {
   return (
     <>
@@ -674,8 +547,6 @@ function DashboardView({
           + New Operation / Pedimento
         </Button>
       </div>
-
-
 
       <div className="mt-8">
         <div className="mb-3 flex items-center justify-between">
@@ -710,15 +581,15 @@ function ProposalsView({
         </p>
         <h1 className="mt-1 text-2xl font-bold tracking-tight">Ready Proposals</h1>
         <p className="mt-1 text-sm text-slate-500">
-          Operations with confirmed multi-carrier underwriting. Review the Top 2 carrier
-          quotes, bind coverage, and issue your Certificate of Insurance.
+          Operations with confirmed multi-carrier underwriting. Review the Top 2 carrier quotes,
+          bind coverage, and issue your Certificate of Insurance.
         </p>
       </div>
 
       {rows.length === 0 ? (
         <div className="mt-8 rounded-2xl border border-slate-200 bg-white px-6 py-16 text-center text-sm text-slate-500">
-          No ready proposals yet. Once carrier appetite matching completes, proposals will
-          appear here.
+          No ready proposals yet. Once carrier appetite matching completes, proposals will appear
+          here.
         </div>
       ) : (
         <div className="mt-8 grid gap-5 md:grid-cols-2">
@@ -803,19 +674,22 @@ function NewRequestModal({
       destination,
       value: Number(value.replace(/,/g, "")),
       status: "pending",
+      createdAt: new Date().toISOString(),
+      files,
+      quotes: [],
     });
     reset();
   }
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-3xl border-slate-200 bg-white p-0">
+      <DialogContent className="max-h-[90vh] max-w-3xl overflow-y-auto border-slate-200 bg-white p-0">
         <DialogHeader className="border-b border-slate-200 px-6 py-5">
           <DialogTitle className="text-lg font-bold text-[#0D1527]">
             Register Freight Operation for Insurance Underwriting
           </DialogTitle>
           <DialogDescription className="text-slate-500">
-            Submit the operation details; our carrier network returns proposals in minutes.
+            Submit the operation details; the Alex AI desk returns proposals in minutes.
           </DialogDescription>
         </DialogHeader>
 
@@ -945,7 +819,11 @@ function NewRequestModal({
         </div>
 
         <DialogFooter className="border-t border-slate-200 px-6 py-4">
-          <Button variant="outline" className="border-slate-200" onClick={() => onOpenChange(false)}>
+          <Button
+            variant="outline"
+            className="border-slate-200"
+            onClick={() => onOpenChange(false)}
+          >
             Cancel
           </Button>
           <Button
@@ -960,21 +838,6 @@ function NewRequestModal({
   );
 }
 
-const QUOTES = [
-  {
-    carrier: "Cover Whale / Hanover",
-    premium: "$480.00 USD",
-    deductible: "$1,000 USD",
-    tags: ["Inland Marine Door-to-Door", "Reefer Breakdown guarantee", "Cross-border endorsement"],
-  },
-  {
-    carrier: "THREE by Berkshire Hathaway",
-    premium: "$520.00 USD",
-    deductible: "$500 USD",
-    tags: ["Comprehensive Cargo", "Delay Protection", "Cyber transit"],
-  },
-];
-
 function QuotesModal({
   operation,
   onOpenChange,
@@ -982,9 +845,11 @@ function QuotesModal({
 }: {
   operation: Operation | null;
   onOpenChange: (o: boolean) => void;
-  onPaid: (id: string) => void;
+  onPaid: (id: string, carrier: string) => void;
 }) {
+  const [confirm, setConfirm] = useState(false);
   const paid = operation?.status === "paid";
+
   return (
     <Dialog open={!!operation} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-4xl border-slate-200 bg-white p-0">
@@ -999,7 +864,7 @@ function QuotesModal({
         </DialogHeader>
 
         <div className="max-h-[70vh] overflow-y-auto px-6 py-6">
-          {operation?.status === "pending" ? (
+          {operation && operation.quotes.length === 0 ? (
             <div className="rounded-xl border border-amber-200 bg-amber-50 px-5 py-8 text-center">
               <p className="text-sm font-semibold text-amber-800">
                 Awaiting carrier appetite matching
@@ -1010,77 +875,115 @@ function QuotesModal({
             </div>
           ) : (
             <div className="grid gap-5 md:grid-cols-2">
-              {QUOTES.map((q, i) => (
-                <div
-                  key={q.carrier}
-                  className="flex flex-col rounded-2xl border border-slate-200 bg-white p-5 shadow-sm"
-                >
-                  <div className="flex items-start justify-between gap-3">
-                    <div>
-                      <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">
-                        Option {i + 1}
-                      </p>
-                      <h3 className="mt-1 text-base font-bold text-[#0D1527]">{q.carrier}</h3>
-                    </div>
-                    <Badge className="bg-[#0D1527] text-white hover:bg-[#0D1527]">
-                      <ShieldCheck className="mr-1 size-3.5" /> Tier-1 A-Rated
-                    </Badge>
-                  </div>
-
-                  <div className="mt-5 grid grid-cols-2 gap-3">
-                    <div className="rounded-xl bg-slate-50 p-3">
-                      <p className="text-xs text-slate-500">Premium</p>
-                      <p className="text-lg font-bold tabular-nums text-[#1A56DB]">{q.premium}</p>
-                    </div>
-                    <div className="rounded-xl bg-slate-50 p-3">
-                      <p className="text-xs text-slate-500">Deductible</p>
-                      <p className="text-lg font-bold tabular-nums text-[#0D1527]">
-                        {q.deductible}
-                      </p>
-                    </div>
-                  </div>
-
-                  <ul className="mt-5 flex-1 space-y-2">
-                    {q.tags.map((t) => (
-                      <li key={t} className="flex items-center gap-2 text-sm text-slate-600">
-                        <CheckCircle2 className="size-4 text-[#06D6A0]" />
-                        {t}
-                      </li>
-                    ))}
-                  </ul>
-
-                  <Button
-                    disabled={paid}
-                    onClick={() => operation && onPaid(operation.id)}
-                    className="mt-5 w-full bg-[#1A56DB] text-white hover:bg-[#1A56DB]/90"
+              {operation?.quotes.map((q, i) => {
+                const bound = paid && operation.boundCarrier === q.carrier;
+                return (
+                  <div
+                    key={q.carrier}
+                    className={cn(
+                      "flex flex-col rounded-2xl border bg-white p-5 shadow-sm",
+                      bound ? "border-[#06D6A0] ring-1 ring-[#06D6A0]/40" : "border-slate-200",
+                    )}
                   >
-                    {paid ? "Policy Bound" : "Pay & Bind via Carrier Link"}
-                  </Button>
-                </div>
-              ))}
+                    <div className="flex items-start justify-between gap-3">
+                      <div>
+                        <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">
+                          Option {i + 1}
+                        </p>
+                        <h3 className="mt-1 text-base font-bold text-[#0D1527]">{q.carrier}</h3>
+                      </div>
+                      <Badge className="bg-[#0D1527] text-white hover:bg-[#0D1527]">
+                        <ShieldCheck className="mr-1 size-3.5" /> Tier-1 A-Rated
+                      </Badge>
+                    </div>
+
+                    <div className="mt-5 grid grid-cols-2 gap-3">
+                      <div className="rounded-xl bg-slate-50 p-3">
+                        <p className="text-xs text-slate-500">Premium</p>
+                        <p className="text-lg font-bold tabular-nums text-[#1A56DB]">
+                          {usd(q.premium)}
+                        </p>
+                      </div>
+                      <div className="rounded-xl bg-slate-50 p-3">
+                        <p className="text-xs text-slate-500">Deductible</p>
+                        <p className="text-lg font-bold tabular-nums text-[#0D1527]">
+                          {usd(q.deductible)}
+                        </p>
+                      </div>
+                    </div>
+
+                    {q.notes && (
+                      <ul className="mt-5 flex-1 space-y-2">
+                        {q.notes.split("·").map((t) => (
+                          <li
+                            key={t}
+                            className="flex items-center gap-2 text-sm text-slate-600"
+                          >
+                            <CheckCircle2 className="size-4 shrink-0 text-[#06D6A0]" />
+                            {t.trim()}
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+
+                    <div className="mt-5 space-y-2">
+                      <a
+                        href={q.paymentUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="flex items-center justify-center gap-1.5 text-xs font-medium text-[#1A56DB] hover:underline"
+                      >
+                        <ExternalLink className="size-3.5" /> Carrier payment link
+                      </a>
+                      <Button
+                        disabled={paid}
+                        onClick={() => {
+                          window.open(q.paymentUrl, "_blank", "noreferrer");
+                          operation && onPaid(operation.id, q.carrier);
+                        }}
+                        className="w-full bg-[#1A56DB] text-white hover:bg-[#1A56DB]/90"
+                      >
+                        {bound ? "Policy Bound" : paid ? "Not selected" : "Pay & Bind via Carrier"}
+                      </Button>
+                    </div>
+                  </div>
+                );
+              })}
             </div>
           )}
 
-          {paid && (
+          {operation && operation.quotes.length > 0 && !paid && (
+            <label className="mt-6 flex items-start gap-3 rounded-xl bg-slate-50 p-4 text-sm text-slate-600">
+              <Checkbox
+                checked={confirm}
+                onCheckedChange={(v) => setConfirm(Boolean(v))}
+                className="mt-0.5"
+              />
+              I confirm the cargo details are accurate and authorize Alex AI to bind the selected
+              carrier option.
+            </label>
+          )}
+
+          {paid && operation && (
             <div className="mt-6 rounded-2xl border border-emerald-200 bg-emerald-50/70 p-6">
               <span className="inline-flex items-center gap-2 rounded-full bg-[#06D6A0] px-3 py-1 text-xs font-bold text-[#0D1527]">
                 ● COI Ready (&lt; 90s Issuance)
               </span>
               <p className="mt-3 text-sm text-emerald-900">
-                Payment confirmed. Your official proposal and digital certificate are ready to
-                download.
+                Payment confirmed with {operation.boundCarrier}. Your official proposal and digital
+                certificate are ready to download.
               </p>
               <div className="mt-4 flex flex-wrap gap-3">
                 <Button
                   variant="outline"
                   className="border-emerald-300 bg-white"
-                  onClick={() => toast.success("Proposal (PDF) downloaded")}
+                  onClick={() => downloadProposalPDF(operation)}
                 >
                   <Download className="mr-2 size-4" /> Download Proposal (PDF)
                 </Button>
                 <Button
                   className="bg-[#0D1527] text-white hover:bg-[#0D1527]/90"
-                  onClick={() => toast.success("Certificate of Insurance (COI) downloaded")}
+                  onClick={() => downloadCOIPDF(operation)}
                 >
                   <Download className="mr-2 size-4" /> Download Certificate of Insurance (COI)
                 </Button>
