@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { Nebula } from "@/components/nebula";
+import { SiteFooter } from "@/components/site-footer";
 import carrierLogos from "@/assets/logos.png.asset.json";
 import alexLogo from "@/assets/alex-logo.png.asset.json";
 import {
