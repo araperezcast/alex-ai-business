@@ -520,11 +520,12 @@ function PortalPage() {
   );
 }
 
-type ModuleKey = "dashboard" | "operations";
+type ModuleKey = "dashboard" | "operations" | "proposals";
 
 const MODULES: { key: ModuleKey; label: string; icon: typeof LayoutDashboard }[] = [
   { key: "dashboard", label: "Dashboard", icon: LayoutDashboard },
   { key: "operations", label: "Operations / Pedimentos", icon: ClipboardList },
+  { key: "proposals", label: "Proposals", icon: FileText },
 ];
 
 function OperationsTable({
