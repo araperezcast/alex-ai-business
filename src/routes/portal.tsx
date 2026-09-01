@@ -143,12 +143,12 @@ const usd = (n: number) =>
 
 const STATUS_META: Record<Status, { label: string; className: string }> = {
   pending: {
-    label: "Pending Quote",
+    label: "Pending",
     className: "bg-amber-50 text-amber-700 ring-1 ring-amber-200",
   },
   quoted: { label: "Quoted", className: "bg-blue-50 text-blue-700 ring-1 ring-blue-200" },
   paid: {
-    label: "Active / COI Issued",
+    label: "Paid / Active",
     className: "bg-emerald-50 text-emerald-700 ring-1 ring-emerald-200",
   },
 };
@@ -170,10 +170,11 @@ function StatusBadge({ status }: { status: Status }) {
 
 const TABS: { key: Status | "all"; label: string }[] = [
   { key: "all", label: "All" },
-  { key: "pending", label: "Pending Quote" },
+  { key: "pending", label: "Pending Underwriting" },
   { key: "quoted", label: "Quoted" },
   { key: "paid", label: "Active / COI Issued" },
 ];
+
 
 function PortalPage() {
   const [rows, setRows] = useState<Operation[]>(INITIAL);
@@ -225,7 +226,7 @@ function PortalPage() {
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
           <div className="flex items-center gap-4">
             <span className="text-base font-bold tracking-tight">GRUPO JOFFROY</span>
-            <span className="h-6 w-px bg-slate-200" />
+            <span className="text-slate-300">×</span>
             <img
               src={alexLogo.url}
               alt="Alex AI Insurtech"
@@ -233,8 +234,8 @@ function PortalPage() {
             />
           </div>
           <div className="flex items-center gap-3">
-            <span className="hidden text-xs font-medium text-slate-500 sm:block">
-              Client Portal · joffroy.alexai.cloud
+            <span className="hidden rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-500 sm:block">
+              joffroy.alexai.cloud
             </span>
             <div className="flex size-9 items-center justify-center rounded-full bg-[#514690] text-xs font-bold text-white">
               GJ
@@ -242,6 +243,7 @@ function PortalPage() {
           </div>
         </div>
       </header>
+
 
       <main className="mx-auto max-w-7xl px-6 py-10">
         <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
@@ -263,7 +265,7 @@ function PortalPage() {
               <Input
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                placeholder="Filter by Pedimento, Manifest ID, or Tracking"
+                placeholder="Search by Pedimento ID, Manifest, or City"
                 className="w-full border-slate-200 bg-white pl-9 sm:w-80"
               />
             </div>
@@ -271,10 +273,30 @@ function PortalPage() {
               onClick={() => setNewOpen(true)}
               className="bg-[#1A56DB] text-white hover:bg-[#1A56DB]/90"
             >
-              + New Customs Request
+              + New Customs Operation
             </Button>
           </div>
         </div>
+
+        <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {[
+            { label: "Operations Registered", value: counts.all, tone: "text-[#0D1527]" },
+            { label: "Pending Underwriting", value: counts.pending, tone: "text-amber-600" },
+            { label: "Proposals Ready", value: counts.quoted, tone: "text-[#1A56DB]" },
+            { label: "Active COIs Issued", value: counts.paid, tone: "text-[#06D6A0]" },
+          ].map((k) => (
+            <div
+              key={k.label}
+              className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm"
+            >
+              <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+                {k.label}
+              </p>
+              <p className={cn("mt-2 text-2xl font-bold tabular-nums", k.tone)}>{k.value}</p>
+            </div>
+          ))}
+        </div>
+
 
         <div className="mt-8 flex flex-wrap gap-2 border-b border-slate-200 pb-px">
           {TABS.map((t) => (
@@ -301,7 +323,7 @@ function PortalPage() {
             <TableHeader>
               <TableRow className="bg-slate-50/80 hover:bg-slate-50/80">
                 <TableHead className="text-xs font-semibold uppercase tracking-wide text-slate-500">
-                  Operation / Pedimento ID
+                  Pedimento / Manifest ID
                 </TableHead>
                 <TableHead className="text-xs font-semibold uppercase tracking-wide text-slate-500">
                   Risk Vertical
@@ -310,8 +332,9 @@ function PortalPage() {
                   Route
                 </TableHead>
                 <TableHead className="text-xs font-semibold uppercase tracking-wide text-slate-500">
-                  Insured Sum
+                  Insured Cargo Value
                 </TableHead>
+
                 <TableHead className="text-xs font-semibold uppercase tracking-wide text-slate-500">
                   Status
                 </TableHead>
@@ -337,19 +360,30 @@ function PortalPage() {
                     <StatusBadge status={r.status} />
                   </TableCell>
                   <TableCell className="text-right">
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => setSelected(r)}
-                      className="text-[#1A56DB] hover:bg-blue-50 hover:text-[#1A56DB]"
-                    >
-                      {r.status === "quoted"
-                        ? "Review Quotes"
-                        : r.status === "paid"
-                          ? "Download COI"
-                          : "View Details"}
-                    </Button>
+                    <div className="flex justify-end gap-2">
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => setSelected(r)}
+                        className="text-[#1A56DB] hover:bg-blue-50 hover:text-[#1A56DB]"
+                      >
+                        View Proposal
+                      </Button>
+                      {r.status === "paid" && (
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() =>
+                            toast.success(`Certificate of Insurance downloaded for ${r.id}`)
+                          }
+                          className="border-emerald-200 bg-emerald-50 text-emerald-700 hover:bg-emerald-100 hover:text-emerald-800"
+                        >
+                          <Download className="mr-1.5 size-3.5" /> COI
+                        </Button>
+                      )}
+                    </div>
                   </TableCell>
+
                 </TableRow>
               ))}
               {filtered.length === 0 && (
@@ -666,7 +700,7 @@ function QuotesModal({
                     onClick={() => operation && onPaid(operation.id)}
                     className="mt-5 w-full bg-[#1A56DB] text-white hover:bg-[#1A56DB]/90"
                   >
-                    {paid ? "Policy Bound" : "Select & Pay via Carrier Link"}
+                    {paid ? "Policy Bound" : "Pay & Bind via Carrier Link"}
                   </Button>
                 </div>
               ))}
@@ -676,7 +710,7 @@ function QuotesModal({
           {paid && (
             <div className="mt-6 rounded-2xl border border-emerald-200 bg-emerald-50/70 p-6">
               <span className="inline-flex items-center gap-2 rounded-full bg-[#06D6A0] px-3 py-1 text-xs font-bold text-[#0D1527]">
-                ● COI Issued in &lt; 90 Seconds
+                ● COI Ready (&lt; 90s Issuance)
               </span>
               <p className="mt-3 text-sm text-emerald-900">
                 Payment confirmed. Your official proposal and digital certificate are ready to
@@ -686,15 +720,15 @@ function QuotesModal({
                 <Button
                   variant="outline"
                   className="border-emerald-300 bg-white"
-                  onClick={() => toast.success("Official proposal (PDF) downloaded")}
+                  onClick={() => toast.success("Proposal (PDF) downloaded")}
                 >
-                  <Download className="mr-2 size-4" /> Download Official Proposal (PDF)
+                  <Download className="mr-2 size-4" /> Download Proposal (PDF)
                 </Button>
                 <Button
                   className="bg-[#0D1527] text-white hover:bg-[#0D1527]/90"
-                  onClick={() => toast.success("Digital certificate (COI) downloaded")}
+                  onClick={() => toast.success("Certificate of Insurance (COI) downloaded")}
                 >
-                  <Download className="mr-2 size-4" /> Download Digital Certificate (COI)
+                  <Download className="mr-2 size-4" /> Download Certificate of Insurance (COI)
                 </Button>
               </div>
             </div>
