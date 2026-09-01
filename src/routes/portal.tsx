@@ -335,23 +335,95 @@ function PortalPage() {
 
   if (!authed) return <PortalLogin onSuccess={() => setAuthed(true)} />;
 
+  const quotedOps = rows.filter((r) => r.status === "quoted");
+  const paidOps = rows.filter((r) => r.status === "paid");
+
   return (
-    <div className="min-h-screen bg-[#F8FAFC] text-[#0D1527]">
-      <header className="sticky top-0 z-30 border-b border-slate-200 bg-white/90 backdrop-blur">
-        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
-          <div className="flex items-center gap-4">
-            <span className="text-base font-bold tracking-tight">GRUPO JOFFROY</span>
-            <span className="text-slate-300">×</span>
-            <img
-              src={alexLogo.url}
-              alt="Alex AI Insurtech"
-              className="h-5 w-auto opacity-90 invert"
-            />
+    <div className="flex min-h-screen bg-[#F8FAFC] text-[#0D1527]">
+      {/* ===== Sidebar ===== */}
+      <aside
+        className={cn(
+          "fixed inset-y-0 left-0 z-40 flex w-64 flex-col border-r border-slate-200 bg-white transition-transform lg:static lg:translate-x-0",
+          sidebarOpen ? "translate-x-0" : "-translate-x-full",
+        )}
+      >
+        <div className="flex h-16 items-center gap-2.5 border-b border-slate-200 px-5">
+          <span className="text-sm font-bold tracking-tight">GRUPO JOFFROY</span>
+          <span className="text-slate-300">×</span>
+          <img src={alexLogo.url} alt="Alex AI Insurtech" className="h-4 w-auto opacity-90 invert" />
+        </div>
+
+        <nav className="flex-1 space-y-1 overflow-y-auto px-3 py-4">
+          {MODULES.map((m) => {
+            const count =
+              m.key === "operations"
+                ? counts.all
+                : m.key === "proposals"
+                  ? counts.quoted
+                  : m.key === "cois"
+                    ? counts.paid
+                    : null;
+            return (
+              <button
+                key={m.key}
+                onClick={() => {
+                  setView(m.key);
+                  setSidebarOpen(false);
+                }}
+                className={cn(
+                  "flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors",
+                  view === m.key
+                    ? "bg-[#0D1527] text-white"
+                    : "text-slate-600 hover:bg-slate-100 hover:text-[#0D1527]",
+                )}
+              >
+                <m.icon className="size-4.5 shrink-0" />
+                <span className="flex-1 text-left">{m.label}</span>
+                {count !== null && (
+                  <span
+                    className={cn(
+                      "rounded-full px-2 py-0.5 text-xs tabular-nums",
+                      view === m.key ? "bg-white/15 text-white" : "bg-slate-100 text-slate-500",
+                    )}
+                  >
+                    {count}
+                  </span>
+                )}
+              </button>
+            );
+          })}
+        </nav>
+
+        <div className="border-t border-slate-200 p-4">
+          <p className="rounded-xl bg-slate-50 px-3 py-2 text-center text-xs text-slate-500">
+            joffroy.alexai.cloud
+          </p>
+        </div>
+      </aside>
+      {sidebarOpen && (
+        <button
+          aria-label="Close menu"
+          onClick={() => setSidebarOpen(false)}
+          className="fixed inset-0 z-30 bg-[#0D1527]/40 lg:hidden"
+        />
+      )}
+
+      {/* ===== Main column ===== */}
+      <div className="flex min-w-0 flex-1 flex-col">
+        <header className="sticky top-0 z-20 flex h-16 items-center justify-between border-b border-slate-200 bg-white/90 px-4 backdrop-blur sm:px-6">
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() => setSidebarOpen(true)}
+              className="rounded-lg p-2 text-slate-500 hover:bg-slate-100 lg:hidden"
+              aria-label="Open menu"
+            >
+              <Menu className="size-5" />
+            </button>
+            <span className="hidden rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-500 sm:block">
+              Grupo Joffroy · Client Portal
+            </span>
           </div>
           <div className="flex items-center gap-3">
-            <span className="hidden rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-500 sm:block">
-              joffroy.alexai.cloud
-            </span>
             <Button
               variant="ghost"
               size="sm"
@@ -364,164 +436,246 @@ function PortalPage() {
               GJ
             </div>
           </div>
-        </div>
-      </header>
+        </header>
 
+        <main className="flex-1 px-4 py-8 sm:px-6 lg:px-8">
+          {view === "dashboard" && (
+            <DashboardView
+              counts={counts}
+              rows={rows}
+              onNew={() => setNewOpen(true)}
+              onSelect={setSelected}
+              onNavigate={setView}
+            />
+          )}
 
+          {view === "operations" && (
+            <>
+              <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+                <div>
+                  <p className="text-xs font-bold tracking-[0.18em] text-[#1A56DB] uppercase">
+                    Grupo Joffroy · Client Portal
+                  </p>
+                  <h1 className="mt-1 text-2xl font-bold tracking-tight">
+                    Operations &amp; Customs Clearance
+                  </h1>
+                  <p className="mt-1 text-sm text-slate-500">
+                    Manage Grupo Joffroy freight operations: register pedimentos, review
+                    multi-carrier proposals, and issue COIs instantly.
+                  </p>
+                </div>
+                <div className="flex flex-col gap-3 sm:flex-row">
+                  <div className="relative">
+                    <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-slate-400" />
+                    <Input
+                      value={query}
+                      onChange={(e) => setQuery(e.target.value)}
+                      placeholder="Search by Pedimento ID, Manifest, or City"
+                      className="w-full border-slate-200 bg-white pl-9 sm:w-80"
+                    />
+                  </div>
+                  <Button
+                    onClick={() => setNewOpen(true)}
+                    className="bg-[#1A56DB] text-white hover:bg-[#1A56DB]/90"
+                  >
+                    + New Operation / Pedimento
+                  </Button>
+                </div>
+              </div>
 
-
-      <main className="mx-auto max-w-7xl px-6 py-10">
-        <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-          <div>
-            <p className="text-xs font-bold tracking-[0.18em] text-[#1A56DB] uppercase">
-              Grupo Joffroy · Client Portal
-            </p>
-            <h1 className="mt-1 text-2xl font-bold tracking-tight">
-              Operations &amp; Customs Clearance
-            </h1>
-            <p className="mt-1 text-sm text-slate-500">
-              Manage Grupo Joffroy freight operations: register pedimentos, review multi-carrier
-              proposals, and issue COIs instantly.
-            </p>
-          </div>
-          <div className="flex flex-col gap-3 sm:flex-row">
-            <div className="relative">
-              <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-slate-400" />
-              <Input
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                placeholder="Search by Pedimento ID, Manifest, or City"
-                className="w-full border-slate-200 bg-white pl-9 sm:w-80"
-              />
-            </div>
-            <Button
-              onClick={() => setNewOpen(true)}
-              className="bg-[#1A56DB] text-white hover:bg-[#1A56DB]/90"
-            >
-              + New Customs Operation
-            </Button>
-          </div>
-        </div>
-
-        <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {[
-            { label: "Operations Registered", value: counts.all, tone: "text-[#0D1527]" },
-            { label: "Pending Underwriting", value: counts.pending, tone: "text-amber-600" },
-            { label: "Proposals Ready", value: counts.quoted, tone: "text-[#1A56DB]" },
-            { label: "Active COIs Issued", value: counts.paid, tone: "text-[#06D6A0]" },
-          ].map((k) => (
-            <div
-              key={k.label}
-              className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm"
-            >
-              <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
-                {k.label}
-              </p>
-              <p className={cn("mt-2 text-2xl font-bold tabular-nums", k.tone)}>{k.value}</p>
-            </div>
-          ))}
-        </div>
-
-
-        <div className="mt-8 flex flex-wrap gap-2 border-b border-slate-200 pb-px">
-          {TABS.map((t) => (
-            <button
-              key={t.key}
-              onClick={() => setTab(t.key)}
-              className={cn(
-                "-mb-px flex items-center gap-2 border-b-2 px-4 py-2.5 text-sm font-semibold transition-colors",
-                tab === t.key
-                  ? "border-[#1A56DB] text-[#1A56DB]"
-                  : "border-transparent text-slate-500 hover:text-[#0D1527]",
-              )}
-            >
-              {t.label}
-              <span className="rounded-full bg-slate-100 px-2 py-0.5 text-xs text-slate-600">
-                {counts[t.key]}
-              </span>
-            </button>
-          ))}
-        </div>
-
-        <div className="mt-6 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
-          <Table>
-            <TableHeader>
-              <TableRow className="bg-slate-50/80 hover:bg-slate-50/80">
-                <TableHead className="text-xs font-semibold uppercase tracking-wide text-slate-500">
-                  Pedimento / Manifest ID
-                </TableHead>
-                <TableHead className="text-xs font-semibold uppercase tracking-wide text-slate-500">
-                  Risk Vertical
-                </TableHead>
-                <TableHead className="text-xs font-semibold uppercase tracking-wide text-slate-500">
-                  Route
-                </TableHead>
-                <TableHead className="text-xs font-semibold uppercase tracking-wide text-slate-500">
-                  Insured Cargo Value
-                </TableHead>
-
-                <TableHead className="text-xs font-semibold uppercase tracking-wide text-slate-500">
-                  Status
-                </TableHead>
-                <TableHead className="text-right text-xs font-semibold uppercase tracking-wide text-slate-500">
-                  Actions
-                </TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {filtered.map((r) => (
-                <TableRow key={r.id} className="border-slate-100">
-                  <TableCell className="font-semibold">{r.id}</TableCell>
-                  <TableCell className="text-slate-600">{r.vertical}</TableCell>
-                  <TableCell className="text-slate-600">
-                    <span className="inline-flex items-center gap-2">
-                      {r.origin}
-                      <ArrowRight className="size-3.5 text-slate-400" />
-                      {r.destination}
+              <div className="mt-8 flex flex-wrap gap-2 border-b border-slate-200 pb-px">
+                {TABS.map((t) => (
+                  <button
+                    key={t.key}
+                    onClick={() => setTab(t.key)}
+                    className={cn(
+                      "-mb-px flex items-center gap-2 border-b-2 px-4 py-2.5 text-sm font-semibold transition-colors",
+                      tab === t.key
+                        ? "border-[#1A56DB] text-[#1A56DB]"
+                        : "border-transparent text-slate-500 hover:text-[#0D1527]",
+                    )}
+                  >
+                    {t.label}
+                    <span className="rounded-full bg-slate-100 px-2 py-0.5 text-xs text-slate-600">
+                      {counts[t.key]}
                     </span>
-                  </TableCell>
-                  <TableCell className="font-medium tabular-nums">{usd(r.value)} USD</TableCell>
-                  <TableCell>
-                    <StatusBadge status={r.status} />
-                  </TableCell>
-                  <TableCell className="text-right">
-                    <div className="flex justify-end gap-2">
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => setSelected(r)}
-                        className="text-[#1A56DB] hover:bg-blue-50 hover:text-[#1A56DB]"
-                      >
-                        View Proposal
-                      </Button>
-                      {r.status === "paid" && (
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() =>
-                            toast.success(`Certificate of Insurance downloaded for ${r.id}`)
-                          }
-                          className="border-emerald-200 bg-emerald-50 text-emerald-700 hover:bg-emerald-100 hover:text-emerald-800"
-                        >
-                          <Download className="mr-1.5 size-3.5" /> COI
-                        </Button>
-                      )}
-                    </div>
-                  </TableCell>
+                  </button>
+                ))}
+              </div>
 
-                </TableRow>
-              ))}
-              {filtered.length === 0 && (
-                <TableRow>
-                  <TableCell colSpan={6} className="py-16 text-center text-sm text-slate-500">
-                    No operations match your filters.
-                  </TableCell>
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
-        </div>
-      </main>
+              <OperationsTable rows={filtered} onSelect={setSelected} />
+            </>
+          )}
+
+          {view === "proposals" && (
+            <>
+              <div>
+                <p className="text-xs font-bold tracking-[0.18em] text-[#1A56DB] uppercase">
+                  Underwriting · Multi-Carrier
+                </p>
+                <h1 className="mt-1 text-2xl font-bold tracking-tight">Ready Proposals</h1>
+                <p className="mt-1 text-sm text-slate-500">
+                  Proposals generated by underwriting, ready to compare, pay and bind.
+                </p>
+              </div>
+              <div className="mt-6 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+                <Table>
+                  <TableHeader>
+                    <TableRow className="bg-slate-50/80 hover:bg-slate-50/80">
+                      <TableHead className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+                        Pedimento
+                      </TableHead>
+                      <TableHead className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+                        Risk Vertical
+                      </TableHead>
+                      <TableHead className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+                        Route
+                      </TableHead>
+                      <TableHead className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+                        Insured Value
+                      </TableHead>
+                      <TableHead className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+                        Status
+                      </TableHead>
+                      <TableHead className="text-right text-xs font-semibold uppercase tracking-wide text-slate-500">
+                        Action
+                      </TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {quotedOps.map((r) => (
+                      <TableRow key={r.id} className="border-slate-100">
+                        <TableCell className="font-semibold">{r.id}</TableCell>
+                        <TableCell className="text-slate-600">{r.vertical}</TableCell>
+                        <TableCell className="text-slate-600">
+                          <span className="inline-flex items-center gap-2">
+                            {r.origin}
+                            <ArrowRight className="size-3.5 text-slate-400" />
+                            {r.destination}
+                          </span>
+                        </TableCell>
+                        <TableCell className="font-medium tabular-nums">
+                          {usd(r.value)} USD
+                        </TableCell>
+                        <TableCell>
+                          <StatusBadge status={r.status} />
+                        </TableCell>
+                        <TableCell className="text-right">
+                          <Button
+                            size="sm"
+                            onClick={() => setSelected(r)}
+                            className="bg-[#0D1527] text-white hover:bg-[#0D1527]/90"
+                          >
+                            View Presentation
+                          </Button>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                    {quotedOps.length === 0 && (
+                      <TableRow>
+                        <TableCell colSpan={6} className="py-16 text-center text-sm text-slate-500">
+                          No proposals ready yet — operations under underwriting will appear here.
+                        </TableCell>
+                      </TableRow>
+                    )}
+                  </TableBody>
+                </Table>
+              </div>
+            </>
+          )}
+
+          {view === "cois" && (
+            <>
+              <div>
+                <p className="text-xs font-bold tracking-[0.18em] text-[#06D6A0] uppercase">
+                  Bound Policies · Instant Issuance
+                </p>
+                <h1 className="mt-1 text-2xl font-bold tracking-tight">
+                  Certificates of Insurance Issued
+                </h1>
+                <p className="mt-1 text-sm text-slate-500">
+                  Paid operations with digital COIs issued in under 90 seconds.
+                </p>
+              </div>
+              <div className="mt-6 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+                <Table>
+                  <TableHeader>
+                    <TableRow className="bg-slate-50/80 hover:bg-slate-50/80">
+                      <TableHead className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+                        Pedimento
+                      </TableHead>
+                      <TableHead className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+                        Risk Vertical
+                      </TableHead>
+                      <TableHead className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+                        Route
+                      </TableHead>
+                      <TableHead className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+                        Insured Value
+                      </TableHead>
+                      <TableHead className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+                        Status
+                      </TableHead>
+                      <TableHead className="text-right text-xs font-semibold uppercase tracking-wide text-slate-500">
+                        Documents
+                      </TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {paidOps.map((r) => (
+                      <TableRow key={r.id} className="border-slate-100">
+                        <TableCell className="font-semibold">{r.id}</TableCell>
+                        <TableCell className="text-slate-600">{r.vertical}</TableCell>
+                        <TableCell className="text-slate-600">
+                          <span className="inline-flex items-center gap-2">
+                            {r.origin}
+                            <ArrowRight className="size-3.5 text-slate-400" />
+                            {r.destination}
+                          </span>
+                        </TableCell>
+                        <TableCell className="font-medium tabular-nums">
+                          {usd(r.value)} USD
+                        </TableCell>
+                        <TableCell>
+                          <StatusBadge status={r.status} />
+                        </TableCell>
+                        <TableCell className="text-right">
+                          <div className="flex justify-end gap-2">
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => toast.success(`Proposal (PDF) downloaded for ${r.id}`)}
+                              className="border-slate-200"
+                            >
+                              <Download className="mr-1.5 size-3.5" /> Proposal
+                            </Button>
+                            <Button
+                              size="sm"
+                              onClick={() =>
+                                toast.success(`Certificate of Insurance downloaded for ${r.id}`)
+                              }
+                              className="bg-emerald-600 text-white hover:bg-emerald-700"
+                            >
+                              <Download className="mr-1.5 size-3.5" /> COI
+                            </Button>
+                          </div>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                    {paidOps.length === 0 && (
+                      <TableRow>
+                        <TableCell colSpan={6} className="py-16 text-center text-sm text-slate-500">
+                          No certificates issued yet.
+                        </TableCell>
+                      </TableRow>
+                    )}
+                  </TableBody>
+                </Table>
+              </div>
+            </>
+          )}
+        </main>
+      </div>
 
       <NewRequestModal open={newOpen} onOpenChange={setNewOpen} onSubmit={addOperation} />
       <QuotesModal
@@ -530,6 +684,170 @@ function PortalPage() {
         onPaid={markPaid}
       />
     </div>
+  );
+}
+
+type ModuleKey = "dashboard" | "operations" | "proposals" | "cois";
+
+const MODULES: { key: ModuleKey; label: string; icon: typeof LayoutDashboard }[] = [
+  { key: "dashboard", label: "Dashboard", icon: LayoutDashboard },
+  { key: "operations", label: "Operations / Pedimentos", icon: ClipboardList },
+  { key: "proposals", label: "Ready Proposals", icon: FileText },
+  { key: "cois", label: "COIs Issued", icon: Award },
+];
+
+function OperationsTable({
+  rows,
+  onSelect,
+}: {
+  rows: Operation[];
+  onSelect: (op: Operation) => void;
+}) {
+  return (
+    <div className="mt-6 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+      <Table>
+        <TableHeader>
+          <TableRow className="bg-slate-50/80 hover:bg-slate-50/80">
+            <TableHead className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+              Pedimento / Manifest ID
+            </TableHead>
+            <TableHead className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+              Risk Vertical
+            </TableHead>
+            <TableHead className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+              Route
+            </TableHead>
+            <TableHead className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+              Insured Cargo Value
+            </TableHead>
+            <TableHead className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+              Status
+            </TableHead>
+            <TableHead className="text-right text-xs font-semibold uppercase tracking-wide text-slate-500">
+              Actions
+            </TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {rows.map((r) => (
+            <TableRow key={r.id} className="border-slate-100">
+              <TableCell className="font-semibold">{r.id}</TableCell>
+              <TableCell className="text-slate-600">{r.vertical}</TableCell>
+              <TableCell className="text-slate-600">
+                <span className="inline-flex items-center gap-2">
+                  {r.origin}
+                  <ArrowRight className="size-3.5 text-slate-400" />
+                  {r.destination}
+                </span>
+              </TableCell>
+              <TableCell className="font-medium tabular-nums">{usd(r.value)} USD</TableCell>
+              <TableCell>
+                <StatusBadge status={r.status} />
+              </TableCell>
+              <TableCell className="text-right">
+                <div className="flex justify-end gap-2">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => onSelect(r)}
+                    className="text-[#1A56DB] hover:bg-blue-50 hover:text-[#1A56DB]"
+                  >
+                    View Proposal
+                  </Button>
+                  {r.status === "paid" && (
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() =>
+                        toast.success(`Certificate of Insurance downloaded for ${r.id}`)
+                      }
+                      className="border-emerald-200 bg-emerald-50 text-emerald-700 hover:bg-emerald-100 hover:text-emerald-800"
+                    >
+                      <Download className="mr-1.5 size-3.5" /> COI
+                    </Button>
+                  )}
+                </div>
+              </TableCell>
+            </TableRow>
+          ))}
+          {rows.length === 0 && (
+            <TableRow>
+              <TableCell colSpan={6} className="py-16 text-center text-sm text-slate-500">
+                No operations match your filters.
+              </TableCell>
+            </TableRow>
+          )}
+        </TableBody>
+      </Table>
+    </div>
+  );
+}
+
+function DashboardView({
+  counts,
+  rows,
+  onNew,
+  onSelect,
+  onNavigate,
+}: {
+  counts: { all: number; pending: number; quoted: number; paid: number };
+  rows: Operation[];
+  onNew: () => void;
+  onSelect: (op: Operation) => void;
+  onNavigate: (view: ModuleKey) => void;
+}) {
+  return (
+    <>
+      <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+        <div>
+          <p className="text-xs font-bold tracking-[0.18em] text-[#1A56DB] uppercase">
+            Grupo Joffroy · Client Portal
+          </p>
+          <h1 className="mt-1 text-2xl font-bold tracking-tight">Operations Dashboard</h1>
+          <p className="mt-1 text-sm text-slate-500">
+            Cross-border freight underwriting and COI issuance at a glance.
+          </p>
+        </div>
+        <Button onClick={onNew} className="bg-[#1A56DB] text-white hover:bg-[#1A56DB]/90">
+          + New Operation / Pedimento
+        </Button>
+      </div>
+
+      <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {[
+          { label: "Operations Registered", value: counts.all, tone: "text-[#0D1527]", to: "operations" as ModuleKey },
+          { label: "Pending Underwriting", value: counts.pending, tone: "text-amber-600", to: "operations" as ModuleKey },
+          { label: "Proposals Ready", value: counts.quoted, tone: "text-[#1A56DB]", to: "proposals" as ModuleKey },
+          { label: "Active COIs Issued", value: counts.paid, tone: "text-[#06D6A0]", to: "cois" as ModuleKey },
+        ].map((k) => (
+          <button
+            key={k.label}
+            onClick={() => onNavigate(k.to)}
+            className="rounded-2xl border border-slate-200 bg-white p-5 text-left shadow-sm transition-shadow hover:shadow-md"
+          >
+            <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+              {k.label}
+            </p>
+            <p className={cn("mt-2 text-2xl font-bold tabular-nums", k.tone)}>{k.value}</p>
+          </button>
+        ))}
+      </div>
+
+      <div className="mt-8">
+        <div className="mb-3 flex items-center justify-between">
+          <h2 className="text-sm font-bold uppercase tracking-wide text-slate-500">
+            Recent Operations
+          </h2>
+          <button
+            onClick={() => onNavigate("operations")}
+            className="text-sm font-semibold text-[#1A56DB] hover:underline"
+          >
+            View all
+          </button>
+        </div>
+        <OperationsTable rows={rows.slice(0, 4)} onSelect={onSelect} />
+      </div>
+    </>
   );
 }
 
