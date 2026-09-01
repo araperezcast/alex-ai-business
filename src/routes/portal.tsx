@@ -359,7 +359,12 @@ function PortalPage() {
 
         <nav className="flex-1 space-y-1 overflow-y-auto px-3 py-4">
           {MODULES.map((m) => {
-            const count = m.key === "operations" ? counts.all : null;
+            const count =
+              m.key === "operations"
+                ? counts.all
+                : m.key === "proposals"
+                  ? counts.quoted
+                  : null;
             return (
               <button
                 key={m.key}
