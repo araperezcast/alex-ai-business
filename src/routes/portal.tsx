@@ -425,6 +425,9 @@ function PortalPage() {
           {view === "admin-pulse" && <PulseView rows={rows} />}
           {view === "admin-catalogs" && <CatalogsView rows={rows} />}
         </main>
+        <footer className="border-t border-slate-200 bg-white px-4 py-4 text-center sm:px-6 lg:px-8">
+          <SiteFooter />
+        </footer>
       </div>
 
       <QuoteCaptureModal
