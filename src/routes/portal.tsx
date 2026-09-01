@@ -284,6 +284,8 @@ function PortalPage() {
   const [newOpen, setNewOpen] = useState(false);
   const [selected, setSelected] = useState<Operation | null>(null);
   const [authed, setAuthed] = useState(false);
+  const [view, setView] = useState<ModuleKey>("dashboard");
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   useEffect(() => {
     if (sessionStorage.getItem(PORTAL_SESSION_KEY) === "1") setAuthed(true);
