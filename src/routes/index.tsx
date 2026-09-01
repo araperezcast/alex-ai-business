@@ -31,6 +31,8 @@ import {
   Music2,
   BarChart3,
   ShieldCheck,
+  Menu,
+  X,
 } from "lucide-react";
 import { toast } from "sonner";
 import cargoImg from "@/assets/cargo.jpg";
