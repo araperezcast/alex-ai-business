@@ -654,7 +654,10 @@ function DashboardView({
             Cross-border freight underwriting and COI issuance at a glance.
           </p>
         </div>
-        <Button onClick={onNew} className="bg-[#1A56DB] text-white hover:bg-[#1A56DB]/90">
+        <Button
+          onClick={onNew}
+          className="bg-gradient-to-r from-[#0048FF] to-[#07D6A0] text-white hover:opacity-90"
+        >
           + New Operation / Pedimento
         </Button>
       </div>
@@ -868,7 +871,10 @@ function NewRequestModal({
           <Button variant="outline" className="border-slate-200" onClick={() => onOpenChange(false)}>
             Cancel
           </Button>
-          <Button onClick={submit} className="bg-[#1A56DB] text-white hover:bg-[#1A56DB]/90">
+          <Button
+            onClick={submit}
+            className="bg-gradient-to-r from-[#0048FF] to-[#07D6A0] text-white hover:opacity-90"
+          >
             Submit for Underwriting
           </Button>
         </DialogFooter>
