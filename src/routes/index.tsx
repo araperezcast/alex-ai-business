@@ -780,6 +780,7 @@ function Footer() {
 function Home() {
   return (
     <main>
+      <Navbar />
       <Hero />
       <Perks />
       <Bento />
