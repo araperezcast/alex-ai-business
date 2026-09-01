@@ -226,7 +226,7 @@ function PortalPage() {
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
           <div className="flex items-center gap-4">
             <span className="text-base font-bold tracking-tight">GRUPO JOFFROY</span>
-            <span className="h-6 w-px bg-slate-200" />
+            <span className="text-slate-300">×</span>
             <img
               src={alexLogo.url}
               alt="Alex AI Insurtech"
@@ -234,8 +234,8 @@ function PortalPage() {
             />
           </div>
           <div className="flex items-center gap-3">
-            <span className="hidden text-xs font-medium text-slate-500 sm:block">
-              Client Portal · joffroy.alexai.cloud
+            <span className="hidden rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-500 sm:block">
+              joffroy.alexai.cloud
             </span>
             <div className="flex size-9 items-center justify-center rounded-full bg-[#514690] text-xs font-bold text-white">
               GJ
@@ -243,6 +243,7 @@ function PortalPage() {
           </div>
         </div>
       </header>
+
 
       <main className="mx-auto max-w-7xl px-6 py-10">
         <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
