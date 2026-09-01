@@ -512,6 +512,13 @@ function PortalPage() {
             </>
           )}
 
+          {view === "proposals" && (
+            <ProposalsView
+              rows={rows.filter((r) => r.status === "quoted")}
+              onSelect={setSelected}
+            />
+          )}
+
         </main>
       </div>
 
