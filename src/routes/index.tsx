@@ -79,6 +79,7 @@ function GradientButton({
 }
 
 function Navbar() {
+  const [open, setOpen] = useState(false);
   const links = [
     { label: "Products", to: "/" },
     { label: "Solutions", to: "/" },
@@ -88,8 +89,8 @@ function Navbar() {
   ];
   return (
     <header className="fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-navy-deep/80 backdrop-blur-md">
-      <nav className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
-        <Link to="/" className="flex items-center">
+      <nav className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-6">
+        <Link to="/" className="flex shrink-0 items-center" onClick={() => setOpen(false)}>
           <img
             src={alexLogo.url}
             alt="Alex AI Insurtech"
@@ -107,16 +108,16 @@ function Navbar() {
             </Link>
           ))}
         </div>
-        <div className="flex items-center gap-6">
+        <div className="hidden items-center gap-6 lg:flex">
           <Link
             to="/"
-            className="hidden text-sm font-medium text-white/80 transition-colors hover:text-white sm:block"
+            className="text-sm font-medium text-white/80 transition-colors hover:text-white"
           >
             Contact
           </Link>
           <Link
             to="/"
-            className="hidden text-sm font-medium text-white/80 transition-colors hover:text-white sm:block"
+            className="text-sm font-medium text-white/80 transition-colors hover:text-white"
           >
             Login
           </Link>
@@ -127,7 +128,46 @@ function Navbar() {
             Get started
           </Link>
         </div>
+        <button
+          type="button"
+          aria-label={open ? "Close menu" : "Open menu"}
+          aria-expanded={open}
+          onClick={() => setOpen((v) => !v)}
+          className="grid h-10 w-10 shrink-0 place-items-center rounded-full border border-white/15 text-white lg:hidden"
+        >
+          {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+        </button>
       </nav>
+      {open && (
+        <div className="border-t border-white/10 bg-navy-deep px-6 py-6 lg:hidden">
+          <div className="flex flex-col gap-4">
+            {links.map((l) => (
+              <Link
+                key={l.label}
+                to={l.to}
+                onClick={() => setOpen(false)}
+                className="text-base font-medium text-white/80 transition-colors hover:text-white"
+              >
+                {l.label}
+              </Link>
+            ))}
+            <div className="mt-2 flex items-center gap-5 border-t border-white/10 pt-4">
+              <Link to="/" className="text-sm font-medium text-white/80 hover:text-white">
+                Contact
+              </Link>
+              <Link to="/" className="text-sm font-medium text-white/80 hover:text-white">
+                Login
+              </Link>
+              <Link
+                to="/"
+                className="bg-gradient-brand rounded-full px-5 py-2 text-sm font-bold text-brand-foreground"
+              >
+                Get started
+              </Link>
+            </div>
+          </div>
+        </div>
+      )}
     </header>
   );
 }
