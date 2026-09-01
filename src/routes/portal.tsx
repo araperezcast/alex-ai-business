@@ -700,7 +700,7 @@ function QuotesModal({
                     onClick={() => operation && onPaid(operation.id)}
                     className="mt-5 w-full bg-[#1A56DB] text-white hover:bg-[#1A56DB]/90"
                   >
-                    {paid ? "Policy Bound" : "Select & Pay via Carrier Link"}
+                    {paid ? "Policy Bound" : "Pay & Bind via Carrier Link"}
                   </Button>
                 </div>
               ))}
@@ -710,7 +710,7 @@ function QuotesModal({
           {paid && (
             <div className="mt-6 rounded-2xl border border-emerald-200 bg-emerald-50/70 p-6">
               <span className="inline-flex items-center gap-2 rounded-full bg-[#06D6A0] px-3 py-1 text-xs font-bold text-[#0D1527]">
-                ● COI Issued in &lt; 90 Seconds
+                ● COI Ready (&lt; 90s Issuance)
               </span>
               <p className="mt-3 text-sm text-emerald-900">
                 Payment confirmed. Your official proposal and digital certificate are ready to
@@ -720,15 +720,15 @@ function QuotesModal({
                 <Button
                   variant="outline"
                   className="border-emerald-300 bg-white"
-                  onClick={() => toast.success("Official proposal (PDF) downloaded")}
+                  onClick={() => toast.success("Proposal (PDF) downloaded")}
                 >
-                  <Download className="mr-2 size-4" /> Download Official Proposal (PDF)
+                  <Download className="mr-2 size-4" /> Download Proposal (PDF)
                 </Button>
                 <Button
                   className="bg-[#0D1527] text-white hover:bg-[#0D1527]/90"
-                  onClick={() => toast.success("Digital certificate (COI) downloaded")}
+                  onClick={() => toast.success("Certificate of Insurance (COI) downloaded")}
                 >
-                  <Download className="mr-2 size-4" /> Download Digital Certificate (COI)
+                  <Download className="mr-2 size-4" /> Download Certificate of Insurance (COI)
                 </Button>
               </div>
             </div>
