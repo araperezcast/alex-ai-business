@@ -143,12 +143,12 @@ const usd = (n: number) =>
 
 const STATUS_META: Record<Status, { label: string; className: string }> = {
   pending: {
-    label: "Pending Quote",
+    label: "Pending",
     className: "bg-amber-50 text-amber-700 ring-1 ring-amber-200",
   },
   quoted: { label: "Quoted", className: "bg-blue-50 text-blue-700 ring-1 ring-blue-200" },
   paid: {
-    label: "Active / COI Issued",
+    label: "Paid / Active",
     className: "bg-emerald-50 text-emerald-700 ring-1 ring-emerald-200",
   },
 };
@@ -170,10 +170,11 @@ function StatusBadge({ status }: { status: Status }) {
 
 const TABS: { key: Status | "all"; label: string }[] = [
   { key: "all", label: "All" },
-  { key: "pending", label: "Pending Quote" },
+  { key: "pending", label: "Pending Underwriting" },
   { key: "quoted", label: "Quoted" },
   { key: "paid", label: "Active / COI Issued" },
 ];
+
 
 function PortalPage() {
   const [rows, setRows] = useState<Operation[]>(INITIAL);
