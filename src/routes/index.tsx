@@ -864,6 +864,7 @@ function Home() {
       <Navbar />
       <Hero />
       <Perks />
+      <ValueCards />
       <Bento />
       <Programs />
       <Advantage />
