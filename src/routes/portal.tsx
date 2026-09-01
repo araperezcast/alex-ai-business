@@ -1,12 +1,15 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
+  Activity,
   ArrowRight,
+  BookOpen,
   CheckCircle2,
   ClipboardList,
   Download,
   ExternalLink,
   FileText,
+  Inbox,
   LayoutDashboard,
   LogOut,
   Menu,
@@ -19,6 +22,12 @@ import { toast } from "sonner";
 
 import alexLogo from "@/assets/alex-logo.png.asset.json";
 import joffroyLogo from "@/assets/joffroy-logo.png.asset.json";
+import {
+  CatalogsView,
+  PulseView,
+  QueueView,
+  QuoteCaptureModal,
+} from "@/components/admin-modules";
 import { PortalLogin } from "@/components/portal-login";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -116,17 +125,31 @@ const TABS: { key: Status | "all"; label: string }[] = [
   { key: "paid", label: "COIs Issued / Active" },
 ];
 
-type ModuleKey = "dashboard" | "operations" | "proposals";
+type ModuleKey =
+  | "dashboard"
+  | "operations"
+  | "proposals"
+  | "admin-queue"
+  | "admin-pulse"
+  | "admin-catalogs";
 
-const MODULES: { key: ModuleKey; label: string; icon: typeof LayoutDashboard }[] = [
+type NavItem = { key: ModuleKey; label: string; icon: typeof LayoutDashboard };
+
+const MODULES: NavItem[] = [
   { key: "dashboard", label: "Dashboard", icon: LayoutDashboard },
   { key: "operations", label: "Operations / Pedimentos", icon: ClipboardList },
   { key: "proposals", label: "Proposals", icon: FileText },
 ];
 
+const ADMIN_MODULES: NavItem[] = [
+  { key: "admin-queue", label: "Incoming Queue", icon: Inbox },
+  { key: "admin-pulse", label: "Alex Pulse · Metrics", icon: Activity },
+  { key: "admin-catalogs", label: "Catalogs", icon: BookOpen },
+];
+
 function PortalPage() {
   const navigate = useNavigate();
-  const { rows, addOperation, markPaid } = useOperations();
+  const { rows, addOperation, markPaid, sendProposals } = useOperations();
   const [tab, setTab] = useState<Status | "all">("all");
   const [query, setQuery] = useState("");
   const [from, setFrom] = useState("");
@@ -136,14 +159,10 @@ function PortalPage() {
   const [session, setSession] = useState<Session | null>(null);
   const [view, setView] = useState<ModuleKey>("dashboard");
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [quoteTargetId, setQuoteTargetId] = useState<string | null>(null);
 
   useEffect(() => {
-    const s = loadSession();
-    if (s?.role === "alex") {
-      navigate({ to: "/admin" });
-      return;
-    }
-    setSession(s);
+    setSession(loadSession());
   }, [navigate]);
 
   const selected = useMemo(
@@ -195,7 +214,7 @@ function PortalPage() {
   }
 
   if (!session) {
-    return <PortalLogin onSuccess={(s) => (s.role === "alex" ? navigate({ to: "/admin" }) : setSession(s))} />;
+    return <PortalLogin onSuccess={(s) => setSession(s)} />;
   }
 
   return (
