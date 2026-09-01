@@ -266,8 +266,7 @@ function PortalPage() {
         </div>
       </header>
 
-        </div>
-      </header>
+
 
 
       <main className="mx-auto max-w-7xl px-6 py-10">
