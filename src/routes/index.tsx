@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { Nebula } from "@/components/nebula";
 import carrierLogos from "@/assets/logos.png.asset.json";
@@ -75,6 +75,60 @@ function GradientButton({
     >
       {children}
     </button>
+  );
+}
+
+function Navbar() {
+  const links = [
+    { label: "Products", to: "/" },
+    { label: "Solutions", to: "/" },
+    { label: "Alex Portal B2B", to: "/portal" },
+    { label: "Company", to: "/" },
+    { label: "Customers", to: "/" },
+  ];
+  return (
+    <header className="fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-navy-deep/80 backdrop-blur-md">
+      <nav className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
+        <Link to="/" className="flex items-center">
+          <img
+            src={alexLogo.url}
+            alt="Alex AI Insurtech"
+            className="h-7 w-auto mix-blend-screen"
+          />
+        </Link>
+        <div className="hidden items-center gap-8 lg:flex">
+          {links.map((l) => (
+            <Link
+              key={l.label}
+              to={l.to}
+              className="text-sm font-medium text-white/80 transition-colors hover:text-white"
+            >
+              {l.label}
+            </Link>
+          ))}
+        </div>
+        <div className="flex items-center gap-6">
+          <Link
+            to="/"
+            className="hidden text-sm font-medium text-white/80 transition-colors hover:text-white sm:block"
+          >
+            Contact
+          </Link>
+          <Link
+            to="/"
+            className="hidden text-sm font-medium text-white/80 transition-colors hover:text-white sm:block"
+          >
+            Login
+          </Link>
+          <Link
+            to="/"
+            className="bg-gradient-brand rounded-full px-5 py-2 text-sm font-bold text-brand-foreground transition-all hover:brightness-110"
+          >
+            Get started
+          </Link>
+        </div>
+      </nav>
+    </header>
   );
 }
 
@@ -726,6 +780,7 @@ function Footer() {
 function Home() {
   return (
     <main>
+      <Navbar />
       <Hero />
       <Perks />
       <Bento />
