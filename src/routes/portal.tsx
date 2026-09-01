@@ -323,7 +323,7 @@ function PortalPage() {
             <TableHeader>
               <TableRow className="bg-slate-50/80 hover:bg-slate-50/80">
                 <TableHead className="text-xs font-semibold uppercase tracking-wide text-slate-500">
-                  Operation / Pedimento ID
+                  Pedimento / Manifest ID
                 </TableHead>
                 <TableHead className="text-xs font-semibold uppercase tracking-wide text-slate-500">
                   Risk Vertical
@@ -332,8 +332,9 @@ function PortalPage() {
                   Route
                 </TableHead>
                 <TableHead className="text-xs font-semibold uppercase tracking-wide text-slate-500">
-                  Insured Sum
+                  Insured Cargo Value
                 </TableHead>
+
                 <TableHead className="text-xs font-semibold uppercase tracking-wide text-slate-500">
                   Status
                 </TableHead>
