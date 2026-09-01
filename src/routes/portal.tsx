@@ -664,40 +664,63 @@ function ProposalsView({
           here.
         </div>
       ) : (
-        <div className="mt-8 grid gap-5 md:grid-cols-2">
-          {rows.map((r) => (
-            <div
-              key={r.id}
-              className="flex flex-col rounded-2xl border border-slate-200 bg-white p-5 shadow-sm"
-            >
-              <div className="flex items-start justify-between gap-3">
-                <div>
-                  <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">
-                    Pedimento
-                  </p>
-                  <h3 className="mt-1 text-base font-bold text-[#0D1527]">{r.id}</h3>
-                </div>
-                <StatusBadge status={r.status} />
-              </div>
-
-              <p className="mt-3 text-sm text-slate-600">{r.vertical}</p>
-              <p className="mt-1 flex items-center gap-2 text-sm text-slate-500">
-                {r.origin} <ArrowRight className="size-3.5 text-slate-400" /> {r.destination}
-              </p>
-              <p className="mt-2 text-sm font-medium tabular-nums text-[#0D1527]">
-                {usd(r.value)} USD insured sum
-              </p>
-
-              <Button
-                onClick={() => onSelect(r)}
-                className="mt-5 w-full bg-gradient-to-r from-[#0048FF] to-[#07D6A0] text-white hover:opacity-90"
-              >
-                Review Proposals
-              </Button>
-            </div>
-          ))}
+        <div className="mt-8 overflow-x-auto rounded-2xl border border-slate-200 bg-white shadow-sm">
+          <Table>
+            <TableHeader>
+              <TableRow className="bg-slate-50 hover:bg-slate-50">
+                {["Client / Pedimento", "Business", "Coverages", "Total Premium", "Status"].map(
+                  (h) => (
+                    <TableHead key={h} className="text-sm font-medium text-slate-500">
+                      {h}
+                    </TableHead>
+                  ),
+                )}
+                <TableHead className="text-right text-sm font-medium text-slate-500">
+                  Action
+                </TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {rows.map((r) => {
+                const best = r.quotes[0];
+                return (
+                  <TableRow key={r.id} className="border-slate-100">
+                    <TableCell className="py-5">
+                      <p className="font-bold text-[#0D1527]">{r.id}</p>
+                      <p className="mt-0.5 flex items-center gap-1.5 text-xs text-slate-500">
+                        {r.origin} <ArrowRight className="size-3 text-slate-400" /> {r.destination}
+                      </p>
+                    </TableCell>
+                    <TableCell className="text-slate-500">Grupo Joffroy</TableCell>
+                    <TableCell className="max-w-sm text-slate-600">
+                      {r.vertical}
+                      {best?.notes ? `, ${best.notes.replace(/ · /g, ", ")}` : ""}
+                    </TableCell>
+                    <TableCell className="font-semibold tabular-nums text-emerald-600">
+                      {best ? usd(best.premium) : "—"}
+                    </TableCell>
+                    <TableCell>
+                      <span className="inline-flex items-center rounded-md bg-blue-50 px-2.5 py-1 text-xs font-semibold text-[#1A56DB] ring-1 ring-blue-200">
+                        Pending Presentation
+                      </span>
+                    </TableCell>
+                    <TableCell className="text-right">
+                      <Button
+                        size="sm"
+                        onClick={() => onSelect(r)}
+                        className="bg-[#0D1527] text-white hover:bg-[#0D1527]/90"
+                      >
+                        <FileText className="mr-1.5 size-3.5" /> View Presentation
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
+            </TableBody>
+          </Table>
         </div>
       )}
+
     </>
   );
 }
