@@ -259,6 +259,45 @@ function Perks() {
   );
 }
 
+const valueCards = [
+  {
+    number: "01",
+    title: "Zero-Friction Risk Management",
+    body: "Alex AI handles 100% of underwriting workflows, compliance, and dedicated 24/7 claims support—eliminating administrative overhead for your enterprise.",
+  },
+  {
+    number: "02",
+    title: "53+ Top-Tier Institutional Carriers",
+    body: "Direct, real-time appetite matching across leading A-Rated US commercial insurers, delivering scalable capacity and optimal rates.",
+  },
+  {
+    number: "03",
+    title: "Instant 90-Second COI Issuance",
+    body: "Automated digital Certificate of Insurance (COI) generation for logistics dispatch, freight transit, and commercial compliance without delays.",
+  },
+];
+
+function ValueCards() {
+  return (
+    <section className="bg-background px-6 py-20">
+      <div className="mx-auto grid max-w-6xl gap-6 md:grid-cols-3">
+        {valueCards.map((c) => (
+          <div
+            key={c.number}
+            className="group border-border bg-card rounded-2xl border p-8 transition-shadow hover:shadow-card"
+          >
+            <span className="text-gradient-brand text-sm font-extrabold tracking-[0.18em]">
+              {c.number}
+            </span>
+            <h3 className="mt-4 text-xl font-extrabold tracking-tight">{c.title}</h3>
+            <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{c.body}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
 function Bento() {
   return (
     <section className="bg-polar px-6 py-20">
