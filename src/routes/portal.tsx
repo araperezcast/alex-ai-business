@@ -2,11 +2,15 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
   ArrowRight,
+  Award,
   CheckCircle2,
+  ClipboardList,
   Download,
   FileText,
+  LayoutDashboard,
   Lock,
   LogOut,
+  Menu,
   Search,
   ShieldCheck,
   UploadCloud,
