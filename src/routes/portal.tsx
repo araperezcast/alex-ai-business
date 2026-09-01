@@ -659,25 +659,6 @@ function DashboardView({
         </Button>
       </div>
 
-      <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {[
-          { label: "Operations Registered", value: counts.all, tone: "text-[#0D1527]", tab: "all" as const },
-          { label: "Pending Underwriting", value: counts.pending, tone: "text-amber-600", tab: "pending" as const },
-          { label: "Proposals Ready", value: counts.quoted, tone: "text-[#1A56DB]", tab: "quoted" as const },
-          { label: "Active COIs Issued", value: counts.paid, tone: "text-[#06D6A0]", tab: "paid" as const },
-        ].map((k) => (
-          <button
-            key={k.label}
-            onClick={() => onNavigate("operations", k.tab)}
-            className="rounded-2xl border border-slate-200 bg-white p-5 text-left shadow-sm transition-shadow hover:shadow-md"
-          >
-            <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
-              {k.label}
-            </p>
-            <p className={cn("mt-2 text-2xl font-bold tabular-nums", k.tone)}>{k.value}</p>
-          </button>
-        ))}
-      </div>
 
 
       <div className="mt-8">
