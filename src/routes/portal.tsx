@@ -360,19 +360,30 @@ function PortalPage() {
                     <StatusBadge status={r.status} />
                   </TableCell>
                   <TableCell className="text-right">
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => setSelected(r)}
-                      className="text-[#1A56DB] hover:bg-blue-50 hover:text-[#1A56DB]"
-                    >
-                      {r.status === "quoted"
-                        ? "Review Quotes"
-                        : r.status === "paid"
-                          ? "Download COI"
-                          : "View Details"}
-                    </Button>
+                    <div className="flex justify-end gap-2">
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => setSelected(r)}
+                        className="text-[#1A56DB] hover:bg-blue-50 hover:text-[#1A56DB]"
+                      >
+                        View Proposal
+                      </Button>
+                      {r.status === "paid" && (
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() =>
+                            toast.success(`Certificate of Insurance downloaded for ${r.id}`)
+                          }
+                          className="border-emerald-200 bg-emerald-50 text-emerald-700 hover:bg-emerald-100 hover:text-emerald-800"
+                        >
+                          <Download className="mr-1.5 size-3.5" /> COI
+                        </Button>
+                      )}
+                    </div>
                   </TableCell>
+
                 </TableRow>
               ))}
               {filtered.length === 0 && (
