@@ -1,12 +1,15 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
+  Activity,
   ArrowRight,
+  BookOpen,
   CheckCircle2,
   ClipboardList,
   Download,
   ExternalLink,
   FileText,
+  Inbox,
   LayoutDashboard,
   LogOut,
   Menu,
@@ -19,6 +22,12 @@ import { toast } from "sonner";
 
 import alexLogo from "@/assets/alex-logo.png.asset.json";
 import joffroyLogo from "@/assets/joffroy-logo.png.asset.json";
+import {
+  CatalogsView,
+  PulseView,
+  QueueView,
+  QuoteCaptureModal,
+} from "@/components/admin-modules";
 import { PortalLogin } from "@/components/portal-login";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -116,17 +125,30 @@ const TABS: { key: Status | "all"; label: string }[] = [
   { key: "paid", label: "COIs Issued / Active" },
 ];
 
-type ModuleKey = "dashboard" | "operations" | "proposals";
+type ModuleKey =
+  | "dashboard"
+  | "operations"
+  | "proposals"
+  | "admin-queue"
+  | "admin-pulse"
+  | "admin-catalogs";
 
-const MODULES: { key: ModuleKey; label: string; icon: typeof LayoutDashboard }[] = [
+type NavItem = { key: ModuleKey; label: string; icon: typeof LayoutDashboard };
+
+const MODULES: NavItem[] = [
   { key: "dashboard", label: "Dashboard", icon: LayoutDashboard },
   { key: "operations", label: "Operations / Pedimentos", icon: ClipboardList },
   { key: "proposals", label: "Proposals", icon: FileText },
 ];
 
+const ADMIN_MODULES: NavItem[] = [
+  { key: "admin-queue", label: "Incoming Queue", icon: Inbox },
+  { key: "admin-pulse", label: "Alex Pulse · Metrics", icon: Activity },
+  { key: "admin-catalogs", label: "Catalogs", icon: BookOpen },
+];
+
 function PortalPage() {
-  const navigate = useNavigate();
-  const { rows, addOperation, markPaid } = useOperations();
+  const { rows, addOperation, markPaid, sendProposals } = useOperations();
   const [tab, setTab] = useState<Status | "all">("all");
   const [query, setQuery] = useState("");
   const [from, setFrom] = useState("");
@@ -136,15 +158,11 @@ function PortalPage() {
   const [session, setSession] = useState<Session | null>(null);
   const [view, setView] = useState<ModuleKey>("dashboard");
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [quoteTargetId, setQuoteTargetId] = useState<string | null>(null);
 
   useEffect(() => {
-    const s = loadSession();
-    if (s?.role === "alex") {
-      navigate({ to: "/admin" });
-      return;
-    }
-    setSession(s);
-  }, [navigate]);
+    setSession(loadSession());
+  }, []);
 
   const selected = useMemo(
     () => rows.find((r) => r.id === selectedId) ?? null,
@@ -195,7 +213,7 @@ function PortalPage() {
   }
 
   if (!session) {
-    return <PortalLogin onSuccess={(s) => (s.role === "alex" ? navigate({ to: "/admin" }) : setSession(s))} />;
+    return <PortalLogin onSuccess={(s) => setSession(s)} />;
   }
 
   return (
@@ -218,34 +236,34 @@ function PortalPage() {
             const count =
               m.key === "operations" ? counts.all : m.key === "proposals" ? counts.quoted : null;
             return (
-              <button
+              <NavButton
                 key={m.key}
+                item={m}
+                active={view === m.key}
+                count={count}
                 onClick={() => {
                   setView(m.key);
                   setSidebarOpen(false);
                 }}
-                className={cn(
-                  "flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors",
-                  view === m.key
-                    ? "bg-[#0D1527] text-white"
-                    : "text-slate-600 hover:bg-slate-100 hover:text-[#0D1527]",
-                )}
-              >
-                <m.icon className="size-4.5 shrink-0" />
-                <span className="flex-1 text-left">{m.label}</span>
-                {count !== null && (
-                  <span
-                    className={cn(
-                      "rounded-full px-2 py-0.5 text-xs tabular-nums",
-                      view === m.key ? "bg-white/15 text-white" : "bg-slate-100 text-slate-500",
-                    )}
-                  >
-                    {count}
-                  </span>
-                )}
-              </button>
+              />
             );
           })}
+
+          <p className="px-3 pt-6 pb-2 text-[11px] font-bold uppercase tracking-[0.18em] text-slate-400">
+            Admin · Alex AI Desk
+          </p>
+          {ADMIN_MODULES.map((m) => (
+            <NavButton
+              key={m.key}
+              item={m}
+              active={view === m.key}
+              count={m.key === "admin-queue" ? counts.pending : null}
+              onClick={() => {
+                setView(m.key);
+                setSidebarOpen(false);
+              }}
+            />
+          ))}
         </nav>
 
         <div className="border-t border-slate-200 p-4">
@@ -399,9 +417,26 @@ function PortalPage() {
               onSelect={(op) => setSelectedId(op.id)}
             />
           )}
+
+          {view === "admin-queue" && (
+            <QueueView rows={rows} onQuote={(op) => setQuoteTargetId(op.id)} />
+          )}
+          {view === "admin-pulse" && <PulseView rows={rows} />}
+          {view === "admin-catalogs" && <CatalogsView rows={rows} />}
         </main>
       </div>
 
+      <QuoteCaptureModal
+        operation={rows.find((r) => r.id === quoteTargetId) ?? null}
+        onOpenChange={(o) => !o && setQuoteTargetId(null)}
+        onSend={(id, quotes) => {
+          sendProposals(id, quotes);
+          setQuoteTargetId(null);
+          toast.success("Proposal sent to Grupo Joffroy", {
+            description: "Corporate PDF generated and published to the client portal.",
+          });
+        }}
+      />
       <NewRequestModal open={newOpen} onOpenChange={setNewOpen} onSubmit={handleAdd} />
       <QuotesModal
         operation={selected}
@@ -412,6 +447,43 @@ function PortalPage() {
         }}
       />
     </div>
+  );
+}
+
+function NavButton({
+  item,
+  active,
+  count,
+  onClick,
+}: {
+  item: NavItem;
+  active: boolean;
+  count: number | null;
+  onClick: () => void;
+}) {
+  return (
+    <button
+      onClick={onClick}
+      className={cn(
+        "flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors",
+        active
+          ? "bg-[#0D1527] text-white"
+          : "text-slate-600 hover:bg-slate-100 hover:text-[#0D1527]",
+      )}
+    >
+      <item.icon className="size-4.5 shrink-0" />
+      <span className="flex-1 text-left">{item.label}</span>
+      {count !== null && (
+        <span
+          className={cn(
+            "rounded-full px-2 py-0.5 text-xs tabular-nums",
+            active ? "bg-white/15 text-white" : "bg-slate-100 text-slate-500",
+          )}
+        >
+          {count}
+        </span>
+      )}
+    </button>
   );
 }
 
@@ -592,40 +664,63 @@ function ProposalsView({
           here.
         </div>
       ) : (
-        <div className="mt-8 grid gap-5 md:grid-cols-2">
-          {rows.map((r) => (
-            <div
-              key={r.id}
-              className="flex flex-col rounded-2xl border border-slate-200 bg-white p-5 shadow-sm"
-            >
-              <div className="flex items-start justify-between gap-3">
-                <div>
-                  <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">
-                    Pedimento
-                  </p>
-                  <h3 className="mt-1 text-base font-bold text-[#0D1527]">{r.id}</h3>
-                </div>
-                <StatusBadge status={r.status} />
-              </div>
-
-              <p className="mt-3 text-sm text-slate-600">{r.vertical}</p>
-              <p className="mt-1 flex items-center gap-2 text-sm text-slate-500">
-                {r.origin} <ArrowRight className="size-3.5 text-slate-400" /> {r.destination}
-              </p>
-              <p className="mt-2 text-sm font-medium tabular-nums text-[#0D1527]">
-                {usd(r.value)} USD insured sum
-              </p>
-
-              <Button
-                onClick={() => onSelect(r)}
-                className="mt-5 w-full bg-gradient-to-r from-[#0048FF] to-[#07D6A0] text-white hover:opacity-90"
-              >
-                Review Proposals
-              </Button>
-            </div>
-          ))}
+        <div className="mt-8 overflow-x-auto rounded-2xl border border-slate-200 bg-white shadow-sm">
+          <Table>
+            <TableHeader>
+              <TableRow className="bg-slate-50 hover:bg-slate-50">
+                {["Client / Pedimento", "Business", "Coverages", "Total Premium", "Status"].map(
+                  (h) => (
+                    <TableHead key={h} className="text-sm font-medium text-slate-500">
+                      {h}
+                    </TableHead>
+                  ),
+                )}
+                <TableHead className="text-right text-sm font-medium text-slate-500">
+                  Action
+                </TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {rows.map((r) => {
+                const best = r.quotes[0];
+                return (
+                  <TableRow key={r.id} className="border-slate-100">
+                    <TableCell className="py-5">
+                      <p className="font-bold text-[#0D1527]">{r.id}</p>
+                      <p className="mt-0.5 flex items-center gap-1.5 text-xs text-slate-500">
+                        {r.origin} <ArrowRight className="size-3 text-slate-400" /> {r.destination}
+                      </p>
+                    </TableCell>
+                    <TableCell className="text-slate-500">Grupo Joffroy</TableCell>
+                    <TableCell className="max-w-sm text-slate-600">
+                      {r.vertical}
+                      {best?.notes ? `, ${best.notes.replace(/ · /g, ", ")}` : ""}
+                    </TableCell>
+                    <TableCell className="font-semibold tabular-nums text-emerald-600">
+                      {best ? usd(best.premium) : "—"}
+                    </TableCell>
+                    <TableCell>
+                      <span className="inline-flex items-center rounded-md bg-blue-50 px-2.5 py-1 text-xs font-semibold text-[#1A56DB] ring-1 ring-blue-200">
+                        Pending Presentation
+                      </span>
+                    </TableCell>
+                    <TableCell className="text-right">
+                      <Button
+                        size="sm"
+                        onClick={() => onSelect(r)}
+                        className="bg-[#0D1527] text-white hover:bg-[#0D1527]/90"
+                      >
+                        <FileText className="mr-1.5 size-3.5" /> View Presentation
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
+            </TableBody>
+          </Table>
         </div>
       )}
+
     </>
   );
 }
