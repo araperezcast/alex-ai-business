@@ -265,7 +265,7 @@ function PortalPage() {
               <Input
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                placeholder="Filter by Pedimento, Manifest ID, or Tracking"
+                placeholder="Search by Pedimento ID, Manifest, or City"
                 className="w-full border-slate-200 bg-white pl-9 sm:w-80"
               />
             </div>
@@ -273,10 +273,30 @@ function PortalPage() {
               onClick={() => setNewOpen(true)}
               className="bg-[#1A56DB] text-white hover:bg-[#1A56DB]/90"
             >
-              + New Customs Request
+              + New Customs Operation
             </Button>
           </div>
         </div>
+
+        <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {[
+            { label: "Operations Registered", value: counts.all, tone: "text-[#0D1527]" },
+            { label: "Pending Underwriting", value: counts.pending, tone: "text-amber-600" },
+            { label: "Proposals Ready", value: counts.quoted, tone: "text-[#1A56DB]" },
+            { label: "Active COIs Issued", value: counts.paid, tone: "text-[#06D6A0]" },
+          ].map((k) => (
+            <div
+              key={k.label}
+              className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm"
+            >
+              <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+                {k.label}
+              </p>
+              <p className={cn("mt-2 text-2xl font-bold tabular-nums", k.tone)}>{k.value}</p>
+            </div>
+          ))}
+        </div>
+
 
         <div className="mt-8 flex flex-wrap gap-2 border-b border-slate-200 pb-px">
           {TABS.map((t) => (
