@@ -234,7 +234,7 @@ function PortalPage() {
           </div>
           <div className="flex items-center gap-3">
             <span className="hidden text-xs font-medium text-slate-500 sm:block">
-              joffroy.alexai.cloud
+              Client Portal · joffroy.alexai.cloud
             </span>
             <div className="flex size-9 items-center justify-center rounded-full bg-[#514690] text-xs font-bold text-white">
               GJ
@@ -246,9 +246,15 @@ function PortalPage() {
       <main className="mx-auto max-w-7xl px-6 py-10">
         <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
           <div>
-            <h1 className="text-2xl font-bold tracking-tight">Operations &amp; Customs Clearance</h1>
+            <p className="text-xs font-bold tracking-[0.18em] text-[#1A56DB] uppercase">
+              Grupo Joffroy · Client Portal
+            </p>
+            <h1 className="mt-1 text-2xl font-bold tracking-tight">
+              Operations &amp; Customs Clearance
+            </h1>
             <p className="mt-1 text-sm text-slate-500">
-              Register pedimentos, review multi-carrier proposals, and issue COIs instantly.
+              Manage Grupo Joffroy freight operations: register pedimentos, review multi-carrier
+              proposals, and issue COIs instantly.
             </p>
           </div>
           <div className="flex flex-col gap-3 sm:flex-row">

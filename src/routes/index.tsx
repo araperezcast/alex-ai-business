@@ -31,6 +31,8 @@ import {
   Music2,
   BarChart3,
   ShieldCheck,
+  Menu,
+  X,
 } from "lucide-react";
 import { toast } from "sonner";
 import cargoImg from "@/assets/cargo.jpg";
@@ -79,6 +81,7 @@ function GradientButton({
 }
 
 function Navbar() {
+  const [open, setOpen] = useState(false);
   const links = [
     { label: "Products", to: "/" },
     { label: "Solutions", to: "/" },
@@ -88,8 +91,8 @@ function Navbar() {
   ];
   return (
     <header className="fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-navy-deep/80 backdrop-blur-md">
-      <nav className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
-        <Link to="/" className="flex items-center">
+      <nav className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-6">
+        <Link to="/" className="flex shrink-0 items-center" onClick={() => setOpen(false)}>
           <img
             src={alexLogo.url}
             alt="Alex AI Insurtech"
@@ -107,16 +110,16 @@ function Navbar() {
             </Link>
           ))}
         </div>
-        <div className="flex items-center gap-6">
+        <div className="hidden items-center gap-6 lg:flex">
           <Link
             to="/"
-            className="hidden text-sm font-medium text-white/80 transition-colors hover:text-white sm:block"
+            className="text-sm font-medium text-white/80 transition-colors hover:text-white"
           >
             Contact
           </Link>
           <Link
             to="/"
-            className="hidden text-sm font-medium text-white/80 transition-colors hover:text-white sm:block"
+            className="text-sm font-medium text-white/80 transition-colors hover:text-white"
           >
             Login
           </Link>
@@ -127,7 +130,46 @@ function Navbar() {
             Get started
           </Link>
         </div>
+        <button
+          type="button"
+          aria-label={open ? "Close menu" : "Open menu"}
+          aria-expanded={open}
+          onClick={() => setOpen((v) => !v)}
+          className="grid h-10 w-10 shrink-0 place-items-center rounded-full border border-white/15 text-white lg:hidden"
+        >
+          {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+        </button>
       </nav>
+      {open && (
+        <div className="border-t border-white/10 bg-navy-deep px-6 py-6 lg:hidden">
+          <div className="flex flex-col gap-4">
+            {links.map((l) => (
+              <Link
+                key={l.label}
+                to={l.to}
+                onClick={() => setOpen(false)}
+                className="text-base font-medium text-white/80 transition-colors hover:text-white"
+              >
+                {l.label}
+              </Link>
+            ))}
+            <div className="mt-2 flex items-center gap-5 border-t border-white/10 pt-4">
+              <Link to="/" className="text-sm font-medium text-white/80 hover:text-white">
+                Contact
+              </Link>
+              <Link to="/" className="text-sm font-medium text-white/80 hover:text-white">
+                Login
+              </Link>
+              <Link
+                to="/"
+                className="bg-gradient-brand rounded-full px-5 py-2 text-sm font-bold text-brand-foreground"
+              >
+                Get started
+              </Link>
+            </div>
+          </div>
+        </div>
+      )}
     </header>
   );
 }
@@ -212,6 +254,45 @@ function Perks() {
             </div>
           ))}
         </div>
+      </div>
+    </section>
+  );
+}
+
+const valueCards = [
+  {
+    number: "01",
+    title: "Zero-Friction Risk Management",
+    body: "Alex AI handles 100% of underwriting workflows, compliance, and dedicated 24/7 claims support—eliminating administrative overhead for your enterprise.",
+  },
+  {
+    number: "02",
+    title: "53+ Top-Tier Institutional Carriers",
+    body: "Direct, real-time appetite matching across leading A-Rated US commercial insurers, delivering scalable capacity and optimal rates.",
+  },
+  {
+    number: "03",
+    title: "Instant 90-Second COI Issuance",
+    body: "Automated digital Certificate of Insurance (COI) generation for logistics dispatch, freight transit, and commercial compliance without delays.",
+  },
+];
+
+function ValueCards() {
+  return (
+    <section className="bg-background px-6 py-20">
+      <div className="mx-auto grid max-w-6xl gap-6 md:grid-cols-3">
+        {valueCards.map((c) => (
+          <div
+            key={c.number}
+            className="group border-border bg-card rounded-2xl border p-8 transition-shadow hover:shadow-card"
+          >
+            <span className="text-gradient-brand text-sm font-extrabold tracking-[0.18em]">
+              {c.number}
+            </span>
+            <h3 className="mt-4 text-xl font-extrabold tracking-tight">{c.title}</h3>
+            <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{c.body}</p>
+          </div>
+        ))}
       </div>
     </section>
   );
@@ -783,6 +864,7 @@ function Home() {
       <Navbar />
       <Hero />
       <Perks />
+      <ValueCards />
       <Bento />
       <Programs />
       <Advantage />
