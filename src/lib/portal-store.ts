@@ -251,7 +251,7 @@ export function useOperations() {
                 ...r,
                 status: "paid" as Status,
                 paidAt: new Date().toISOString(),
-                boundCarrier: carrier ?? r.boundCarrier ?? r.quotes[0]?.carrier,
+                boundCarrier: carrier ?? r.boundCarrier ?? r.quotes[0]?.carrier ?? "",
               }
             : r,
         ),
