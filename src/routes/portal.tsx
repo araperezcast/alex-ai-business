@@ -37,6 +37,7 @@ import {
   QuoteCaptureModal,
 } from "@/components/admin-modules";
 import { PortalDashboard } from "@/components/portal-dashboard";
+import { PortalAppetite } from "@/components/portal-appetite";
 import { PortalLogin } from "@/components/portal-login";
 import { SiteFooter } from "@/components/site-footer";
 import { Badge } from "@/components/ui/badge";
@@ -345,7 +346,9 @@ function PortalPage() {
         <main className="flex-1 px-4 py-8 sm:px-6 lg:px-8">
           {view === "dashboard" && <PortalDashboard />}
 
-          {["appetite", "clients", "crm", "calendar", "admin-agencies", "admin-users"].includes(
+          {view === "appetite" && <PortalAppetite />}
+
+          {["clients", "crm", "calendar", "admin-agencies", "admin-users"].includes(
             view,
           ) && (
             <div className="rounded-2xl border border-[#EDE7DE] bg-[#FCFAF7] p-10 text-center">
