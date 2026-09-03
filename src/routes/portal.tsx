@@ -374,9 +374,7 @@ function PortalPage() {
 
           {view === "proposals" && <PortalProposals />}
 
-          {view === "admin-queue" && (
-            <QueueView rows={rows} onQuote={(op) => setQuoteTargetId(op.id)} />
-          )}
+          {view === "admin-queue" && <PortalBIIngestion />}
           {view === "admin-pulse" && <PulseView rows={rows} />}
           {view === "admin-catalogs" && <CatalogsView rows={rows} />}
         </main>
