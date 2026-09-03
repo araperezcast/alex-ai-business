@@ -238,47 +238,43 @@ function PortalPage() {
   }
 
   return (
-    <div className="flex min-h-screen bg-[#F8FAFC] text-[#0D1527]">
+    <div className="flex min-h-screen bg-[#F6F2EC] text-[#16305C]">
       {/* ===== Sidebar ===== */}
       <aside
         className={cn(
-          "fixed inset-y-0 left-0 z-40 flex w-64 flex-col border-r border-slate-200 bg-white transition-transform lg:static lg:translate-x-0",
+          "fixed inset-y-0 left-0 z-40 flex w-64 flex-col border-r border-[#EDE7DE] bg-[#FBF9F6] transition-transform lg:static lg:translate-x-0",
           sidebarOpen ? "translate-x-0" : "-translate-x-full",
         )}
       >
-        <div className="flex h-16 items-center gap-2.5 border-b border-slate-200 px-5">
+        <div className="flex h-16 items-center gap-2.5 px-5">
           <img src={joffroyLogo.url} alt="Grupo Joffroy" className="h-5 w-auto" />
-          <span className="text-slate-300">×</span>
+          <span className="text-[#C9C2B8]">×</span>
           <img src={alexLogo.url} alt="Alex AI Insurtech" className="h-4 w-auto opacity-90 invert" />
         </div>
 
         <nav className="flex-1 space-y-1 overflow-y-auto px-3 py-4">
-          {MODULES.map((m) => {
-            const count =
-              m.key === "operations" ? counts.all : m.key === "proposals" ? counts.quoted : null;
-            return (
-              <NavButton
-                key={m.key}
-                item={m}
-                active={view === m.key}
-                count={count}
-                onClick={() => {
-                  setView(m.key);
-                  setSidebarOpen(false);
-                }}
-              />
-            );
-          })}
+          {MODULES.map((m) => (
+            <NavButton
+              key={m.key}
+              item={m}
+              active={view === m.key}
+              count={null}
+              onClick={() => {
+                setView(m.key);
+                setSidebarOpen(false);
+              }}
+            />
+          ))}
 
-          <p className="px-3 pt-6 pb-2 text-[11px] font-bold uppercase tracking-[0.18em] text-slate-400">
-            Admin · Alex AI Desk
+          <p className="px-3 pt-7 pb-2 text-[11px] font-bold uppercase tracking-[0.18em] text-[#A9A296]">
+            Administration
           </p>
           {ADMIN_MODULES.map((m) => (
             <NavButton
               key={m.key}
               item={m}
               active={view === m.key}
-              count={m.key === "admin-queue" ? counts.pending : null}
+              count={null}
               onClick={() => {
                 setView(m.key);
                 setSidebarOpen(false);
@@ -287,10 +283,20 @@ function PortalPage() {
           ))}
         </nav>
 
-        <div className="border-t border-slate-200 p-4">
-          <p className="rounded-xl bg-slate-50 px-3 py-2 text-center text-xs text-slate-500">
-            joffroy.alexai.cloud
-          </p>
+        <div className="space-y-1 px-3 pb-3">
+          <button className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-[#5A6474] hover:bg-[#F1ECE4]">
+            <Moon className="size-4.5" /> Modo Oscuro
+          </button>
+          <button className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-[#5A6474] hover:bg-[#F1ECE4]">
+            <Languages className="size-4.5" /> Español
+          </button>
+          <button className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-[#5A6474] hover:bg-[#F1ECE4]">
+            <Settings className="size-4.5" /> Settings
+          </button>
+        </div>
+
+        <div className="px-4 pb-5 text-center">
+          <SiteFooter />
         </div>
       </aside>
       {sidebarOpen && (
@@ -302,45 +308,53 @@ function PortalPage() {
       )}
 
       {/* ===== Main column ===== */}
-      <div className="flex min-w-0 flex-1 flex-col">
-        <header className="sticky top-0 z-20 flex h-16 items-center justify-between border-b border-slate-200 bg-white/90 px-4 backdrop-blur sm:px-6">
+      <div className="flex min-w-0 flex-1 flex-col bg-gradient-to-b from-[#FBF3E9] via-[#F7F4EF] to-[#F2F3F5]">
+        <header className="sticky top-0 z-20 flex h-16 items-center justify-between border-b border-[#EDE7DE] bg-[#FBF9F6]/85 px-4 backdrop-blur sm:px-6">
           <div className="flex items-center gap-3">
             <button
               onClick={() => setSidebarOpen(true)}
-              className="rounded-lg p-2 text-slate-500 hover:bg-slate-100 lg:hidden"
+              className="rounded-lg p-2 text-[#5A6474] hover:bg-[#F1ECE4] lg:hidden"
               aria-label="Open menu"
             >
               <Menu className="size-5" />
             </button>
-            <span className="hidden rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-500 sm:block">
-              Grupo Joffroy · Client Portal
-            </span>
           </div>
           <div className="flex items-center gap-3">
-            <span className="hidden text-xs text-slate-500 sm:block">{session.email}</span>
+            <span className="hidden text-xs text-[#7A8494] sm:block">{session.email}</span>
             <Button
               variant="ghost"
               size="sm"
               onClick={signOut}
-              className="text-slate-500 hover:text-[#0D1527]"
+              className="text-[#7A8494] hover:text-[#16305C]"
             >
               <LogOut className="mr-1.5 size-4" /> Sign out
             </Button>
-            <div className="flex size-9 items-center justify-center rounded-full bg-[#514690] text-xs font-bold text-white">
-              GJ
+            <button
+              className="rounded-full p-2 text-[#5A6474] hover:bg-[#F1ECE4]"
+              aria-label="Notifications"
+            >
+              <Bell className="size-5" />
+            </button>
+            <div className="flex size-9 items-center justify-center rounded-full border border-[#E2E8F0] bg-white text-xs font-bold text-[#16305C]">
+              D
             </div>
           </div>
         </header>
 
         <main className="flex-1 px-4 py-8 sm:px-6 lg:px-8">
-          {view === "dashboard" && (
-            <DashboardView
-              rows={rows}
-              onNew={() => setNewOpen(true)}
-              onSelect={(op) => setSelectedId(op.id)}
-              onNavigate={(v) => setView(v)}
-            />
+          {view === "dashboard" && <PortalDashboard />}
+
+          {["appetite", "clients", "crm", "calendar", "admin-agencies", "admin-users"].includes(
+            view,
+          ) && (
+            <div className="rounded-2xl border border-[#EDE7DE] bg-[#FCFAF7] p-10 text-center">
+              <h2 className="font-serif text-xl font-bold text-[#16305C]">
+                {[...MODULES, ...ADMIN_MODULES].find((m) => m.key === view)?.label}
+              </h2>
+              <p className="mt-2 text-sm text-[#7A8494]">Module layout coming next.</p>
+            </div>
           )}
+
 
           {view === "operations" && (
             <>
