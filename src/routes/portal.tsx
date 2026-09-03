@@ -28,7 +28,6 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 
-import alexLogo from "@/assets/alex-logo.png.asset.json";
 import alexaiLogo from "@/assets/logo-alexai.png.asset.json";
 import joffroyLogo from "@/assets/joffroy-logo.png.asset.json";
 import {
