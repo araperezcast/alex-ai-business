@@ -36,7 +36,8 @@ import {
   X,
 } from "lucide-react";
 import { toast } from "sonner";
-import cargoImg from "@/assets/cargo.jpg";
+import cargoImg from "@/assets/bentoGrid.png.asset.json";
+const cargoUrl = cargoImg.url;
 import partnersImg from "@/assets/partners.jpg";
 
 export const Route = createFileRoute("/")({
@@ -315,8 +316,8 @@ function Bento() {
         <div className="mt-14 grid gap-6 lg:grid-cols-3">
           <article className="relative col-span-1 min-h-[420px] overflow-hidden rounded-2xl lg:col-span-2">
             <img
-              src={cargoImg}
-              alt="Refrigerated freight trucks at an Arizona border logistics yard"
+              src={cargoUrl}
+              alt="Row of commercial trucks parked at a cross-border logistics hub"
               width={1200}
               height={800}
               loading="lazy"
