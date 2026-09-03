@@ -98,21 +98,21 @@ function VisitColumn({ title, visits, pending = false }: { title: string; visits
 
 function VisitCard({ visit, pending }: { visit: Visit; pending: boolean }) {
   return (
-    <article className="overflow-hidden rounded-[7px] border border-[#E8E6E2] bg-[#FFFDFC] shadow-[0_1px_4px_rgba(30,44,67,0.05)]">
+    <article className="overflow-hidden rounded-[10px] border border-[#E5E7EB] bg-white shadow-[0_1px_3px_rgba(16,44,85,0.06)]">
       <div className="flex items-start justify-between gap-3 px-3.5 pb-2 pt-3">
         <div className="min-w-0">
           <h3 className="truncate text-[11px] font-semibold leading-4 text-[#203657]">{visit.client}</h3>
           <p className="mt-0.5 flex items-center gap-1 text-[8px] text-[#929AA6]"><CalendarDays className="size-2.5" /> {visit.date}</p>
         </div>
         <div className="flex items-center gap-2">
-          <span className={`rounded-full px-2 py-0.5 text-[8px] font-medium ${pending ? "bg-[#FFF2D8] text-[#C88619]" : "bg-[#DDF8EE] text-[#12916F]"}`}>
+          <span className={`rounded-full px-2 py-0.5 text-[8px] font-medium ${pending ? "bg-[#FEF3C7] text-[#92601A]" : "bg-[#D1FAE5] text-[#0B6E4E]"}`}>
             {pending ? "Pending" : "Completed"}
           </span>
           <span className="flex size-5 items-center justify-center rounded-md border border-[#ECE9E4] text-[#85909F]"><MessageSquareText className="size-2.5" /></span>
         </div>
       </div>
 
-      <div className="border-y border-[#F0EEE9] bg-[#F7F8F9] px-3.5 py-2.5">
+      <div className="border-y border-[#EEF1F4] bg-[#F8FAFC] px-3.5 py-2.5">
         <div className="mb-1.5 flex items-center gap-1.5">
           <span className="rounded border border-[#DFE3E7] bg-white px-1.5 py-0.5 text-[7px] font-medium text-[#6F7886]">{visit.type}</span>
           <span className="rounded border border-[#DFE3E7] bg-white px-1.5 py-0.5 text-[7px] font-medium text-[#6F7886]">COMMERCIAL</span>
@@ -122,7 +122,7 @@ function VisitCard({ visit, pending }: { visit: Visit; pending: boolean }) {
       </div>
 
       {visit.agreements && (
-        <div className="px-3.5 py-2">
+        <div className="bg-[#F8FAFC] px-3.5 py-2">
           <p className="text-[8px] font-semibold uppercase text-[#657185]">Agreements</p>
           <div className="mt-1 flex flex-wrap gap-1">
             {visit.agreements.map((agreement) => (
@@ -132,7 +132,7 @@ function VisitCard({ visit, pending }: { visit: Visit; pending: boolean }) {
         </div>
       )}
 
-      <footer className="flex flex-wrap items-center gap-x-3 gap-y-1 border-t border-[#F0EEE9] px-3.5 py-2 text-[7px] text-[#87909D]">
+      <footer className="flex flex-wrap items-center gap-x-3 gap-y-1 border-t border-[#EEF1F4] bg-[#F8FAFC] px-3.5 py-2 text-[7px] text-[#87909D]">
         {visit.companion && <span className="inline-flex items-center gap-1"><UsersRound className="size-2.5" /> {visit.companion}</span>}
         {visit.location && <span className="inline-flex items-center gap-1"><MapPin className="size-2.5" /> {visit.location}</span>}
         <span className="inline-flex items-center gap-1"><UserRound className="size-2.5" /> {visit.agent ?? "Diego J."}</span>
