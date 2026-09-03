@@ -184,11 +184,12 @@ function Hero() {
       <div className="relative mx-auto max-w-5xl px-6 pt-32 pb-20 text-center">
 
         <h1 className="text-4xl leading-tight font-extrabold tracking-tight text-white sm:text-5xl md:text-6xl">
-          Build a more efficient insurance program with Alex AI.
+          Embedded Insurance Infrastructure for Customs & Logistics.
         </h1>
         <p className="mx-auto mt-6 max-w-2xl text-base text-white/70">
-          Connecting Arizona logistics, cross-border freight, and enterprises with real-time
-          multi-carrier underwriting and 90-second automated COI issuance.
+          Transform your customs clearance flow into a highly profitable digital business unit.
+          Protect cross-border freight with digital COI issuance in under 90 seconds, backed by
+          53+ A-Rated US carriers.
         </p>
         <div className="mt-9">
           <GradientButton>Join our partner program</GradientButton>
