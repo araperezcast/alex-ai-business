@@ -301,10 +301,6 @@ function PortalPage() {
             <Settings className="size-4.5" /> Settings
           </button>
         </div>
-
-        <div className="px-4 pb-5 text-center">
-          <SiteFooter />
-        </div>
       </aside>
       {sidebarOpen && (
         <button
@@ -369,6 +365,10 @@ function PortalPage() {
           {view === "admin-pulse" && <PortalMyAgency />}
           {view === "admin-catalogs" && <PortalCarriers />}
         </main>
+
+        <footer className="border-t border-[#E2E8F0] bg-white/60 px-4 py-4 sm:px-6 lg:px-8">
+          <SiteFooter />
+        </footer>
       </div>
 
       <QuoteCaptureModal
