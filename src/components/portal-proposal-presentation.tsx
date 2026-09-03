@@ -50,8 +50,8 @@ type Option = {
 function optionsFor(row: ProposalRow): Option[] {
   const base = parsePremium(row.premium) || 2400;
   const seed = row.client.length;
-  const c1 = CARRIERS[seed % CARRIERS.length];
-  const c2 = CARRIERS[(seed + 3) % CARRIERS.length];
+  const c1 = CARRIERS[seed % CARRIERS.length] ?? CARRIERS[0]!;
+  const c2 = CARRIERS[(seed + 3) % CARRIERS.length] ?? CARRIERS[1]!;
   return [
     {
       carrier: c1,
