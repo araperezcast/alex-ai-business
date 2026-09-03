@@ -36,6 +36,7 @@ import {
   QueueView,
   QuoteCaptureModal,
 } from "@/components/admin-modules";
+import { PortalDashboard } from "@/components/portal-dashboard";
 import { PortalLogin } from "@/components/portal-login";
 import { SiteFooter } from "@/components/site-footer";
 import { Badge } from "@/components/ui/badge";
@@ -459,9 +460,6 @@ function PortalPage() {
           {view === "admin-pulse" && <PulseView rows={rows} />}
           {view === "admin-catalogs" && <CatalogsView rows={rows} />}
         </main>
-        <footer className="border-t border-slate-200 bg-white px-4 py-4 text-center sm:px-6 lg:px-8">
-          <SiteFooter />
-        </footer>
       </div>
 
       <QuoteCaptureModal
@@ -505,8 +503,8 @@ function NavButton({
       className={cn(
         "flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors",
         active
-          ? "bg-[#0D1527] text-white"
-          : "text-slate-600 hover:bg-slate-100 hover:text-[#0D1527]",
+          ? "bg-[#F1ECE4] text-[#16305C]"
+          : "text-[#5A6474] hover:bg-[#F5F1EA] hover:text-[#16305C]",
       )}
     >
       <item.icon className="size-4.5 shrink-0" />
@@ -624,55 +622,6 @@ function OperationsTable({
         </TableBody>
       </Table>
     </div>
-  );
-}
-
-function DashboardView({
-  rows,
-  onNew,
-  onSelect,
-  onNavigate,
-}: {
-  rows: Operation[];
-  onNew: () => void;
-  onSelect: (op: Operation) => void;
-  onNavigate: (view: ModuleKey) => void;
-}) {
-  return (
-    <>
-      <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-        <div>
-          <p className="text-xs font-bold tracking-[0.18em] text-[#1A56DB] uppercase">
-            Grupo Joffroy · Client Portal
-          </p>
-          <h1 className="mt-1 text-2xl font-bold tracking-tight">Operations Dashboard</h1>
-          <p className="mt-1 text-sm text-slate-500">
-            Cross-border freight underwriting and COI issuance at a glance.
-          </p>
-        </div>
-        <Button
-          onClick={onNew}
-          className="bg-gradient-to-r from-[#0048FF] to-[#07D6A0] text-white hover:opacity-90"
-        >
-          + New Operation / Pedimento
-        </Button>
-      </div>
-
-      <div className="mt-8">
-        <div className="mb-3 flex items-center justify-between">
-          <h2 className="text-sm font-bold uppercase tracking-wide text-slate-500">
-            Recent Operations
-          </h2>
-          <button
-            onClick={() => onNavigate("operations")}
-            className="text-sm font-semibold text-[#1A56DB] hover:underline"
-          >
-            View all
-          </button>
-        </div>
-        <OperationsTable rows={rows.slice(0, 4)} onSelect={onSelect} />
-      </div>
-    </>
   );
 }
 
