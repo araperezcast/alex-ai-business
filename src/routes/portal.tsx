@@ -315,7 +315,7 @@ function PortalPage() {
       )}
 
       {/* ===== Main column ===== */}
-      <div className="flex min-w-0 flex-1 flex-col bg-gradient-to-b from-[#FBF3E9] via-[#F7F4EF] to-[#F2F3F5]">
+      <div className="flex min-w-0 flex-1 flex-col bg-[#F3F5F9]">
         <header className="sticky top-0 z-20 flex h-16 items-center justify-between border-b border-[#EDE7DE] bg-[#FBF9F6]/85 px-4 backdrop-blur sm:px-6">
           <div className="flex items-center gap-3">
             <button
