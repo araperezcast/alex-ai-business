@@ -30,11 +30,7 @@ import { toast } from "sonner";
 
 import alexaiLogo from "@/assets/logo-alexai.png.asset.json";
 import joffroyLogo from "@/assets/joffroy-logo.png.asset.json";
-import {
-  CatalogsView,
-  PulseView,
-  QuoteCaptureModal,
-} from "@/components/admin-modules";
+import { QuoteCaptureModal } from "@/components/admin-modules";
 import { PortalDashboard } from "@/components/portal-dashboard";
 import { PortalAppetite } from "@/components/portal-appetite";
 import { PortalQuotes } from "@/components/portal-quotes";
