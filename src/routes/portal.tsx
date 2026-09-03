@@ -301,10 +301,6 @@ function PortalPage() {
             <Settings className="size-4.5" /> Settings
           </button>
         </div>
-
-        <div className="px-4 pb-5 text-center">
-          <SiteFooter />
-        </div>
       </aside>
       {sidebarOpen && (
         <button
