@@ -423,9 +423,9 @@ function Bento() {
 
 const programs = [
   {
-    title: "Customs & 3PL Integration",
+    title: "Customs & 3PL API",
     intro:
-      "Automate cargo insurance and instant COI generation directly inside your freight clearance workflow.",
+      "Automate cargo insurance directly inside your pedimento or freight clearance workflow.",
     items: [
       "Automated 90-second COI issuance at port of entry",
       "Dedicated API integration for freight dispatchers & coolers",
@@ -434,8 +434,8 @@ const programs = [
     ],
   },
   {
-    title: "Fleet & Commercial Programs",
-    intro: "Optimize fleet premium costs and risk assessments across Arizona trade corridors.",
+    title: "Fleet Telematics",
+    intro: "Optimize fleet premium costs and risk assessments across binational trade corridors.",
     items: [
       "Tailored underwriting for 5 to 500+ commercial units",
       "Telematics-aligned premium optimization",
@@ -444,9 +444,9 @@ const programs = [
     ],
   },
   {
-    title: "Strategic Referral Network",
+    title: "Revenue Share Network",
     intro:
-      "Connect your business clients to top-tier commercial coverage and earn institutional referral incentives.",
+      "Earn institutional referral incentives while protecting your clients' cargo.",
     items: [
       "Co-branded quoting portals for your association or enterprise",
       "Dedicated sales enablement and licensed underwriter support",
