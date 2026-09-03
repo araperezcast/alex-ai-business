@@ -391,11 +391,10 @@ function Bento() {
             <div className="absolute inset-0 bg-gradient-to-t from-navy-deep via-navy-deep/45 to-transparent" />
             <div className="absolute right-8 bottom-8 left-8 flex flex-wrap items-end justify-between gap-6">
               <div className="min-w-0">
-                <h3 className="text-2xl font-bold text-white">Alex Risk Partners</h3>
-                <p className="text-sm font-semibold text-emerald">E&S & Mining Operations</p>
+                <h3 className="text-2xl font-bold text-white">Mining & Hazmat</h3>
+                <p className="text-sm font-semibold text-emerald">Specialized Equipment & Environmental</p>
                 <p className="mt-2 max-w-md text-sm text-white/75">
-                  High-limit specialized risk placement and custom underwriting for heavy industrial
-                  infrastructure.
+                  Specialized Equipment Breakdown and environmental liability placement.
                 </p>
               </div>
               <div className="w-56 shrink-0 rounded-xl border border-white/10 bg-navy-deep/90 p-4">
