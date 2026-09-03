@@ -37,6 +37,7 @@ import {
   QuoteCaptureModal,
 } from "@/components/admin-modules";
 import { PortalDashboard } from "@/components/portal-dashboard";
+import { PortalAppetite } from "@/components/portal-appetite";
 import { PortalLogin } from "@/components/portal-login";
 import { SiteFooter } from "@/components/site-footer";
 import { Badge } from "@/components/ui/badge";
