@@ -36,7 +36,8 @@ import {
   X,
 } from "lucide-react";
 import { toast } from "sonner";
-import cargoImg from "@/assets/cargo.jpg";
+import cargoImg from "@/assets/bentoGrid.png.asset.json";
+const cargoUrl = cargoImg.url;
 import partnersImg from "@/assets/partners.jpg";
 
 export const Route = createFileRoute("/")({
