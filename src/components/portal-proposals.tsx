@@ -163,6 +163,8 @@ export function PortalProposals() {
           </table>
         </div>
       </div>
+
+      <ProposalPresentation row={presenting} onClose={() => setPresenting(null)} />
     </div>
   );
 }
