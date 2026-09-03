@@ -242,7 +242,7 @@ function Perks() {
         </div>
 
         <p className="mt-16 text-xs font-bold tracking-[0.18em] text-muted-foreground uppercase">
-          Enterprise insurance perks
+          Key Partnership Benefits
         </p>
         <h2 className="text-gradient-brand mt-5 max-w-4xl text-3xl leading-snug font-extrabold tracking-tight sm:text-4xl">
           Build a custom commercial insurance program
