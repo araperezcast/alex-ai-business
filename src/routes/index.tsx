@@ -215,20 +215,20 @@ function Hero() {
 
 const perks = [
   {
-    title: "Scale at your own pace.",
-    body: "Our enterprise onboarding team works with you to deploy custom coverage lines aligned with your freight volume and operating footprint.",
+    title: "Port-of-Entry Agility",
+    body: "Instant digital Certificate of Insurance (COI) generation per entry, eliminating delays at fiscal yards.",
   },
   {
-    title: "Direct access to 53+ top-tier carriers.",
-    body: "Eliminate single-broker bottlenecks with real-time underwriting and appetite matching across leading US commercial insurers.",
+    title: "Institutional Capacity",
+    body: "Direct API connection with 53+ Tier-1 carriers for algorithmic risk placement without bottlenecks.",
   },
   {
-    title: "Maximize speed and operational savings.",
-    body: "Issue verified Certificates of Insurance (COI) in under 90 seconds while cutting administrative overhead on fleet policies.",
+    title: "Zero-CapEx Revenue",
+    body: "Monetize your existing transactional volume with our embedded revenue share model.",
   },
   {
-    title: "Dedicated human risk advisors.",
-    body: "Get 24/7 direct access to licensed commercial underwriters and claims adjusters ready to support your drivers and cargo.",
+    title: "Zero Admin Burden",
+    body: "We handle 100% of risk underwriting, technical support, and end-to-end claims management.",
   },
 ];
 
