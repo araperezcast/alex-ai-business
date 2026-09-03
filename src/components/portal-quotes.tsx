@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Copy, Eye, History, Pencil, Repeat2, UserPlus } from "lucide-react";
+import { Copy, Eye, History, Pencil, Repeat2, UserPlus, X, ChevronRight, Upload } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 
@@ -136,8 +136,169 @@ function IconBtn({ children }: { children: React.ReactNode }) {
   );
 }
 
+const LEGAL_STRUCTURES = [
+  "Sole Proprietorship",
+  "Partnership",
+  "LLC",
+  "S-Corporation",
+  "C-Corporation",
+  "Non-Profit",
+  "Trust",
+];
+
+const inputClass =
+  "w-full rounded-md border border-[#E2E8F0] bg-[#F8FAFC] px-3.5 py-2.5 text-sm text-[#1E293B] outline-none transition focus:border-[#1A56DB] focus:ring-2 focus:ring-[#1A56DB]/30 placeholder:text-[#94A3B8]";
+const labelClass = "mb-1.5 block text-xs font-semibold text-[#16305C]";
+
+function RequestQuoteModal({ onClose }: { onClose: () => void }) {
+  return (
+    <div
+      className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-black/50 px-4 py-8 backdrop-blur-sm"
+      onClick={onClose}
+    >
+      <div
+        className="w-full max-w-2xl rounded-xl bg-white shadow-xl"
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* Header */}
+        <div className="flex items-start justify-between border-b border-[#EEF0F4] px-7 pt-6 pb-5">
+          <div>
+            <h2 className="text-xl font-bold text-[#16305C]">Request Quote</h2>
+            <p className="mt-0.5 text-sm text-[#919EB1]">New Request</p>
+          </div>
+          <button
+            type="button"
+            onClick={onClose}
+            className="grid size-8 place-items-center rounded-lg text-[#94A3B8] transition-colors hover:bg-[#F1F5F9] hover:text-[#16305C]"
+            aria-label="Close"
+          >
+            <X className="size-5" />
+          </button>
+        </div>
+
+        {/* Body */}
+        <form
+          className="space-y-5 px-7 py-6"
+          onSubmit={(e) => {
+            e.preventDefault();
+            onClose();
+          }}
+        >
+          {/* New Client selector */}
+          <div>
+            <label className={labelClass}>Client</label>
+            <div className="rounded-md border border-[#E2E8F0] bg-[#F8FAFC] px-3.5 py-2.5">
+              <select
+                className="w-full bg-transparent text-sm text-[#1E293B] outline-none"
+                defaultValue=""
+              >
+                <option value="" disabled>
+                  -- New Client --
+                </option>
+                <option value="existing">Existing Client</option>
+                <option value="new">New Client</option>
+              </select>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <div>
+              <label className={labelClass}>Applicant First Name</label>
+              <input className={inputClass} type="text" placeholder="Enter first name" />
+            </div>
+            <div>
+              <label className={labelClass}>Applicant Last Name</label>
+              <input className={inputClass} type="text" placeholder="Enter last name" />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <div>
+              <label className={labelClass}>Legal Business Name and DBA</label>
+              <input className={inputClass} type="text" placeholder="Business name / DBA" />
+            </div>
+            <div>
+              <label className={labelClass}>Legal Structure</label>
+              <div className={inputClass + " flex items-center px-0 py-0"}>
+                <select className="w-full bg-[#F8FAFC] px-3.5 py-2.5 text-sm text-[#1E293B] outline-none">
+                  <option value="">Select...</option>
+                  {LEGAL_STRUCTURES.map((s) => (
+                    <option key={s} value={s}>
+                      {s}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <div>
+              <label className={labelClass}>FEIN</label>
+              <input className={inputClass} type="text" placeholder="00-0000000" />
+            </div>
+            <div>
+              <label className={labelClass}>Contact Method (Phone or Email)</label>
+              <input className={inputClass} type="text" placeholder="Phone or email" />
+            </div>
+          </div>
+
+          <div>
+            <label className={labelClass}>Physical Address (Street, ZIP, City, State)</label>
+            <input className={inputClass} type="text" placeholder="Street, ZIP, City, State" />
+          </div>
+
+          <div>
+            <label className={labelClass}>Detailed Operations Description</label>
+            <textarea
+              className={inputClass + " min-h-[96px] resize-y"}
+              placeholder="Describe the business operations..."
+            />
+          </div>
+
+          <div>
+            <label className={labelClass}>Years of Industry Experience</label>
+            <input className={inputClass} type="number" min={0} placeholder="0" />
+          </div>
+
+          <div>
+            <label className={labelClass}>Loss Runs</label>
+            <label className="flex min-h-[96px] cursor-pointer flex-col items-center justify-center gap-1 rounded-md border border-dashed border-[#CBD5E1] bg-[#F8FAFC] px-4 py-6 text-center transition hover:border-[#1A56DB] hover:bg-[#F1F5F9]">
+              <Upload className="size-5 text-[#94A3B8]" />
+              <span className="text-xs font-medium text-[#64748B]">
+                Click to upload or drag & drop
+              </span>
+              <span className="text-[11px] text-[#94A3B8]">PDF, DOCX up to 10MB</span>
+              <input type="file" className="hidden" accept=".pdf,.docx" />
+            </label>
+          </div>
+
+          {/* Footer */}
+          <div className="flex items-center justify-between border-t border-[#EEF0F4] pt-5">
+            <button
+              type="button"
+              onClick={onClose}
+              className="rounded-md px-4 py-2.5 text-sm font-semibold text-[#71717A] transition-colors hover:bg-[#F1F5F9]"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              className="inline-flex items-center gap-1.5 rounded-md bg-[#16305C] px-6 py-2.5 text-sm font-semibold text-white transition-opacity hover:opacity-90"
+            >
+              Next
+              <ChevronRight className="size-4" />
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+}
+
 export function PortalQuotes() {
   const [filter, setFilter] = useState<(typeof FILTERS)[number]>("All");
+  const [modalOpen, setModalOpen] = useState(false);
 
   return (
     <div>
@@ -160,7 +321,10 @@ export function PortalQuotes() {
               {f}
             </button>
           ))}
-          <button className="rounded-full bg-[#16305C] px-5 py-2.5 text-sm font-semibold text-white hover:opacity-90">
+          <button
+            onClick={() => setModalOpen(true)}
+            className="rounded-full bg-[#16305C] px-5 py-2.5 text-sm font-semibold text-white hover:opacity-90"
+          >
             + New Quote
           </button>
         </div>
@@ -255,6 +419,8 @@ export function PortalQuotes() {
           </table>
         </div>
       </div>
+
+      {modalOpen && <RequestQuoteModal onClose={() => setModalOpen(false)} />}
     </div>
   );
 }
