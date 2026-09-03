@@ -29,6 +29,7 @@ import {
 import { toast } from "sonner";
 
 import alexLogo from "@/assets/alex-logo.png.asset.json";
+import alexaiLogo from "@/assets/logo-alexai.png.asset.json";
 import joffroyLogo from "@/assets/joffroy-logo.png.asset.json";
 import {
   CatalogsView,
@@ -249,14 +250,14 @@ function PortalPage() {
       {/* ===== Sidebar ===== */}
       <aside
         className={cn(
-          "fixed inset-y-0 left-0 z-40 flex w-64 flex-col border-r border-[#EDE7DE] bg-[#FBF9F6] transition-transform lg:static lg:translate-x-0",
+          "fixed inset-y-0 left-0 z-40 flex w-64 flex-col border-r border-[#E2E8F0] bg-white transition-transform lg:static lg:translate-x-0",
           sidebarOpen ? "translate-x-0" : "-translate-x-full",
         )}
       >
         <div className="flex h-16 items-center gap-2.5 px-5">
+          <img src={alexaiLogo.url} alt="Alex AI" className="h-6 w-auto" />
+          <span className="text-[#06D6A0]">×</span>
           <img src={joffroyLogo.url} alt="Grupo Joffroy" className="h-5 w-auto" />
-          <span className="text-[#C9C2B8]">×</span>
-          <img src={alexLogo.url} alt="Alex AI Insurtech" className="h-4 w-auto opacity-90 invert" />
         </div>
 
         <nav className="flex-1 space-y-1 overflow-y-auto px-3 py-4">
