@@ -38,6 +38,8 @@ import {
 } from "@/components/admin-modules";
 import { PortalDashboard } from "@/components/portal-dashboard";
 import { PortalAppetite } from "@/components/portal-appetite";
+import { PortalQuotes } from "@/components/portal-quotes";
+import { PortalProposals } from "@/components/portal-proposals";
 import { PortalLogin } from "@/components/portal-login";
 import { SiteFooter } from "@/components/site-footer";
 import { Badge } from "@/components/ui/badge";
@@ -360,102 +362,9 @@ function PortalPage() {
           )}
 
 
-          {view === "operations" && (
-            <>
-              <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
-                <div>
-                  <p className="text-xs font-bold tracking-[0.18em] text-[#1A56DB] uppercase">
-                    Grupo Joffroy · Client Portal
-                  </p>
-                  <h1 className="mt-1 text-2xl font-bold tracking-tight">
-                    Operations &amp; Customs Clearance
-                  </h1>
-                  <p className="mt-1 text-sm text-slate-500">
-                    Register pedimentos, review multi-carrier proposals, and issue COIs instantly.
-                  </p>
-                </div>
-                <Button
-                  onClick={() => setNewOpen(true)}
-                  className="bg-gradient-to-r from-[#0048FF] to-[#07D6A0] text-white hover:opacity-90"
-                >
-                  + New Operation / Pedimento
-                </Button>
-              </div>
+          {view === "operations" && <PortalQuotes />}
 
-              <div className="mt-6 flex flex-wrap items-end gap-3 rounded-2xl border border-slate-200 bg-white p-4">
-                <div className="relative min-w-[240px] flex-1">
-                  <Label className="text-xs text-slate-500">Search</Label>
-                  <Search className="pointer-events-none absolute left-3 top-[34px] size-4 text-slate-400" />
-                  <Input
-                    value={query}
-                    onChange={(e) => setQuery(e.target.value)}
-                    placeholder="Pedimento ID, manifest, vertical or city"
-                    className="mt-1 border-slate-200 pl-9"
-                  />
-                </div>
-                <div>
-                  <Label className="text-xs text-slate-500">From</Label>
-                  <Input
-                    type="date"
-                    value={from}
-                    onChange={(e) => setFrom(e.target.value)}
-                    className="mt-1 border-slate-200"
-                  />
-                </div>
-                <div>
-                  <Label className="text-xs text-slate-500">To</Label>
-                  <Input
-                    type="date"
-                    value={to}
-                    onChange={(e) => setTo(e.target.value)}
-                    className="mt-1 border-slate-200"
-                  />
-                </div>
-                {(query || from || to) && (
-                  <Button
-                    variant="ghost"
-                    onClick={() => {
-                      setQuery("");
-                      setFrom("");
-                      setTo("");
-                    }}
-                    className="text-slate-500"
-                  >
-                    Clear filters
-                  </Button>
-                )}
-              </div>
-
-              <div className="mt-6 flex flex-wrap gap-2 border-b border-slate-200 pb-px">
-                {TABS.map((t) => (
-                  <button
-                    key={t.key}
-                    onClick={() => setTab(t.key)}
-                    className={cn(
-                      "-mb-px flex items-center gap-2 border-b-2 px-4 py-2.5 text-sm font-semibold transition-colors",
-                      tab === t.key
-                        ? "border-[#1A56DB] text-[#1A56DB]"
-                        : "border-transparent text-slate-500 hover:text-[#0D1527]",
-                    )}
-                  >
-                    {t.label}
-                    <span className="rounded-full bg-slate-100 px-2 py-0.5 text-xs text-slate-600">
-                      {counts[t.key]}
-                    </span>
-                  </button>
-                ))}
-              </div>
-
-              <OperationsTable rows={filtered} onSelect={(op) => setSelectedId(op.id)} />
-            </>
-          )}
-
-          {view === "proposals" && (
-            <ProposalsView
-              rows={rows.filter((r) => r.status === "quoted")}
-              onSelect={(op) => setSelectedId(op.id)}
-            />
-          )}
+          {view === "proposals" && <PortalProposals />}
 
           {view === "admin-queue" && (
             <QueueView rows={rows} onQuote={(op) => setQuoteTargetId(op.id)} />
