@@ -128,9 +128,15 @@ const TABS: { key: Status | "all"; label: string }[] = [
 
 type ModuleKey =
   | "dashboard"
+  | "appetite"
   | "operations"
   | "proposals"
+  | "clients"
+  | "crm"
+  | "calendar"
   | "admin-queue"
+  | "admin-agencies"
+  | "admin-users"
   | "admin-pulse"
   | "admin-catalogs";
 
@@ -138,14 +144,20 @@ type NavItem = { key: ModuleKey; label: string; icon: typeof LayoutDashboard };
 
 const MODULES: NavItem[] = [
   { key: "dashboard", label: "Dashboard", icon: LayoutDashboard },
-  { key: "operations", label: "Operations / Pedimentos", icon: ClipboardList },
+  { key: "appetite", label: "Appetite Finder", icon: Search },
+  { key: "operations", label: "Quotes", icon: ClipboardList },
   { key: "proposals", label: "Proposals", icon: FileText },
+  { key: "clients", label: "Clients", icon: Users },
+  { key: "crm", label: "CRM / Visits", icon: History },
+  { key: "calendar", label: "Calendar", icon: CalendarDays },
 ];
 
 const ADMIN_MODULES: NavItem[] = [
-  { key: "admin-queue", label: "Incoming Queue", icon: Inbox },
-  { key: "admin-pulse", label: "Alex Pulse · Metrics", icon: Activity },
-  { key: "admin-catalogs", label: "Catalogs", icon: BookOpen },
+  { key: "admin-queue", label: "BI Ingestion", icon: Database },
+  { key: "admin-agencies", label: "Agencies", icon: Building2 },
+  { key: "admin-users", label: "User Management", icon: ShieldCheck },
+  { key: "admin-catalogs", label: "Carriers", icon: BookOpen },
+  { key: "admin-pulse", label: "My Agency", icon: Activity },
 ];
 
 function PortalPage() {
