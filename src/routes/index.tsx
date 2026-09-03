@@ -184,11 +184,12 @@ function Hero() {
       <div className="relative mx-auto max-w-5xl px-6 pt-32 pb-20 text-center">
 
         <h1 className="text-4xl leading-tight font-extrabold tracking-tight text-white sm:text-5xl md:text-6xl">
-          Build a more efficient insurance program with Alex AI.
+          Embedded Insurance Infrastructure for Customs & Logistics.
         </h1>
         <p className="mx-auto mt-6 max-w-2xl text-base text-white/70">
-          Connecting Arizona logistics, cross-border freight, and enterprises with real-time
-          multi-carrier underwriting and 90-second automated COI issuance.
+          Transform your customs clearance flow into a highly profitable digital business unit.
+          Protect cross-border freight with digital COI issuance in under 90 seconds, backed by
+          53+ A-Rated US carriers.
         </p>
         <div className="mt-9">
           <GradientButton>Join our partner program</GradientButton>
@@ -214,20 +215,20 @@ function Hero() {
 
 const perks = [
   {
-    title: "Scale at your own pace.",
-    body: "Our enterprise onboarding team works with you to deploy custom coverage lines aligned with your freight volume and operating footprint.",
+    title: "Port-of-Entry Agility",
+    body: "Instant digital Certificate of Insurance (COI) generation per entry, eliminating delays at fiscal yards.",
   },
   {
-    title: "Direct access to 53+ top-tier carriers.",
-    body: "Eliminate single-broker bottlenecks with real-time underwriting and appetite matching across leading US commercial insurers.",
+    title: "Institutional Capacity",
+    body: "Direct API connection with 53+ Tier-1 carriers for algorithmic risk placement without bottlenecks.",
   },
   {
-    title: "Maximize speed and operational savings.",
-    body: "Issue verified Certificates of Insurance (COI) in under 90 seconds while cutting administrative overhead on fleet policies.",
+    title: "Zero-CapEx Revenue",
+    body: "Monetize your existing transactional volume with our embedded revenue share model.",
   },
   {
-    title: "Dedicated human risk advisors.",
-    body: "Get 24/7 direct access to licensed commercial underwriters and claims adjusters ready to support your drivers and cargo.",
+    title: "Zero Admin Burden",
+    body: "We handle 100% of risk underwriting, technical support, and end-to-end claims management.",
   },
 ];
 
@@ -241,7 +242,7 @@ function Perks() {
         </div>
 
         <p className="mt-16 text-xs font-bold tracking-[0.18em] text-muted-foreground uppercase">
-          Enterprise insurance perks
+          Key Partnership Benefits
         </p>
         <h2 className="text-gradient-brand mt-5 max-w-4xl text-3xl leading-snug font-extrabold tracking-tight sm:text-4xl">
           Build a custom commercial insurance program
@@ -265,18 +266,18 @@ function Perks() {
 const valueCards = [
   {
     number: "01",
-    title: "Zero-Friction Risk Management",
-    body: "Alex AI handles 100% of underwriting workflows, compliance, and dedicated 24/7 claims support—eliminating administrative overhead for your enterprise.",
+    title: "Zero-Friction Workflow",
+    body: "Operate seamlessly within your current customs and dispatch systems.",
   },
   {
     number: "02",
-    title: "53+ Top-Tier Institutional Carriers",
-    body: "Direct, real-time appetite matching across leading A-Rated US commercial insurers, delivering scalable capacity and optimal rates.",
+    title: "A-Rated Backing",
+    body: "Access scalable capacity without traditional brokerage limitations.",
   },
   {
     number: "03",
-    title: "Instant 90-Second COI Issuance",
-    body: "Automated digital Certificate of Insurance (COI) generation for logistics dispatch, freight transit, and commercial compliance without delays.",
+    title: "Automated Compliance",
+    body: "Digital generation per entry for ultimate compliance and speed.",
   },
 ];
 
@@ -307,7 +308,7 @@ function Bento() {
       <div className="mx-auto max-w-6xl">
         <div className="text-center">
           <h2 className="text-gradient-brand text-3xl font-extrabold tracking-tight sm:text-4xl">
-            Built for Arizona&apos;s Core Industries
+            Pre-Configured Matrices for Key Logistics Verticals
           </h2>
           <p className="mt-3 text-sm text-muted-foreground">
             Institutional-grade coverage tailored to your operational reality.
@@ -326,10 +327,9 @@ function Bento() {
             />
             <div className="absolute inset-0 bg-gradient-to-t from-navy-deep via-navy-deep/40 to-transparent" />
             <div className="absolute right-8 bottom-8 left-8">
-              <h3 className="text-2xl font-bold text-white">Cross-Border Cargo & Agribusiness</h3>
+              <h3 className="text-2xl font-bold text-white">Logistics, 3PL & Transfers</h3>
               <p className="mt-2 max-w-lg text-sm text-white/75">
-                Instant inland marine and refrigerated cargo coverage across Nogales and Phoenix
-                freight corridors.
+                Commercial Auto and Trucking Liability for binational fleets and dry vans.
               </p>
             </div>
           </article>
@@ -339,10 +339,9 @@ function Bento() {
               <div className="grid size-11 place-items-center rounded-xl bg-brand/10">
                 <Truck className="size-5 text-brand" />
               </div>
-              <h3 className="mt-6 text-xl font-bold">Commercial Fleets & Logistics</h3>
+              <h3 className="mt-6 text-xl font-bold">Agribusiness & Perishables</h3>
               <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-                Tailored policies for 5 to 500+ commercial vehicles, service vans, and hazmat
-                transport.
+                Motor Truck Cargo with automated reefer breakdown protection for the cold chain.
               </p>
             </div>
             <div className="mt-8 rounded-xl border border-border bg-background p-5 shadow-card">
@@ -363,10 +362,9 @@ function Bento() {
               <div className="grid size-11 place-items-center rounded-xl bg-emerald/15">
                 <Building2 className="size-5 text-emerald" />
               </div>
-              <h3 className="mt-6 text-xl font-bold">SMB & General Liability (BOP)</h3>
+              <h3 className="mt-6 text-xl font-bold">Maquiladora & Manufacturing</h3>
               <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-                Comprehensive property, income protection, and contractor liability underwritten in
-                minutes.
+                Door-to-door Inland Marine for high-value aerospace, medical, and tech inputs.
               </p>
             </div>
             <dl className="mt-8 rounded-xl border border-border bg-background p-5 text-sm">
@@ -393,11 +391,10 @@ function Bento() {
             <div className="absolute inset-0 bg-gradient-to-t from-navy-deep via-navy-deep/45 to-transparent" />
             <div className="absolute right-8 bottom-8 left-8 flex flex-wrap items-end justify-between gap-6">
               <div className="min-w-0">
-                <h3 className="text-2xl font-bold text-white">Alex Risk Partners</h3>
-                <p className="text-sm font-semibold text-emerald">E&S & Mining Operations</p>
+                <h3 className="text-2xl font-bold text-white">Mining & Hazmat</h3>
+                <p className="text-sm font-semibold text-emerald">Specialized Equipment & Environmental</p>
                 <p className="mt-2 max-w-md text-sm text-white/75">
-                  High-limit specialized risk placement and custom underwriting for heavy industrial
-                  infrastructure.
+                  Specialized Equipment Breakdown and environmental liability placement.
                 </p>
               </div>
               <div className="w-56 shrink-0 rounded-xl border border-white/10 bg-navy-deep/90 p-4">
@@ -426,9 +423,9 @@ function Bento() {
 
 const programs = [
   {
-    title: "Customs & 3PL Integration",
+    title: "Customs & 3PL API",
     intro:
-      "Automate cargo insurance and instant COI generation directly inside your freight clearance workflow.",
+      "Automate cargo insurance directly inside your pedimento or freight clearance workflow.",
     items: [
       "Automated 90-second COI issuance at port of entry",
       "Dedicated API integration for freight dispatchers & coolers",
@@ -437,8 +434,8 @@ const programs = [
     ],
   },
   {
-    title: "Fleet & Commercial Programs",
-    intro: "Optimize fleet premium costs and risk assessments across Arizona trade corridors.",
+    title: "Fleet Telematics",
+    intro: "Optimize fleet premium costs and risk assessments across binational trade corridors.",
     items: [
       "Tailored underwriting for 5 to 500+ commercial units",
       "Telematics-aligned premium optimization",
@@ -447,9 +444,9 @@ const programs = [
     ],
   },
   {
-    title: "Strategic Referral Network",
+    title: "Revenue Share Network",
     intro:
-      "Connect your business clients to top-tier commercial coverage and earn institutional referral incentives.",
+      "Earn institutional referral incentives while protecting your clients' cargo.",
     items: [
       "Co-branded quoting portals for your association or enterprise",
       "Dedicated sales enablement and licensed underwriter support",
