@@ -5,7 +5,7 @@ interface Carrier {
   id: number;
   name: string;
   addedOn: string;
-  logo?: string;
+  logo?: string | undefined;
 }
 
 const INITIAL_CARRIERS: Carrier[] = [
