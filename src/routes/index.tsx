@@ -339,10 +339,9 @@ function Bento() {
               <div className="grid size-11 place-items-center rounded-xl bg-brand/10">
                 <Truck className="size-5 text-brand" />
               </div>
-              <h3 className="mt-6 text-xl font-bold">Commercial Fleets & Logistics</h3>
+              <h3 className="mt-6 text-xl font-bold">Agribusiness & Perishables</h3>
               <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-                Tailored policies for 5 to 500+ commercial vehicles, service vans, and hazmat
-                transport.
+                Motor Truck Cargo with automated reefer breakdown protection for the cold chain.
               </p>
             </div>
             <div className="mt-8 rounded-xl border border-border bg-background p-5 shadow-card">
