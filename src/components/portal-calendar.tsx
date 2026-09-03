@@ -124,7 +124,7 @@ export function PortalCalendar() {
               <div
                 key={day.toISOString()}
                 className={cn(
-                  "min-h-[92px] border-b border-r border-[#EDE7DE] p-1.5 first-in-row:border-l",
+                  "min-h-[92px] border-b border-r border-[#EDE7DE] p-1.5",
                   !inMonth && "bg-[#F4F0E8]",
                 )}
               >
