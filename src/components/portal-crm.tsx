@@ -87,7 +87,7 @@ function VisitColumn({ title, visits, pending = false }: { title: string; visits
         <h2 className="text-[12px] font-semibold text-[#263B5B]">{title}</h2>
         <span className="text-[10px] text-[#9AA2AE]">{visits.length}</span>
       </div>
-      <div className="space-y-2">
+      <div className="space-y-3">
         {visits.map((visit, index) => (
           <VisitCard key={`${visit.client}-${visit.date}-${index}`} visit={visit} pending={pending} />
         ))}
