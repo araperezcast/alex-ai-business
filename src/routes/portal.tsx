@@ -33,7 +33,6 @@ import joffroyLogo from "@/assets/joffroy-logo.png.asset.json";
 import {
   CatalogsView,
   PulseView,
-  QueueView,
   QuoteCaptureModal,
 } from "@/components/admin-modules";
 import { PortalDashboard } from "@/components/portal-dashboard";
