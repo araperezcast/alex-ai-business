@@ -28,7 +28,7 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 
-import alexLogo from "@/assets/alex-logo.png.asset.json";
+import alexaiLogo from "@/assets/logo-alexai.png.asset.json";
 import joffroyLogo from "@/assets/joffroy-logo.png.asset.json";
 import {
   CatalogsView,
@@ -249,14 +249,14 @@ function PortalPage() {
       {/* ===== Sidebar ===== */}
       <aside
         className={cn(
-          "fixed inset-y-0 left-0 z-40 flex w-64 flex-col border-r border-[#EDE7DE] bg-[#FBF9F6] transition-transform lg:static lg:translate-x-0",
+          "fixed inset-y-0 left-0 z-40 flex w-64 flex-col border-r border-[#E2E8F0] bg-white transition-transform lg:static lg:translate-x-0",
           sidebarOpen ? "translate-x-0" : "-translate-x-full",
         )}
       >
         <div className="flex h-16 items-center gap-2.5 px-5">
+          <img src={alexaiLogo.url} alt="Alex AI" className="h-6 w-auto" />
+          <span className="text-[#06D6A0]">×</span>
           <img src={joffroyLogo.url} alt="Grupo Joffroy" className="h-5 w-auto" />
-          <span className="text-[#C9C2B8]">×</span>
-          <img src={alexLogo.url} alt="Alex AI Insurtech" className="h-4 w-auto opacity-90 invert" />
         </div>
 
         <nav className="flex-1 space-y-1 overflow-y-auto px-3 py-4">
@@ -273,7 +273,7 @@ function PortalPage() {
             />
           ))}
 
-          <p className="px-3 pt-7 pb-2 text-[11px] font-bold uppercase tracking-[0.18em] text-[#A9A296]">
+          <p className="px-3 pt-7 pb-2 text-[11px] font-bold uppercase tracking-[0.18em] text-[#7C8BA1]">
             Administration
           </p>
           {ADMIN_MODULES.map((m) => (
@@ -290,14 +290,14 @@ function PortalPage() {
           ))}
         </nav>
 
-        <div className="space-y-1 px-3 pb-3">
-          <button className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-[#5A6474] hover:bg-[#F1ECE4]">
+        <div className="space-y-1 border-t border-[#E2E8F0] px-3 pt-3 pb-3">
+          <button className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-[#3D4C63] hover:bg-[#EFF6FF] hover:text-[#1A56DB]">
             <Moon className="size-4.5" /> Modo Oscuro
           </button>
-          <button className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-[#5A6474] hover:bg-[#F1ECE4]">
+          <button className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-[#3D4C63] hover:bg-[#EFF6FF] hover:text-[#1A56DB]">
             <Languages className="size-4.5" /> Español
           </button>
-          <button className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-[#5A6474] hover:bg-[#F1ECE4]">
+          <button className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-[#3D4C63] hover:bg-[#EFF6FF] hover:text-[#1A56DB]">
             <Settings className="size-4.5" /> Settings
           </button>
         </div>
@@ -419,8 +419,8 @@ function NavButton({
       className={cn(
         "flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors",
         active
-          ? "bg-[#F1ECE4] text-[#16305C]"
-          : "text-[#5A6474] hover:bg-[#F5F1EA] hover:text-[#16305C]",
+          ? "bg-gradient-to-r from-[#EFF6FF] to-[#ECFDF5] text-[#1A56DB] shadow-[inset_2px_0_0_0_#06D6A0]"
+          : "text-[#3D4C63] hover:bg-[#EFF6FF] hover:text-[#1A56DB]",
       )}
     >
       <item.icon className="size-4.5 shrink-0" />
