@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 
 import { cn } from "@/lib/utils";
+import pdfAsset from "@/assets/executive-summary.pdf.asset.json";
 
 export type ProposalRow = {
   client: string;
@@ -210,15 +211,24 @@ export function ProposalPresentation({
             Reveal Interactive Proposal
           </button>
 
-          <div className="mt-6 flex items-center justify-center gap-3 rounded-xl border border-[#E2E8F0] bg-[#F8FAFC] px-4 py-3 text-left">
+          <a
+            href={pdfAsset.url}
+            download={pdfName(row.client)}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group mt-6 flex items-center justify-center gap-3 rounded-xl border border-[#E2E8F0] bg-[#F8FAFC] px-4 py-3 text-left transition hover:border-[#1A56DB]/50 hover:bg-[#EFF4FF]"
+          >
             <div className="grid size-10 shrink-0 place-items-center rounded-lg bg-[#FEE2E2] text-[#DC2626]">
               <FileText className="size-5" />
             </div>
-            <div className="min-w-0">
-              <p className="truncate text-sm font-bold text-[#0D1527]">{pdfName(row.client)}</p>
-              <p className="text-xs text-[#8A93A2]">PDF · 1.8 MB</p>
+            <div className="min-w-0 flex-1">
+              <p className="truncate text-sm font-bold text-[#0D1527] group-hover:text-[#1A56DB]">
+                {pdfName(row.client)}
+              </p>
+              <p className="text-xs text-[#8A93A2]">PDF · 0.7 MB · Click to download</p>
             </div>
-          </div>
+            <Download className="size-4 shrink-0 text-[#94A3B8] group-hover:text-[#1A56DB]" />
+          </a>
 
           <p className="mt-6 text-[11px] text-[#94A3B8]">
             Alex AI Insurtech · This proposal is valid for 30 days.
