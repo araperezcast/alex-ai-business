@@ -362,10 +362,9 @@ function Bento() {
               <div className="grid size-11 place-items-center rounded-xl bg-emerald/15">
                 <Building2 className="size-5 text-emerald" />
               </div>
-              <h3 className="mt-6 text-xl font-bold">SMB & General Liability (BOP)</h3>
+              <h3 className="mt-6 text-xl font-bold">Maquiladora & Manufacturing</h3>
               <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-                Comprehensive property, income protection, and contractor liability underwritten in
-                minutes.
+                Door-to-door Inland Marine for high-value aerospace, medical, and tech inputs.
               </p>
             </div>
             <dl className="mt-8 rounded-xl border border-border bg-background p-5 text-sm">
