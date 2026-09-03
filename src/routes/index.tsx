@@ -316,8 +316,8 @@ function Bento() {
         <div className="mt-14 grid gap-6 lg:grid-cols-3">
           <article className="relative col-span-1 min-h-[420px] overflow-hidden rounded-2xl lg:col-span-2">
             <img
-              src={cargoImg}
-              alt="Refrigerated freight trucks at an Arizona border logistics yard"
+              src={cargoUrl}
+              alt="Row of commercial trucks parked at a cross-border logistics hub"
               width={1200}
               height={800}
               loading="lazy"
