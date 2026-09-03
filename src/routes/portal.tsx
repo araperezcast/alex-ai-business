@@ -274,7 +274,7 @@ function PortalPage() {
             />
           ))}
 
-          <p className="px-3 pt-7 pb-2 text-[11px] font-bold uppercase tracking-[0.18em] text-[#A9A296]">
+          <p className="px-3 pt-7 pb-2 text-[11px] font-bold uppercase tracking-[0.18em] text-[#7C8BA1]">
             Administration
           </p>
           {ADMIN_MODULES.map((m) => (
@@ -291,14 +291,14 @@ function PortalPage() {
           ))}
         </nav>
 
-        <div className="space-y-1 px-3 pb-3">
-          <button className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-[#5A6474] hover:bg-[#F1ECE4]">
+        <div className="space-y-1 border-t border-[#E2E8F0] px-3 pt-3 pb-3">
+          <button className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-[#3D4C63] hover:bg-[#EFF6FF] hover:text-[#1A56DB]">
             <Moon className="size-4.5" /> Modo Oscuro
           </button>
-          <button className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-[#5A6474] hover:bg-[#F1ECE4]">
+          <button className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-[#3D4C63] hover:bg-[#EFF6FF] hover:text-[#1A56DB]">
             <Languages className="size-4.5" /> Español
           </button>
-          <button className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-[#5A6474] hover:bg-[#F1ECE4]">
+          <button className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-[#3D4C63] hover:bg-[#EFF6FF] hover:text-[#1A56DB]">
             <Settings className="size-4.5" /> Settings
           </button>
         </div>
@@ -420,8 +420,8 @@ function NavButton({
       className={cn(
         "flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors",
         active
-          ? "bg-[#F1ECE4] text-[#16305C]"
-          : "text-[#5A6474] hover:bg-[#F5F1EA] hover:text-[#16305C]",
+          ? "bg-gradient-to-r from-[#EFF6FF] to-[#ECFDF5] text-[#1A56DB] shadow-[inset_2px_0_0_0_#06D6A0]"
+          : "text-[#3D4C63] hover:bg-[#EFF6FF] hover:text-[#1A56DB]",
       )}
     >
       <item.icon className="size-4.5 shrink-0" />
