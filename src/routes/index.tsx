@@ -38,7 +38,8 @@ import {
 import { toast } from "sonner";
 import cargoImg from "@/assets/bentoGrid.png.asset.json";
 const cargoUrl = cargoImg.url;
-import partnersImg from "@/assets/partners.jpg";
+import partnersAsset from "@/assets/partners.jpg.asset.json";
+const partnersImg = partnersAsset.url;
 
 export const Route = createFileRoute("/")({
   head: () => ({
