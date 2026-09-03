@@ -1,14 +1,10 @@
+import { useState } from "react";
 import { ChevronDown, Eye, History } from "lucide-react";
 
 import { cn } from "@/lib/utils";
+import { ProposalPresentation, type ProposalRow } from "@/components/portal-proposal-presentation";
 
-type Row = {
-  client: string;
-  business: string;
-  coverages: string;
-  premium: string;
-  status: "Pending Presentation" | "Accepted";
-};
+type Row = ProposalRow;
 
 const ROWS: Row[] = [
   {
@@ -95,6 +91,8 @@ const ROWS: Row[] = [
 ];
 
 export function PortalProposals() {
+  const [presenting, setPresenting] = useState<Row | null>(null);
+
   return (
     <div>
       <h1 className="font-serif text-3xl font-black tracking-tight text-[#16305C]">
@@ -146,7 +144,10 @@ export function PortalProposals() {
                       <button className="grid size-9 shrink-0 place-items-center rounded-lg bg-[#F1F5F9] text-[#64748B] hover:bg-[#E2E8F0]">
                         <History className="size-4" />
                       </button>
-                      <button className="flex items-center gap-3 rounded-lg bg-[#16305C] px-4 py-2.5 text-sm font-semibold text-white hover:opacity-90">
+                      <button
+                        onClick={() => setPresenting(r)}
+                        className="flex items-center gap-3 rounded-lg bg-[#16305C] px-4 py-2.5 text-sm font-semibold text-white hover:opacity-90"
+                      >
                         <Eye className="size-4 shrink-0" />
                         <span className="text-right leading-tight">
                           View
@@ -162,6 +163,8 @@ export function PortalProposals() {
           </table>
         </div>
       </div>
+
+      <ProposalPresentation row={presenting} onClose={() => setPresenting(null)} />
     </div>
   );
 }
