@@ -308,7 +308,7 @@ function Bento() {
       <div className="mx-auto max-w-6xl">
         <div className="text-center">
           <h2 className="text-gradient-brand text-3xl font-extrabold tracking-tight sm:text-4xl">
-            Built for Arizona&apos;s Core Industries
+            Pre-Configured Matrices for Key Logistics Verticals
           </h2>
           <p className="mt-3 text-sm text-muted-foreground">
             Institutional-grade coverage tailored to your operational reality.
