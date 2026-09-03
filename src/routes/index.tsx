@@ -327,10 +327,9 @@ function Bento() {
             />
             <div className="absolute inset-0 bg-gradient-to-t from-navy-deep via-navy-deep/40 to-transparent" />
             <div className="absolute right-8 bottom-8 left-8">
-              <h3 className="text-2xl font-bold text-white">Cross-Border Cargo & Agribusiness</h3>
+              <h3 className="text-2xl font-bold text-white">Logistics, 3PL & Transfers</h3>
               <p className="mt-2 max-w-lg text-sm text-white/75">
-                Instant inland marine and refrigerated cargo coverage across Nogales and Phoenix
-                freight corridors.
+                Commercial Auto and Trucking Liability for binational fleets and dry vans.
               </p>
             </div>
           </article>
