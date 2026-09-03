@@ -3,19 +3,27 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import {
   Activity,
   ArrowRight,
+  Bell,
   BookOpen,
+  Building2,
+  CalendarDays,
   CheckCircle2,
   ClipboardList,
+  Database,
   Download,
   ExternalLink,
   FileText,
-  Inbox,
+  History,
   LayoutDashboard,
+  Languages,
   LogOut,
   Menu,
+  Moon,
   Search,
+  Settings,
   ShieldCheck,
   UploadCloud,
+  Users,
   X,
 } from "lucide-react";
 import { toast } from "sonner";
@@ -28,6 +36,7 @@ import {
   QueueView,
   QuoteCaptureModal,
 } from "@/components/admin-modules";
+import { PortalDashboard } from "@/components/portal-dashboard";
 import { PortalLogin } from "@/components/portal-login";
 import { SiteFooter } from "@/components/site-footer";
 import { Badge } from "@/components/ui/badge";
@@ -128,9 +137,15 @@ const TABS: { key: Status | "all"; label: string }[] = [
 
 type ModuleKey =
   | "dashboard"
+  | "appetite"
   | "operations"
   | "proposals"
+  | "clients"
+  | "crm"
+  | "calendar"
   | "admin-queue"
+  | "admin-agencies"
+  | "admin-users"
   | "admin-pulse"
   | "admin-catalogs";
 
@@ -138,14 +153,20 @@ type NavItem = { key: ModuleKey; label: string; icon: typeof LayoutDashboard };
 
 const MODULES: NavItem[] = [
   { key: "dashboard", label: "Dashboard", icon: LayoutDashboard },
-  { key: "operations", label: "Operations / Pedimentos", icon: ClipboardList },
+  { key: "appetite", label: "Appetite Finder", icon: Search },
+  { key: "operations", label: "Quotes", icon: ClipboardList },
   { key: "proposals", label: "Proposals", icon: FileText },
+  { key: "clients", label: "Clients", icon: Users },
+  { key: "crm", label: "CRM / Visits", icon: History },
+  { key: "calendar", label: "Calendar", icon: CalendarDays },
 ];
 
 const ADMIN_MODULES: NavItem[] = [
-  { key: "admin-queue", label: "Incoming Queue", icon: Inbox },
-  { key: "admin-pulse", label: "Alex Pulse · Metrics", icon: Activity },
-  { key: "admin-catalogs", label: "Catalogs", icon: BookOpen },
+  { key: "admin-queue", label: "BI Ingestion", icon: Database },
+  { key: "admin-agencies", label: "Agencies", icon: Building2 },
+  { key: "admin-users", label: "User Management", icon: ShieldCheck },
+  { key: "admin-catalogs", label: "Carriers", icon: BookOpen },
+  { key: "admin-pulse", label: "My Agency", icon: Activity },
 ];
 
 function PortalPage() {
@@ -218,47 +239,43 @@ function PortalPage() {
   }
 
   return (
-    <div className="flex min-h-screen bg-[#F8FAFC] text-[#0D1527]">
+    <div className="flex min-h-screen bg-[#F6F2EC] text-[#16305C]">
       {/* ===== Sidebar ===== */}
       <aside
         className={cn(
-          "fixed inset-y-0 left-0 z-40 flex w-64 flex-col border-r border-slate-200 bg-white transition-transform lg:static lg:translate-x-0",
+          "fixed inset-y-0 left-0 z-40 flex w-64 flex-col border-r border-[#EDE7DE] bg-[#FBF9F6] transition-transform lg:static lg:translate-x-0",
           sidebarOpen ? "translate-x-0" : "-translate-x-full",
         )}
       >
-        <div className="flex h-16 items-center gap-2.5 border-b border-slate-200 px-5">
+        <div className="flex h-16 items-center gap-2.5 px-5">
           <img src={joffroyLogo.url} alt="Grupo Joffroy" className="h-5 w-auto" />
-          <span className="text-slate-300">×</span>
+          <span className="text-[#C9C2B8]">×</span>
           <img src={alexLogo.url} alt="Alex AI Insurtech" className="h-4 w-auto opacity-90 invert" />
         </div>
 
         <nav className="flex-1 space-y-1 overflow-y-auto px-3 py-4">
-          {MODULES.map((m) => {
-            const count =
-              m.key === "operations" ? counts.all : m.key === "proposals" ? counts.quoted : null;
-            return (
-              <NavButton
-                key={m.key}
-                item={m}
-                active={view === m.key}
-                count={count}
-                onClick={() => {
-                  setView(m.key);
-                  setSidebarOpen(false);
-                }}
-              />
-            );
-          })}
+          {MODULES.map((m) => (
+            <NavButton
+              key={m.key}
+              item={m}
+              active={view === m.key}
+              count={null}
+              onClick={() => {
+                setView(m.key);
+                setSidebarOpen(false);
+              }}
+            />
+          ))}
 
-          <p className="px-3 pt-6 pb-2 text-[11px] font-bold uppercase tracking-[0.18em] text-slate-400">
-            Admin · Alex AI Desk
+          <p className="px-3 pt-7 pb-2 text-[11px] font-bold uppercase tracking-[0.18em] text-[#A9A296]">
+            Administration
           </p>
           {ADMIN_MODULES.map((m) => (
             <NavButton
               key={m.key}
               item={m}
               active={view === m.key}
-              count={m.key === "admin-queue" ? counts.pending : null}
+              count={null}
               onClick={() => {
                 setView(m.key);
                 setSidebarOpen(false);
@@ -267,10 +284,20 @@ function PortalPage() {
           ))}
         </nav>
 
-        <div className="border-t border-slate-200 p-4">
-          <p className="rounded-xl bg-slate-50 px-3 py-2 text-center text-xs text-slate-500">
-            joffroy.alexai.cloud
-          </p>
+        <div className="space-y-1 px-3 pb-3">
+          <button className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-[#5A6474] hover:bg-[#F1ECE4]">
+            <Moon className="size-4.5" /> Modo Oscuro
+          </button>
+          <button className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-[#5A6474] hover:bg-[#F1ECE4]">
+            <Languages className="size-4.5" /> Español
+          </button>
+          <button className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-[#5A6474] hover:bg-[#F1ECE4]">
+            <Settings className="size-4.5" /> Settings
+          </button>
+        </div>
+
+        <div className="px-4 pb-5 text-center">
+          <SiteFooter />
         </div>
       </aside>
       {sidebarOpen && (
@@ -282,45 +309,53 @@ function PortalPage() {
       )}
 
       {/* ===== Main column ===== */}
-      <div className="flex min-w-0 flex-1 flex-col">
-        <header className="sticky top-0 z-20 flex h-16 items-center justify-between border-b border-slate-200 bg-white/90 px-4 backdrop-blur sm:px-6">
+      <div className="flex min-w-0 flex-1 flex-col bg-gradient-to-b from-[#FBF3E9] via-[#F7F4EF] to-[#F2F3F5]">
+        <header className="sticky top-0 z-20 flex h-16 items-center justify-between border-b border-[#EDE7DE] bg-[#FBF9F6]/85 px-4 backdrop-blur sm:px-6">
           <div className="flex items-center gap-3">
             <button
               onClick={() => setSidebarOpen(true)}
-              className="rounded-lg p-2 text-slate-500 hover:bg-slate-100 lg:hidden"
+              className="rounded-lg p-2 text-[#5A6474] hover:bg-[#F1ECE4] lg:hidden"
               aria-label="Open menu"
             >
               <Menu className="size-5" />
             </button>
-            <span className="hidden rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-500 sm:block">
-              Grupo Joffroy · Client Portal
-            </span>
           </div>
           <div className="flex items-center gap-3">
-            <span className="hidden text-xs text-slate-500 sm:block">{session.email}</span>
+            <span className="hidden text-xs text-[#7A8494] sm:block">{session.email}</span>
             <Button
               variant="ghost"
               size="sm"
               onClick={signOut}
-              className="text-slate-500 hover:text-[#0D1527]"
+              className="text-[#7A8494] hover:text-[#16305C]"
             >
               <LogOut className="mr-1.5 size-4" /> Sign out
             </Button>
-            <div className="flex size-9 items-center justify-center rounded-full bg-[#514690] text-xs font-bold text-white">
-              GJ
+            <button
+              className="rounded-full p-2 text-[#5A6474] hover:bg-[#F1ECE4]"
+              aria-label="Notifications"
+            >
+              <Bell className="size-5" />
+            </button>
+            <div className="flex size-9 items-center justify-center rounded-full border border-[#E2E8F0] bg-white text-xs font-bold text-[#16305C]">
+              D
             </div>
           </div>
         </header>
 
         <main className="flex-1 px-4 py-8 sm:px-6 lg:px-8">
-          {view === "dashboard" && (
-            <DashboardView
-              rows={rows}
-              onNew={() => setNewOpen(true)}
-              onSelect={(op) => setSelectedId(op.id)}
-              onNavigate={(v) => setView(v)}
-            />
+          {view === "dashboard" && <PortalDashboard />}
+
+          {["appetite", "clients", "crm", "calendar", "admin-agencies", "admin-users"].includes(
+            view,
+          ) && (
+            <div className="rounded-2xl border border-[#EDE7DE] bg-[#FCFAF7] p-10 text-center">
+              <h2 className="font-serif text-xl font-bold text-[#16305C]">
+                {[...MODULES, ...ADMIN_MODULES].find((m) => m.key === view)?.label}
+              </h2>
+              <p className="mt-2 text-sm text-[#7A8494]">Module layout coming next.</p>
+            </div>
           )}
+
 
           {view === "operations" && (
             <>
@@ -425,9 +460,6 @@ function PortalPage() {
           {view === "admin-pulse" && <PulseView rows={rows} />}
           {view === "admin-catalogs" && <CatalogsView rows={rows} />}
         </main>
-        <footer className="border-t border-slate-200 bg-white px-4 py-4 text-center sm:px-6 lg:px-8">
-          <SiteFooter />
-        </footer>
       </div>
 
       <QuoteCaptureModal
@@ -471,8 +503,8 @@ function NavButton({
       className={cn(
         "flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors",
         active
-          ? "bg-[#0D1527] text-white"
-          : "text-slate-600 hover:bg-slate-100 hover:text-[#0D1527]",
+          ? "bg-[#F1ECE4] text-[#16305C]"
+          : "text-[#5A6474] hover:bg-[#F5F1EA] hover:text-[#16305C]",
       )}
     >
       <item.icon className="size-4.5 shrink-0" />
@@ -590,55 +622,6 @@ function OperationsTable({
         </TableBody>
       </Table>
     </div>
-  );
-}
-
-function DashboardView({
-  rows,
-  onNew,
-  onSelect,
-  onNavigate,
-}: {
-  rows: Operation[];
-  onNew: () => void;
-  onSelect: (op: Operation) => void;
-  onNavigate: (view: ModuleKey) => void;
-}) {
-  return (
-    <>
-      <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-        <div>
-          <p className="text-xs font-bold tracking-[0.18em] text-[#1A56DB] uppercase">
-            Grupo Joffroy · Client Portal
-          </p>
-          <h1 className="mt-1 text-2xl font-bold tracking-tight">Operations Dashboard</h1>
-          <p className="mt-1 text-sm text-slate-500">
-            Cross-border freight underwriting and COI issuance at a glance.
-          </p>
-        </div>
-        <Button
-          onClick={onNew}
-          className="bg-gradient-to-r from-[#0048FF] to-[#07D6A0] text-white hover:opacity-90"
-        >
-          + New Operation / Pedimento
-        </Button>
-      </div>
-
-      <div className="mt-8">
-        <div className="mb-3 flex items-center justify-between">
-          <h2 className="text-sm font-bold uppercase tracking-wide text-slate-500">
-            Recent Operations
-          </h2>
-          <button
-            onClick={() => onNavigate("operations")}
-            className="text-sm font-semibold text-[#1A56DB] hover:underline"
-          >
-            View all
-          </button>
-        </div>
-        <OperationsTable rows={rows.slice(0, 4)} onSelect={onSelect} />
-      </div>
-    </>
   );
 }
 
