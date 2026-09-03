@@ -316,7 +316,7 @@ function PortalPage() {
 
       {/* ===== Main column ===== */}
       <div className="flex min-w-0 flex-1 flex-col bg-[#F3F5F9]">
-        <header className="sticky top-0 z-20 flex h-16 items-center justify-between border-b border-[#EDE7DE] bg-[#FBF9F6]/85 px-4 backdrop-blur sm:px-6">
+        <header className="sticky top-0 z-20 flex h-16 items-center justify-between border-b border-[#E2E8F0] bg-white/90 px-4 backdrop-blur sm:px-6">
           <div className="flex items-center gap-3">
             <button
               onClick={() => setSidebarOpen(true)}
