@@ -40,6 +40,9 @@ import { PortalDashboard } from "@/components/portal-dashboard";
 import { PortalAppetite } from "@/components/portal-appetite";
 import { PortalQuotes } from "@/components/portal-quotes";
 import { PortalProposals } from "@/components/portal-proposals";
+import { PortalClients } from "@/components/portal-clients";
+import { PortalCRM } from "@/components/portal-crm";
+import { PortalCalendar } from "@/components/portal-calendar";
 import { PortalLogin } from "@/components/portal-login";
 import { SiteFooter } from "@/components/site-footer";
 import { Badge } from "@/components/ui/badge";
@@ -350,9 +353,11 @@ function PortalPage() {
 
           {view === "appetite" && <PortalAppetite />}
 
-          {["clients", "crm", "calendar", "admin-agencies", "admin-users"].includes(
-            view,
-          ) && (
+          {view === "clients" && <PortalClients />}
+          {view === "crm" && <PortalCRM />}
+          {view === "calendar" && <PortalCalendar />}
+
+          {["admin-agencies", "admin-users"].includes(view) && (
             <div className="rounded-2xl border border-[#EDE7DE] bg-[#FCFAF7] p-10 text-center">
               <h2 className="font-serif text-xl font-bold text-[#16305C]">
                 {[...MODULES, ...ADMIN_MODULES].find((m) => m.key === view)?.label}
@@ -360,7 +365,6 @@ function PortalPage() {
               <p className="mt-2 text-sm text-[#7A8494]">Module layout coming next.</p>
             </div>
           )}
-
 
           {view === "operations" && <PortalQuotes />}
 
