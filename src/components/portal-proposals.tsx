@@ -1,14 +1,10 @@
+import { useState } from "react";
 import { ChevronDown, Eye, History } from "lucide-react";
 
 import { cn } from "@/lib/utils";
+import { ProposalPresentation, type ProposalRow } from "@/components/portal-proposal-presentation";
 
-type Row = {
-  client: string;
-  business: string;
-  coverages: string;
-  premium: string;
-  status: "Pending Presentation" | "Accepted";
-};
+type Row = ProposalRow;
 
 const ROWS: Row[] = [
   {
