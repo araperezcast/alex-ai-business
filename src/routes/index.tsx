@@ -266,18 +266,18 @@ function Perks() {
 const valueCards = [
   {
     number: "01",
-    title: "Zero-Friction Risk Management",
-    body: "Alex AI handles 100% of underwriting workflows, compliance, and dedicated 24/7 claims support—eliminating administrative overhead for your enterprise.",
+    title: "Zero-Friction Workflow",
+    body: "Operate seamlessly within your current customs and dispatch systems.",
   },
   {
     number: "02",
-    title: "53+ Top-Tier Institutional Carriers",
-    body: "Direct, real-time appetite matching across leading A-Rated US commercial insurers, delivering scalable capacity and optimal rates.",
+    title: "A-Rated Backing",
+    body: "Access scalable capacity without traditional brokerage limitations.",
   },
   {
     number: "03",
-    title: "Instant 90-Second COI Issuance",
-    body: "Automated digital Certificate of Insurance (COI) generation for logistics dispatch, freight transit, and commercial compliance without delays.",
+    title: "Automated Compliance",
+    body: "Digital generation per entry for ultimate compliance and speed.",
   },
 ];
 
