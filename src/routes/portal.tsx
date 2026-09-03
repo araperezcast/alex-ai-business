@@ -44,6 +44,9 @@ import { PortalCRM } from "@/components/portal-crm";
 import { PortalCalendar } from "@/components/portal-calendar";
 import { PortalBIIngestion } from "@/components/portal-bi-ingestion";
 import { PortalAgencies } from "@/components/portal-agencies";
+import { PortalUserManagement } from "@/components/portal-user-management";
+import { PortalCarriers } from "@/components/portal-carriers";
+import { PortalMyAgency } from "@/components/portal-my-agency";
 import { PortalLogin } from "@/components/portal-login";
 import { SiteFooter } from "@/components/site-footer";
 import { Badge } from "@/components/ui/badge";
@@ -358,14 +361,7 @@ function PortalPage() {
           {view === "crm" && <PortalCRM />}
           {view === "calendar" && <PortalCalendar />}
 
-          {["admin-users"].includes(view) && (
-            <div className="rounded-2xl border border-[#EDE7DE] bg-[#FCFAF7] p-10 text-center">
-              <h2 className="font-serif text-xl font-bold text-[#16305C]">
-                {[...MODULES, ...ADMIN_MODULES].find((m) => m.key === view)?.label}
-              </h2>
-              <p className="mt-2 text-sm text-[#7A8494]">Module layout coming next.</p>
-            </div>
-          )}
+          {view === "admin-users" && <PortalUserManagement />}
 
           {view === "admin-agencies" && <PortalAgencies />}
 
@@ -374,8 +370,8 @@ function PortalPage() {
           {view === "proposals" && <PortalProposals />}
 
           {view === "admin-queue" && <PortalBIIngestion />}
-          {view === "admin-pulse" && <PulseView rows={rows} />}
-          {view === "admin-catalogs" && <CatalogsView rows={rows} />}
+          {view === "admin-pulse" && <PortalMyAgency />}
+          {view === "admin-catalogs" && <PortalCarriers />}
         </main>
       </div>
 
