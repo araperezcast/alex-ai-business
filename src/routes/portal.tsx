@@ -1,29 +1,22 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
-  Activity,
   ArrowRight,
   Bell,
-  BookOpen,
-  Building2,
   CalendarDays,
   CheckCircle2,
   ClipboardList,
-  Database,
   Download,
   ExternalLink,
   FileText,
-  History,
   LayoutDashboard,
   Languages,
   LogOut,
   Menu,
   Moon,
-  Search,
   Settings,
   ShieldCheck,
   UploadCloud,
-  Users,
   X,
 } from "lucide-react";
 import { toast } from "sonner";
@@ -32,17 +25,10 @@ import alexaiLogo from "@/assets/logo-alexai.png.asset.json";
 import joffroyLogo from "@/assets/joffroy-logo.png.asset.json";
 import { QuoteCaptureModal } from "@/components/admin-modules";
 import { PortalDashboard } from "@/components/portal-dashboard";
-import { PortalAppetite } from "@/components/portal-appetite";
 import { PortalQuotes } from "@/components/portal-quotes";
 import { PortalProposals } from "@/components/portal-proposals";
-import { PortalClients } from "@/components/portal-clients";
-import { PortalCRM } from "@/components/portal-crm";
 import { PortalCalendar } from "@/components/portal-calendar";
-import { PortalBIIngestion } from "@/components/portal-bi-ingestion";
-import { PortalAgencies } from "@/components/portal-agencies";
 import { PortalUserManagement } from "@/components/portal-user-management";
-import { PortalCarriers } from "@/components/portal-carriers";
-import { PortalMyAgency } from "@/components/portal-my-agency";
 import { PortalLogin } from "@/components/portal-login";
 import { SiteFooter } from "@/components/site-footer";
 import { Badge } from "@/components/ui/badge";
@@ -141,38 +127,19 @@ const TABS: { key: Status | "all"; label: string }[] = [
   { key: "paid", label: "COIs Issued / Active" },
 ];
 
-type ModuleKey =
-  | "dashboard"
-  | "appetite"
-  | "operations"
-  | "proposals"
-  | "clients"
-  | "crm"
-  | "calendar"
-  | "admin-queue"
-  | "admin-agencies"
-  | "admin-users"
-  | "admin-pulse"
-  | "admin-catalogs";
+type ModuleKey = "dashboard" | "operations" | "proposals" | "calendar" | "admin-users";
 
 type NavItem = { key: ModuleKey; label: string; icon: typeof LayoutDashboard };
 
 const MODULES: NavItem[] = [
   { key: "dashboard", label: "Dashboard", icon: LayoutDashboard },
-  { key: "appetite", label: "Appetite Finder", icon: Search },
-  { key: "operations", label: "Quotes", icon: ClipboardList },
+  { key: "operations", label: "My Quotes & Policies", icon: ClipboardList },
   { key: "proposals", label: "Proposals", icon: FileText },
-  { key: "clients", label: "Clients", icon: Users },
-  { key: "crm", label: "CRM / Visits", icon: History },
   { key: "calendar", label: "Calendar", icon: CalendarDays },
 ];
 
 const ADMIN_MODULES: NavItem[] = [
-  { key: "admin-queue", label: "BI Ingestion", icon: Database },
-  { key: "admin-agencies", label: "Agencies", icon: Building2 },
   { key: "admin-users", label: "User Management", icon: ShieldCheck },
-  { key: "admin-catalogs", label: "Carriers", icon: BookOpen },
-  { key: "admin-pulse", label: "My Agency", icon: Activity },
 ];
 
 function PortalPage() {
@@ -273,21 +240,25 @@ function PortalPage() {
             />
           ))}
 
-          <p className="px-3 pt-7 pb-2 text-[11px] font-bold uppercase tracking-[0.18em] text-[#7C8BA1]">
-            Administration
-          </p>
-          {ADMIN_MODULES.map((m) => (
-            <NavButton
-              key={m.key}
-              item={m}
-              active={view === m.key}
-              count={null}
-              onClick={() => {
-                setView(m.key);
-                setSidebarOpen(false);
-              }}
-            />
-          ))}
+          {session?.role === "alex" && (
+            <>
+              <p className="px-3 pt-7 pb-2 text-[11px] font-bold uppercase tracking-[0.18em] text-[#7C8BA1]">
+                Administration
+              </p>
+              {ADMIN_MODULES.map((m) => (
+                <NavButton
+                  key={m.key}
+                  item={m}
+                  active={view === m.key}
+                  count={null}
+                  onClick={() => {
+                    setView(m.key);
+                    setSidebarOpen(false);
+                  }}
+                />
+              ))}
+            </>
+          )}
         </nav>
 
         <div className="space-y-1 border-t border-[#E2E8F0] px-3 pt-3 pb-3">
@@ -345,25 +316,17 @@ function PortalPage() {
         </header>
 
         <main className="flex-1 px-4 py-8 sm:px-6 lg:px-8">
-          {view === "dashboard" && <PortalDashboard />}
-
-          {view === "appetite" && <PortalAppetite />}
-
-          {view === "clients" && <PortalClients />}
-          {view === "crm" && <PortalCRM />}
-          {view === "calendar" && <PortalCalendar />}
-
-          {view === "admin-users" && <PortalUserManagement />}
-
-          {view === "admin-agencies" && <PortalAgencies />}
+          {view === "dashboard" && (
+            <PortalDashboard isSeller={session.email.endsWith("@chapman.com")} />
+          )}
 
           {view === "operations" && <PortalQuotes />}
 
           {view === "proposals" && <PortalProposals />}
 
-          {view === "admin-queue" && <PortalBIIngestion />}
-          {view === "admin-pulse" && <PortalMyAgency />}
-          {view === "admin-catalogs" && <PortalCarriers />}
+          {view === "calendar" && <PortalCalendar />}
+
+          {view === "admin-users" && session.role === "alex" && <PortalUserManagement />}
         </main>
 
         <footer className="border-t border-[#E2E8F0] bg-white/60 px-4 py-4 sm:px-6 lg:px-8">

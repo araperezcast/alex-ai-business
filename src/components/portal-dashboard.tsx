@@ -1,18 +1,20 @@
+import { useState } from "react";
 import {
   Activity,
+  Car,
   CircleDollarSign,
   CheckCircle2,
-  Copy,
+  Plus,
+  ShieldCheck,
   Sparkles,
   TrendingUp,
+  X,
 } from "lucide-react";
 import {
   Bar,
   BarChart,
   CartesianGrid,
   Cell,
-  Line,
-  LineChart,
   Pie,
   PieChart,
   ResponsiveContainer,
@@ -23,21 +25,6 @@ import {
 import { cn } from "@/lib/utils";
 
 /* ------------------------------------------------------------------ data */
-
-const QUOTE_EVOLUTION = [
-  { m: "Jan", v: 0 },
-  { m: "Feb", v: 0 },
-  { m: "Mar", v: 0 },
-  { m: "Apr", v: 0 },
-  { m: "May", v: 0 },
-  { m: "Jun", v: 0 },
-  { m: "Jul", v: 0 },
-  { m: "Aug", v: 27878 },
-  { m: "Sep", v: 0 },
-  { m: "Oct", v: 0 },
-  { m: "Nov", v: 0 },
-  { m: "Dec", v: 0 },
-];
 
 const DISTRIBUTION = [
   { name: "Commonwealth Casualty", value: 18, color: "#06D6A0" },
@@ -68,41 +55,41 @@ const VISITS = [
   { agent: "aracely.hernandez", top: 8, bottom: 5, colors: ["#94A3B8", "#06D6A0"] },
 ];
 
-const RECENT_VISITS = [
+const RECENT_ACTIVITY = [
+  {
+    date: "03/9/2026",
+    client: "Juan Carlos Vega",
+    vehicle: "2024 Honda Civic",
+    premium: "$1,284.00",
+    status: "ACTIVE" as const,
+  },
+  {
+    date: "02/9/2026",
+    client: "María Fernanda Ruiz",
+    vehicle: "2023 Toyota RAV4",
+    premium: "$1,462.50",
+    status: "PENDING" as const,
+  },
+  {
+    date: "01/9/2026",
+    client: "Roberto Gómez",
+    vehicle: "2025 Ford F-150",
+    premium: "$1,890.75",
+    status: "ACTIVE" as const,
+  },
+  {
+    date: "29/8/2026",
+    client: "Ana Lucía Torres",
+    vehicle: "2022 Nissan Sentra",
+    premium: "$1,045.20",
+    status: "ACTIVE" as const,
+  },
   {
     date: "28/8/2026",
-    agent: "aracely.hernandez",
-    client: "Younger Brothers Companies",
+    client: "Carlos Mendoza",
+    vehicle: "2024 Chevrolet Silverado",
+    premium: "$1,730.00",
     status: "PENDING" as const,
-    notes: "Se hizo una visita en frío de acuerdo a",
-  },
-  {
-    date: "27/8/2026",
-    agent: "aracely.hernandez",
-    client: "A&A Professional Group",
-    status: "COMPLETED" as const,
-    notes: "Tendremos una reunion de...",
-  },
-  {
-    date: "27/8/2026",
-    agent: "aracely.hernandez",
-    client: "Patrimonia Legal LLC",
-    status: "PENDING" as const,
-    notes: "Hablamos acerca de su seguro y...",
-  },
-  {
-    date: "27/8/2026",
-    agent: "Arantxa Montes",
-    client: "La Esperanza Car Audio (DBA: Ledezma's Electronics)",
-    status: "COMPLETED" as const,
-    notes: "Acordando próxima cita en persona...",
-  },
-  {
-    date: "27/8/2026",
-    agent: "Arantxa Montes",
-    client: "Yanel Saenz",
-    status: "COMPLETED" as const,
-    notes: "-",
   },
 ];
 
@@ -214,32 +201,52 @@ function DateField({ label }: { label: string }) {
   );
 }
 
+function AutoQuoterModal({ onClose }: { onClose: () => void }) {
+  return (
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4 backdrop-blur-sm"
+      onClick={onClose}
+    >
+      <div
+        className="w-full max-w-lg rounded-xl bg-white shadow-xl"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="flex items-start justify-between border-b border-[#EEF0F4] px-7 pt-6 pb-5">
+          <div className="flex items-center gap-3">
+            <div className="flex size-10 items-center justify-center rounded-xl bg-gradient-to-br from-[#1A56DB] to-[#06D6A0]">
+              <Car className="size-5 text-white" />
+            </div>
+            <h2 className="text-xl font-bold text-[#16305C]">Auto Insurance Quoter</h2>
+          </div>
+          <button
+            type="button"
+            onClick={onClose}
+            className="grid size-8 place-items-center rounded-lg text-[#94A3B8] transition-colors hover:bg-[#F1F5F9] hover:text-[#16305C]"
+            aria-label="Close"
+          >
+            <X className="size-5" />
+          </button>
+        </div>
+        <div className="px-7 py-10 text-center text-sm text-slate-400">
+          The auto quoting flow will live here.
+        </div>
+      </div>
+    </div>
+  );
+}
+
 /* ------------------------------------------------------------------ view */
 
-export function PortalDashboard() {
+export function PortalDashboard({ isSeller = false }: { isSeller?: boolean }) {
+  const [quoterOpen, setQuoterOpen] = useState(false);
+
   return (
     <div className="space-y-6">
       {/* Filters */}
       <Panel className="bg-white p-5">
-        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+        <div className="grid gap-4 md:grid-cols-2">
           <DateField label="From" />
           <DateField label="To" />
-          <div>
-            <label className="mb-1.5 block text-[11px] font-semibold uppercase tracking-[0.1em] text-slate-400">
-              Agency
-            </label>
-            <div className="flex h-10 items-center rounded-lg border border-slate-200 bg-slate-50 px-3 text-sm text-slate-500">
-              All Agencies
-            </div>
-          </div>
-          <div>
-            <label className="mb-1.5 block text-[11px] font-semibold uppercase tracking-[0.1em] text-slate-400">
-              Agent(s)
-            </label>
-            <div className="flex h-10 items-center justify-between rounded-lg border border-slate-200 bg-white px-3 text-sm text-[#1A56DB]">
-              All Agents <span className="text-[10px] text-slate-400">▼</span>
-            </div>
-          </div>
         </div>
         <div className="mt-4 flex items-center gap-3">
           <button className="h-9 rounded-lg border border-slate-200 bg-white px-4 text-sm font-medium text-slate-600 hover:bg-slate-50">
@@ -262,87 +269,87 @@ export function PortalDashboard() {
             <Activity className="size-3.5 text-[#06D6A0]" />
           </div>
         </div>
+        <button
+          onClick={() => setQuoterOpen(true)}
+          className="inline-flex h-11 shrink-0 items-center gap-2 rounded-xl bg-gradient-to-r from-[#1A56DB] to-[#06D6A0] px-5 text-sm font-semibold text-white shadow-sm hover:opacity-90"
+        >
+          <Plus className="size-4" /> New Auto Quote
+        </button>
       </div>
 
       {/* KPIs */}
-      <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-5">
+      <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
         <StatCard
-          label="Total Quoted Premium"
-          value="$27,878.21"
-          icon={CircleDollarSign}
+          label="Total Auto Quotes"
+          value="128"
+          icon={Car}
           accent="#1A56DB"
         />
         <StatCard
-          label="Accepted Premium"
-          value="$3,218.43"
-          icon={CheckCircle2}
+          label="Active Policies"
+          value="74"
+          icon={ShieldCheck}
           accent="#06D6A0"
           valueClass="text-[#06D6A0]"
         />
         <StatCard
-          label="Commissions Generated"
-          value="$374.36"
-          icon={Activity}
+          label="Total Premium ($)"
+          value="$96,412.80"
+          icon={CircleDollarSign}
           accent="#0EA5E9"
           valueClass="text-[#0EA5E9]"
-          foot={<span className="font-semibold text-[#0EA5E9]">+$2,632.33 potential</span>}
         />
-        <StatCard
-          label="Pending Quotes"
-          value="1"
-          icon={Copy}
-          accent="#F59E0B"
-          foot={
-            <span className="flex items-center gap-1.5">
-              <span className="size-1.5 rounded-full bg-[#F59E0B]" />1 require review
-            </span>
-          }
-        />
-        <StatCard
-          label="Hit Ratio"
-          value="100%"
-          icon={TrendingUp}
-          accent="#1A56DB"
-          foot={
-            <span className="flex items-center gap-1.5">
-              <span className="size-1.5 rounded-full bg-[#1A56DB]" />
-              <b className="text-[#1A56DB]">3</b> ganadas de 3
-            </span>
-          }
-        />
+        {!isSeller && (
+          <StatCard
+            label="Commission Generated"
+            value="$8,214.55"
+            icon={TrendingUp}
+            accent="#F59E0B"
+            valueClass="text-[#F59E0B]"
+            foot={<span className="font-semibold text-[#F59E0B]">+$1,180.40 this month</span>}
+          />
+        )}
       </div>
 
-      {/* Quote Evolution */}
+      {/* Recent Activity */}
       <Panel>
-        <PanelTitle title="Quote Evolution" subtitle="Quoted premiums in the last quarter." />
-        <div className="h-[280px] w-full">
-          <ResponsiveContainer width="100%" height="100%">
-            <LineChart data={QUOTE_EVOLUTION} margin={{ top: 10, right: 16, bottom: 0, left: 0 }}>
-              <CartesianGrid stroke="transparent" />
-              <XAxis
-                dataKey="m"
-                tickLine={false}
-                axisLine={false}
-                tick={{ fill: "#94A3B8", fontSize: 12 }}
-              />
-              <YAxis
-                ticks={[0, 7000, 14000, 21000, 28000]}
-                tickFormatter={(v: number) => `$${v}`}
-                tickLine={false}
-                axisLine={false}
-                width={70}
-                tick={{ fill: "#94A3B8", fontSize: 12 }}
-              />
-              <Line
-                type="monotone"
-                dataKey="v"
-                stroke="#1A56DB"
-                strokeWidth={2}
-                dot={{ r: 3.5, fill: "#1A56DB" }}
-                isAnimationActive={false}
-              />
-            </LineChart>
-          </ResponsiveContainer>
+        <PanelTitle title="Recent Activity" subtitle="Last 5 vehicles quoted." />
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b border-slate-200 text-[11px] uppercase tracking-[0.08em] text-slate-400">
+                <th className="py-2 pr-3 text-left font-semibold">Date</th>
+                <th className="py-2 pr-3 text-left font-semibold">Client</th>
+                <th className="py-2 pr-3 text-left font-semibold">Vehicle</th>
+                <th className="py-2 pr-3 text-left font-semibold">Total Premium</th>
+                <th className="py-2 text-left font-semibold">Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {RECENT_ACTIVITY.map((v, i) => (
+                <tr key={i} className="border-b border-slate-100 align-middle last:border-0">
+                  <td className="py-3 pr-3 whitespace-nowrap text-slate-600">{v.date}</td>
+                  <td className="py-3 pr-3 font-medium text-[#1A56DB]">{v.client}</td>
+                  <td className="py-3 pr-3 text-slate-600">{v.vehicle}</td>
+                  <td className="py-3 pr-3 font-semibold tabular-nums text-slate-700">
+                    {v.premium}
+                  </td>
+                  <td className="py-3">
+                    <span
+                      className={cn(
+                        "inline-block rounded px-2 py-0.5 text-[10px] font-bold tracking-wide",
+                        v.status === "PENDING"
+                          ? "bg-amber-100 text-amber-700"
+                          : "bg-emerald-100 text-emerald-700",
+                      )}
+                    >
+                      {v.status}
+                    </span>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       </Panel>
 
@@ -417,7 +424,43 @@ export function PortalDashboard() {
                 </tr>
               </thead>
               <tbody>
-                {RECENT_VISITS.map((v, i) => (
+                {[
+                  {
+                    date: "28/8/2026",
+                    agent: "aracely.hernandez",
+                    client: "Younger Brothers Companies",
+                    status: "PENDING" as const,
+                    notes: "Se hizo una visita en frío de acuerdo a",
+                  },
+                  {
+                    date: "27/8/2026",
+                    agent: "aracely.hernandez",
+                    client: "A&A Professional Group",
+                    status: "COMPLETED" as const,
+                    notes: "Tendremos una reunion de...",
+                  },
+                  {
+                    date: "27/8/2026",
+                    agent: "aracely.hernandez",
+                    client: "Patrimonia Legal LLC",
+                    status: "PENDING" as const,
+                    notes: "Hablamos acerca de su seguro y...",
+                  },
+                  {
+                    date: "27/8/2026",
+                    agent: "Arantxa Montes",
+                    client: "La Esperanza Car Audio (DBA: Ledezma's Electronics)",
+                    status: "COMPLETED" as const,
+                    notes: "Acordando próxima cita en persona...",
+                  },
+                  {
+                    date: "27/8/2026",
+                    agent: "Arantxa Montes",
+                    client: "Yanel Saenz",
+                    status: "COMPLETED" as const,
+                    notes: "-",
+                  },
+                ].map((v, i) => (
                   <tr key={i} className="border-b border-slate-100 align-top last:border-0">
                     <td className="py-3 pr-3 text-slate-600">{v.date}</td>
                     <td className="py-3 pr-3 text-slate-600">{v.agent}</td>
@@ -442,6 +485,8 @@ export function PortalDashboard() {
           </div>
         </Panel>
       </div>
+
+      {quoterOpen && <AutoQuoterModal onClose={() => setQuoterOpen(false)} />}
     </div>
   );
 }
