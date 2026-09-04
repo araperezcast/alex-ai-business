@@ -62,6 +62,7 @@ import {
   BadgeCheck,
   Building2,
   CheckCircle2,
+  ChevronDown,
   Facebook,
   Instagram,
   Mail,
@@ -122,17 +123,51 @@ function GradientButton({
   );
 }
 
+type NavItem = { title: string; desc: string };
+type NavMenu = { label: string; items: NavItem[] };
+
+const navMenus: NavMenu[] = [
+  {
+    label: "Products",
+    items: [
+      { title: "Commercial Auto & Trucking", desc: "Liability, physical damage and motor truck cargo for binational fleets and dry vans." },
+      { title: "Motor Truck Cargo", desc: "Per-shipment cargo protection with automated reefer breakdown coverage for the cold chain." },
+      { title: "Inland Marine", desc: "Door-to-door transit coverage for high-value aerospace, medical and tech inputs." },
+      { title: "General Liability", desc: "Premises and operations liability tailored to logistics and customs businesses." },
+      { title: "Digital COI Issuance", desc: "Generate binding Certificates of Insurance in under 90 seconds, per port of entry." },
+    ],
+  },
+  {
+    label: "Solutions",
+    items: [
+      { title: "Customs Brokers & 3PLs", desc: "Embed cargo insurance directly inside your pedimento and clearance workflow." },
+      { title: "Fleet Operators", desc: "Telematics-aligned premiums and unified billing for 5 to 500+ commercial units." },
+      { title: "Maquiladora & Manufacturing", desc: "Inland marine and property programs for cross-border high-value operations." },
+      { title: "Agribusiness & Cold Chain", desc: "Reefer breakdown and perishable cargo protection for binational trade." },
+      { title: "Mining & Hazmat", desc: "Specialized equipment breakdown and environmental liability placement." },
+    ],
+  },
+  {
+    label: "Customers",
+    items: [
+      { title: "Customs Brokerages", desc: "Turn clearance volume into a recurring embedded insurance revenue stream." },
+      { title: "Freight Forwarders", desc: "Offer cargo and liability coverage at point of dispatch with zero admin." },
+      { title: "Dealership Groups", desc: "Digital quoting and policy management for auto dealer inventories." },
+      { title: "Enterprise Risk Teams", desc: "Multi-carrier underwriting and instant COI across distributed operations." },
+      { title: "Partner Agencies", desc: "Co-branded portals with referral incentives and licensed underwriter support." },
+    ],
+  },
+];
+
 function Navbar() {
   const [open, setOpen] = useState(false);
-  const links = [
-    { label: "Products", to: "/" },
-    { label: "Solutions", to: "/" },
-    { label: "Alex Portal B2B", to: "/portal" },
-    { label: "Company", to: "/" },
-    { label: "Customers", to: "/" },
-  ];
+  const [activeMenu, setActiveMenu] = useState<string | null>(null);
+
   return (
-    <header className="fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-navy-deep/80 backdrop-blur-md">
+    <header
+      className="fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-navy-deep/80 backdrop-blur-md"
+      onMouseLeave={() => setActiveMenu(null)}
+    >
       <nav className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-6">
         <Link to="/" className="flex shrink-0 items-center" onClick={() => setOpen(false)}>
           <img
@@ -142,31 +177,38 @@ function Navbar() {
           />
         </Link>
         <div className="hidden items-center gap-8 lg:flex">
-          {links.map((l) => (
-            <Link
-              key={l.label}
-              to={l.to}
-              className="text-sm font-medium text-white/80 transition-colors hover:text-white"
+          {navMenus.map((m) => (
+            <div
+              key={m.label}
+              className="relative"
+              onMouseEnter={() => setActiveMenu(m.label)}
             >
-              {l.label}
-            </Link>
+              <button
+                type="button"
+                onClick={() =>
+                  setActiveMenu((cur) => (cur === m.label ? null : m.label))
+                }
+                className="flex items-center gap-1.5 text-sm font-medium text-white/80 transition-colors hover:text-white"
+              >
+                {m.label}
+                <ChevronDown
+                  className={`size-3.5 transition-transform ${
+                    activeMenu === m.label ? "rotate-180" : ""
+                  }`}
+                />
+              </button>
+            </div>
           ))}
+          <Link
+            to="/portal"
+            className="text-sm font-medium text-white/80 transition-colors hover:text-white"
+          >
+            Alex Portal B2B
+          </Link>
         </div>
         <div className="hidden items-center gap-6 lg:flex">
           <Link
-            to="/"
-            className="text-sm font-medium text-white/80 transition-colors hover:text-white"
-          >
-            Contact
-          </Link>
-          <Link
-            to="/"
-            className="text-sm font-medium text-white/80 transition-colors hover:text-white"
-          >
-            Login
-          </Link>
-          <Link
-            to="/"
+            to="/portal"
             className="bg-gradient-brand rounded-full px-5 py-2 text-sm font-bold text-brand-foreground transition-all hover:brightness-110"
           >
             Get started
@@ -182,33 +224,69 @@ function Navbar() {
           {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
         </button>
       </nav>
+
+      {activeMenu && (
+        <div className="absolute inset-x-0 top-full hidden border-t border-white/10 bg-navy-deep/95 backdrop-blur-md lg:block">
+          <div className="mx-auto max-w-7xl px-6 py-6">
+            <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-5">
+              {navMenus
+                .find((m) => m.label === activeMenu)
+                ?.items.map((it) => (
+                  <Link
+                    key={it.title}
+                    to="/"
+                    onClick={() => setActiveMenu(null)}
+                    className="group rounded-xl border border-white/10 bg-white/5 p-4 transition-colors hover:border-brand/40 hover:bg-white/10"
+                  >
+                    <p className="text-sm font-bold text-white group-hover:text-brand-foreground">
+                      {it.title}
+                    </p>
+                    <p className="mt-1.5 text-xs leading-relaxed text-white/55">
+                      {it.desc}
+                    </p>
+                  </Link>
+                ))}
+            </div>
+          </div>
+        </div>
+      )}
+
       {open && (
         <div className="border-t border-white/10 bg-navy-deep px-6 py-6 lg:hidden">
           <div className="flex flex-col gap-4">
-            {links.map((l) => (
-              <Link
-                key={l.label}
-                to={l.to}
-                onClick={() => setOpen(false)}
-                className="text-base font-medium text-white/80 transition-colors hover:text-white"
-              >
-                {l.label}
-              </Link>
+            {navMenus.map((m) => (
+              <div key={m.label} className="border-b border-white/10 pb-4">
+                <p className="text-xs font-bold tracking-[0.18em] text-white/50 uppercase">
+                  {m.label}
+                </p>
+                <div className="mt-3 flex flex-col gap-3">
+                  {m.items.map((it) => (
+                    <Link
+                      key={it.title}
+                      to="/"
+                      onClick={() => setOpen(false)}
+                      className="text-sm font-medium text-white/80 transition-colors hover:text-white"
+                    >
+                      {it.title}
+                    </Link>
+                  ))}
+                </div>
+              </div>
             ))}
-            <div className="mt-2 flex items-center gap-5 border-t border-white/10 pt-4">
-              <Link to="/" className="text-sm font-medium text-white/80 hover:text-white">
-                Contact
-              </Link>
-              <Link to="/" className="text-sm font-medium text-white/80 hover:text-white">
-                Login
-              </Link>
-              <Link
-                to="/"
-                className="bg-gradient-brand rounded-full px-5 py-2 text-sm font-bold text-brand-foreground"
-              >
-                Get started
-              </Link>
-            </div>
+            <Link
+              to="/portal"
+              onClick={() => setOpen(false)}
+              className="text-base font-medium text-white/80 transition-colors hover:text-white"
+            >
+              Alex Portal B2B
+            </Link>
+            <Link
+              to="/portal"
+              onClick={() => setOpen(false)}
+              className="bg-gradient-brand mt-2 rounded-full px-5 py-2 text-center text-sm font-bold text-brand-foreground"
+            >
+              Get started
+            </Link>
           </div>
         </div>
       )}
@@ -330,17 +408,17 @@ const valueCards = [
 function ValueCards() {
   return (
     <section className="bg-background px-6 py-20">
-      <div className="mx-auto grid max-w-6xl gap-6 md:grid-cols-3">
+      <div className="mx-auto grid max-w-6xl gap-8 md:grid-cols-3">
         {valueCards.map((c) => (
           <div
             key={c.number}
-            className="group border-border bg-card rounded-2xl border p-8 transition-shadow hover:shadow-card"
+            className="group border-border bg-card rounded-3xl border p-11 min-h-[320px] transition-shadow hover:shadow-card"
           >
-            <span className="text-gradient-brand text-sm font-extrabold tracking-[0.18em]">
+            <span className="text-gradient-brand text-xl font-extrabold tracking-[0.18em]">
               {c.number}
             </span>
-            <h3 className="mt-4 text-xl font-extrabold tracking-tight">{c.title}</h3>
-            <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{c.body}</p>
+            <h3 className="mt-6 text-3xl font-extrabold tracking-tight">{c.title}</h3>
+            <p className="mt-4 text-base leading-relaxed text-muted-foreground">{c.body}</p>
           </div>
         ))}
       </div>
