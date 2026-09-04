@@ -263,7 +263,7 @@ function PortalPage() {
         </div>
 
         <nav className="flex-1 space-y-1 overflow-y-auto px-3 py-4">
-          {MODULES.map((m) => (
+          {(session.role === "chapman" ? CHAPMAN_MODULES : FULL_MODULES).map((m) => (
             <NavButton
               key={m.key}
               item={m}
