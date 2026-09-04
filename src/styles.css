@@ -198,7 +198,7 @@
 }
 
 @utility animate-marquee {
-  animation: marquee 40s linear infinite;
+  animation: marquee 52s linear infinite;
 }
 
 /* Subtle nebula drift for the hero glow on hover */
