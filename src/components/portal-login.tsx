@@ -28,9 +28,7 @@ const TENANTS: Record<string, Tenant> = {
     badge: "Bienvenido al espacio de trabajo de Partners de Chapman",
     buttonClass: "bg-[#0B6E4F] text-white hover:bg-[#095c42]",
     chipClass: "bg-emerald-50 text-emerald-700 border-emerald-200",
-    logo: "wordmark",
-    wordmark: "CHAPMAN",
-    wordmarkClass: "text-[#0B6E4F]",
+    logo: "chapman",
   },
   "joffroy.com": {
     id: "joffroy",
