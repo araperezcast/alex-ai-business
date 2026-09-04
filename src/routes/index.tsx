@@ -3,6 +3,25 @@ import { useState } from "react";
 import { Nebula } from "@/components/nebula";
 import { SiteFooter } from "@/components/site-footer";
 import carrierLogos from "@/assets/logos.png.asset.json";
+import bristolWestLogo from "@/assets/carriers/bristol-west.png.asset.json";
+import sfaLogo from "@/assets/carriers/sfa-risk-solutions.png.asset.json";
+import americanModernLogo from "@/assets/carriers/american-modern.png.asset.json";
+import chubbLogo from "@/assets/carriers/chubb.png.asset.json";
+import coterieLogo from "@/assets/carriers/coterie.png.asset.json";
+import coverWhaleLogo from "@/assets/carriers/cover-whale.png.asset.json";
+import dieselLogo from "@/assets/carriers/diesel-insurance.png.asset.json";
+import ergoNextLogo from "@/assets/carriers/ergo-next.png.asset.json";
+
+const partnerLogos = [
+  { src: bristolWestLogo.url, alt: "Bristol West Insurance Group" },
+  { src: sfaLogo.url, alt: "SFA Risk Solutions" },
+  { src: americanModernLogo.url, alt: "American Modern Insurance Group" },
+  { src: chubbLogo.url, alt: "Chubb" },
+  { src: coterieLogo.url, alt: "Coterie" },
+  { src: coverWhaleLogo.url, alt: "Cover Whale" },
+  { src: dieselLogo.url, alt: "Diesel Insurance Solutions" },
+  { src: ergoNextLogo.url, alt: "ERGO Next" },
+];
 import alexLogo from "@/assets/alex-logo.png.asset.json";
 import {
   Accordion,
