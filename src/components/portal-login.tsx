@@ -190,6 +190,8 @@ export function PortalLogin({
             <br />
             Alex AI desk: <span className="font-semibold">desk@alexai.cloud</span>
             <br />
+            Chapman client: <span className="font-semibold">producer@chapman.com</span>
+            <br />
             Password for all accounts: <span className="font-semibold">123000</span>
           </p>
         </div>
