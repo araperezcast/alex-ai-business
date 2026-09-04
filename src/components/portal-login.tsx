@@ -186,9 +186,11 @@ export function PortalLogin({
 
           <p className="mt-6 rounded-xl bg-slate-50 p-3 text-xs leading-relaxed text-slate-500">
             Demo access — Joffroy client:{" "}
-            <span className="font-semibold">operaciones@joffroy.com / joffroy2026</span>
+            <span className="font-semibold">operaciones@joffroy.com</span>
             <br />
-            Alex AI desk: <span className="font-semibold">desk@alexai.cloud / alexai2026</span>
+            Alex AI desk: <span className="font-semibold">desk@alexai.cloud</span>
+            <br />
+            Password for all accounts: <span className="font-semibold">123000</span>
           </p>
         </div>
 
