@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { Nebula } from "@/components/nebula";
 import { SiteFooter } from "@/components/site-footer";
-import carrierLogos from "@/assets/logos.png.asset.json";
+
 import bristolWestLogo from "@/assets/carriers/bristol-west.png.asset.json";
 import sfaLogo from "@/assets/carriers/sfa-risk-solutions.png.asset.json";
 import americanModernLogo from "@/assets/carriers/american-modern.png.asset.json";
