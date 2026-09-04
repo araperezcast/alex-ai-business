@@ -127,7 +127,15 @@ const TABS: { key: Status | "all"; label: string }[] = [
   { key: "paid", label: "COIs Issued / Active" },
 ];
 
-type ModuleKey = "dashboard" | "operations" | "proposals" | "calendar" | "admin-users";
+type ModuleKey =
+  | "dashboard"
+  | "operations"
+  | "proposals"
+  | "calendar"
+  | "clients"
+  | "crm"
+  | "my-agency"
+  | "admin-users";
 
 type NavItem = { key: ModuleKey; label: string; icon: typeof LayoutDashboard };
 
@@ -136,6 +144,9 @@ const MODULES: NavItem[] = [
   { key: "operations", label: "My Quotes & Policies", icon: ClipboardList },
   { key: "proposals", label: "Proposals", icon: FileText },
   { key: "calendar", label: "Calendar", icon: CalendarDays },
+  { key: "clients", label: "Clients", icon: Users },
+  { key: "crm", label: "CRM / Visits", icon: MapPin },
+  { key: "my-agency", label: "My Agency", icon: Building2 },
 ];
 
 const ADMIN_MODULES: NavItem[] = [
