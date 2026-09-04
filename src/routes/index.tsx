@@ -36,7 +36,7 @@ import {
   X,
 } from "lucide-react";
 import { toast } from "sonner";
-import cargoImg from "@/assets/bentoGrid.png.asset.json";
+import cargoImg from "@/assets/trailer.jpg.asset.json";
 const cargoUrl = cargoImg.url;
 import partnersAsset from "@/assets/partners.jpg.asset.json";
 const partnersImg = partnersAsset.url;
