@@ -3,6 +3,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 
 import alexLogo from "@/assets/logo-alexai.png.asset.json";
+import chapmanLogo from "@/assets/chapman-logo.png.asset.json";
 import joffroyLogo from "@/assets/joffroy-logo.png.asset.json";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -16,9 +17,7 @@ type Tenant = {
   badge: string;
   buttonClass: string;
   chipClass: string;
-  logo: "wordmark" | "joffroy";
-  wordmark?: string;
-  wordmarkClass?: string;
+  logo: "chapman" | "joffroy";
 };
 
 const TENANTS: Record<string, Tenant> = {
@@ -29,9 +28,7 @@ const TENANTS: Record<string, Tenant> = {
     badge: "Bienvenido al espacio de trabajo de Partners de Chapman",
     buttonClass: "bg-[#0B6E4F] text-white hover:bg-[#095c42]",
     chipClass: "bg-emerald-50 text-emerald-700 border-emerald-200",
-    logo: "wordmark",
-    wordmark: "CHAPMAN",
-    wordmarkClass: "text-[#0B6E4F]",
+    logo: "chapman",
   },
   "joffroy.com": {
     id: "joffroy",
@@ -97,13 +94,9 @@ export function PortalLogin({
           {tenant ? (
             <div key={tenant.id} className="flex animate-fade-in items-center gap-4">
               {tenant.logo === "joffroy" ? (
-                <img src={joffroyLogo.url} alt={tenant.name} className="h-8 w-auto" />
+                <img src={joffroyLogo.url} alt={tenant.name} className="h-9 w-auto" />
               ) : (
-                <span
-                  className={`text-xl font-extrabold tracking-[0.18em] ${tenant.wordmarkClass ?? ""}`}
-                >
-                  {tenant.wordmark}
-                </span>
+                <img src={chapmanLogo.url} alt={tenant.name} className="h-9 w-auto" />
               )}
               <span className="h-8 w-px bg-slate-300" aria-hidden="true" />
               <img src={alexLogo.url} alt="Alex AI Insurtech" className="h-7 w-auto" />
