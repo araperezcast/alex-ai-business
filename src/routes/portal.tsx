@@ -276,7 +276,7 @@ function PortalPage() {
             />
           ))}
 
-          {(session.role === "alex" || session.role === "chapman") && (
+          {(["alex", "chapman", "joffroy"] as const).includes(session.role) && (
             <>
               <p className="px-3 pt-7 pb-2 text-[11px] font-bold uppercase tracking-[0.18em] text-[#7C8BA1]">
                 Administration
