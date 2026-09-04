@@ -17,9 +17,7 @@ type Tenant = {
   badge: string;
   buttonClass: string;
   chipClass: string;
-  logo: "wordmark" | "joffroy";
-  wordmark?: string;
-  wordmarkClass?: string;
+  logo: "chapman" | "joffroy";
 };
 
 const TENANTS: Record<string, Tenant> = {
