@@ -1,4 +1,4 @@
-export type PortalRole = "joffroy" | "alex";
+export type PortalRole = "joffroy" | "alex" | "chapman";
 
 export const SESSION_KEY = "joffroy-portal-session";
 
@@ -20,7 +20,7 @@ const ACCOUNTS: { email: string; password: string; role: PortalRole; name: strin
   {
     email: "producer@chapman.com",
     password: UNIVERSAL_PASSWORD,
-    role: "joffroy",
+    role: "chapman",
     name: "Chapman · Producer",
   },
 ];

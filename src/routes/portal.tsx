@@ -7,6 +7,8 @@ import {
   CalendarDays,
   CheckCircle2,
   ClipboardList,
+  Compass,
+  Database,
   Download,
   ExternalLink,
   FileText,
@@ -18,6 +20,7 @@ import {
   Moon,
   Settings,
   ShieldCheck,
+  Truck,
   UploadCloud,
   Users,
   X,
@@ -35,6 +38,10 @@ import { PortalUserManagement } from "@/components/portal-user-management";
 import { PortalClients } from "@/components/portal-clients";
 import { PortalCRM } from "@/components/portal-crm";
 import { PortalMyAgency } from "@/components/portal-my-agency";
+import { PortalAppetite } from "@/components/portal-appetite";
+import { PortalBIIngestion } from "@/components/portal-bi-ingestion";
+import { PortalAgencies } from "@/components/portal-agencies";
+import { PortalCarriers } from "@/components/portal-carriers";
 import { PortalLogin } from "@/components/portal-login";
 import { SiteFooter } from "@/components/site-footer";
 import { Badge } from "@/components/ui/badge";
@@ -141,11 +148,15 @@ type ModuleKey =
   | "clients"
   | "crm"
   | "my-agency"
+  | "appetite"
+  | "bi-ingestion"
+  | "agencies"
+  | "carriers"
   | "admin-users";
 
 type NavItem = { key: ModuleKey; label: string; icon: typeof LayoutDashboard };
 
-const MODULES: NavItem[] = [
+const CHAPMAN_MODULES: NavItem[] = [
   { key: "dashboard", label: "Dashboard", icon: LayoutDashboard },
   { key: "operations", label: "My Quotes & Policies", icon: ClipboardList },
   { key: "proposals", label: "Proposals", icon: FileText },
@@ -153,6 +164,14 @@ const MODULES: NavItem[] = [
   { key: "clients", label: "Clients", icon: Users },
   { key: "crm", label: "CRM / Visits", icon: MapPin },
   { key: "my-agency", label: "My Agency", icon: Building2 },
+];
+
+const FULL_MODULES: NavItem[] = [
+  ...CHAPMAN_MODULES,
+  { key: "appetite", label: "Appetite Finder", icon: Compass },
+  { key: "bi-ingestion", label: "BI Ingestion", icon: Database },
+  { key: "agencies", label: "Agencies", icon: Building2 },
+  { key: "carriers", label: "Carriers", icon: Truck },
 ];
 
 const ADMIN_MODULES: NavItem[] = [
@@ -244,7 +263,7 @@ function PortalPage() {
         </div>
 
         <nav className="flex-1 space-y-1 overflow-y-auto px-3 py-4">
-          {MODULES.map((m) => (
+          {(session.role === "chapman" ? CHAPMAN_MODULES : FULL_MODULES).map((m) => (
             <NavButton
               key={m.key}
               item={m}
@@ -257,25 +276,21 @@ function PortalPage() {
             />
           ))}
 
-          {session?.role === "alex" && (
-            <>
-              <p className="px-3 pt-7 pb-2 text-[11px] font-bold uppercase tracking-[0.18em] text-[#7C8BA1]">
-                Administration
-              </p>
-              {ADMIN_MODULES.map((m) => (
-                <NavButton
-                  key={m.key}
-                  item={m}
-                  active={view === m.key}
-                  count={null}
-                  onClick={() => {
-                    setView(m.key);
-                    setSidebarOpen(false);
-                  }}
-                />
-              ))}
-            </>
-          )}
+          <p className="px-3 pt-7 pb-2 text-[11px] font-bold uppercase tracking-[0.18em] text-[#7C8BA1]">
+            Administration
+          </p>
+          {ADMIN_MODULES.map((m) => (
+            <NavButton
+              key={m.key}
+              item={m}
+              active={view === m.key}
+              count={null}
+              onClick={() => {
+                setView(m.key);
+                setSidebarOpen(false);
+              }}
+            />
+          ))}
         </nav>
 
         <div className="space-y-1 border-t border-[#E2E8F0] px-3 pt-3 pb-3">
@@ -349,7 +364,15 @@ function PortalPage() {
 
           {view === "my-agency" && <PortalMyAgency />}
 
-          {view === "admin-users" && session.role === "alex" && <PortalUserManagement />}
+          {view === "appetite" && session.role !== "chapman" && <PortalAppetite />}
+
+          {view === "bi-ingestion" && session.role !== "chapman" && <PortalBIIngestion />}
+
+          {view === "agencies" && session.role !== "chapman" && <PortalAgencies />}
+
+          {view === "carriers" && session.role !== "chapman" && <PortalCarriers />}
+
+          {view === "admin-users" && <PortalUserManagement />}
         </main>
 
         <footer className="border-t border-[#E2E8F0] bg-white/60 px-4 py-4 sm:px-6 lg:px-8">
