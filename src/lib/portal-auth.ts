@@ -17,9 +17,15 @@ const ACCOUNTS: { email: string; password: string; role: PortalRole; name: strin
     role: "alex",
     name: "Alex AI · Underwriting Desk",
   },
+  {
+    email: "producer@chapman.com",
+    password: UNIVERSAL_PASSWORD,
+    role: "joffroy",
+    name: "Chapman · Producer",
+  },
 ];
 
-const ALLOWED_DOMAINS = ["joffroy.com", "joffroy.com.mx", "alexai.cloud"];
+const ALLOWED_DOMAINS = ["joffroy.com", "joffroy.com.mx", "alexai.cloud", "chapman.com"];
 
 export type Session = { email: string; role: PortalRole; name: string };
 
