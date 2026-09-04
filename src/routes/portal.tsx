@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+// views render block updated below
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
   ArrowRight,
