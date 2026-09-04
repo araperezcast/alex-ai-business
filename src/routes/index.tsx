@@ -2,7 +2,26 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { Nebula } from "@/components/nebula";
 import { SiteFooter } from "@/components/site-footer";
-import carrierLogos from "@/assets/logos.png.asset.json";
+
+import bristolWestLogo from "@/assets/carriers/bristol-west.png.asset.json";
+import sfaLogo from "@/assets/carriers/sfa-risk-solutions.png.asset.json";
+import americanModernLogo from "@/assets/carriers/american-modern.png.asset.json";
+import chubbLogo from "@/assets/carriers/chubb.png.asset.json";
+import coterieLogo from "@/assets/carriers/coterie.png.asset.json";
+import coverWhaleLogo from "@/assets/carriers/cover-whale.png.asset.json";
+import dieselLogo from "@/assets/carriers/diesel-insurance.png.asset.json";
+import ergoNextLogo from "@/assets/carriers/ergo-next.png.asset.json";
+
+const partnerLogos = [
+  { src: bristolWestLogo.url, alt: "Bristol West Insurance Group" },
+  { src: sfaLogo.url, alt: "SFA Risk Solutions" },
+  { src: americanModernLogo.url, alt: "American Modern Insurance Group" },
+  { src: chubbLogo.url, alt: "Chubb" },
+  { src: coterieLogo.url, alt: "Coterie" },
+  { src: coverWhaleLogo.url, alt: "Cover Whale" },
+  { src: dieselLogo.url, alt: "Diesel Insurance Solutions" },
+  { src: ergoNextLogo.url, alt: "ERGO Next" },
+];
 import alexLogo from "@/assets/alex-logo.png.asset.json";
 import {
   Accordion,
@@ -198,14 +217,21 @@ function Hero() {
       <div className="relative overflow-hidden pb-8">
         <div className="animate-marquee flex w-max [mask-image:linear-gradient(90deg,transparent,black_8%,black_92%,transparent)]">
           {[0, 1].map((copy) => (
-            <img
-              key={copy}
-              src={carrierLogos.url}
-              alt="Carrier partners: Nirvana, RLI Transportation, Canal Insurance, Chubb, Sentry, Northland Insurance"
-              aria-hidden={copy === 1}
-              className="h-16 w-auto shrink-0"
-              draggable={false}
-            />
+            <div key={copy} aria-hidden={copy === 1} className="flex shrink-0 items-center">
+              {partnerLogos.map((logo) => (
+                <div
+                  key={logo.alt}
+                  className="mx-6 flex h-16 w-44 shrink-0 items-center justify-center"
+                >
+                  <img
+                    src={logo.src}
+                    alt={logo.alt}
+                    className="max-h-full w-full object-contain"
+                    draggable={false}
+                  />
+                </div>
+              ))}
+            </div>
           ))}
         </div>
       </div>
