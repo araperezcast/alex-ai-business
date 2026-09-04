@@ -94,13 +94,9 @@ export function PortalLogin({
           {tenant ? (
             <div key={tenant.id} className="flex animate-fade-in items-center gap-4">
               {tenant.logo === "joffroy" ? (
-                <img src={joffroyLogo.url} alt={tenant.name} className="h-8 w-auto" />
+                <img src={joffroyLogo.url} alt={tenant.name} className="h-9 w-auto" />
               ) : (
-                <span
-                  className={`text-xl font-extrabold tracking-[0.18em] ${tenant.wordmarkClass ?? ""}`}
-                >
-                  {tenant.wordmark}
-                </span>
+                <img src={chapmanLogo.url} alt={tenant.name} className="h-9 w-auto" />
               )}
               <span className="h-8 w-px bg-slate-300" aria-hidden="true" />
               <img src={alexLogo.url} alt="Alex AI Insurtech" className="h-7 w-auto" />
