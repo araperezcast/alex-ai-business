@@ -86,7 +86,7 @@ export function PortalLogin({
   function simulate(domain: string) {
     const sample = domain === "chapman.com" ? "producer@chapman.com" : "operaciones@joffroy.com";
     setEmail(sample);
-    setTenant(TENANTS[domain]);
+    setTenant(TENANTS[domain] ?? null);
   }
 
   return (
