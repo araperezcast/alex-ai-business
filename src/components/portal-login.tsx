@@ -1,16 +1,60 @@
-import { Lock } from "lucide-react";
+import { ArrowRight, Globe, Lock, Sparkles } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 
-import alexLogo from "@/assets/alex-logo.png.asset.json";
+import alexLogo from "@/assets/logo-alexai.png.asset.json";
 import joffroyLogo from "@/assets/joffroy-logo.png.asset.json";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { authenticate, saveSession, type PortalRole, type Session } from "@/lib/portal-auth";
 
+type Tenant = {
+  id: "chapman" | "joffroy";
+  name: string;
+  workspace: string;
+  badge: string;
+  buttonClass: string;
+  chipClass: string;
+  logo: "wordmark" | "joffroy";
+  wordmark?: string;
+  wordmarkClass?: string;
+};
+
+const TENANTS: Record<string, Tenant> = {
+  "chapman.com": {
+    id: "chapman",
+    name: "Chapman",
+    workspace: "Chapman",
+    badge: "Bienvenido al espacio de trabajo de Partners de Chapman",
+    buttonClass: "bg-[#0B6E4F] text-white hover:bg-[#095c42]",
+    chipClass: "bg-emerald-50 text-emerald-700 border-emerald-200",
+    logo: "wordmark",
+    wordmark: "CHAPMAN",
+    wordmarkClass: "text-[#0B6E4F]",
+  },
+  "joffroy.com": {
+    id: "joffroy",
+    name: "Grupo Joffroy",
+    workspace: "Joffroy",
+    badge: "Bienvenido al espacio de trabajo de Partners de Grupo Joffroy",
+    buttonClass: "bg-[#1A56DB] text-white hover:bg-[#1648b8]",
+    chipClass: "bg-blue-50 text-blue-700 border-blue-200",
+    logo: "joffroy",
+  },
+  "joffroy.com.mx": {
+    id: "joffroy",
+    name: "Grupo Joffroy",
+    workspace: "Joffroy",
+    badge: "Bienvenido al espacio de trabajo de Partners de Grupo Joffroy",
+    buttonClass: "bg-[#1A56DB] text-white hover:bg-[#1648b8]",
+    chipClass: "bg-blue-50 text-blue-700 border-blue-200",
+    logo: "joffroy",
+  },
+};
+
 export function PortalLogin({
-  variant = "joffroy",
+  variant: _variant,
   onSuccess,
 }: {
   variant?: PortalRole;
@@ -19,6 +63,12 @@ export function PortalLogin({
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [tenant, setTenant] = useState<Tenant | null>(null);
+
+  function detectTenant(value: string) {
+    const domain = value.trim().toLowerCase().split("@")[1] ?? "";
+    setTenant(TENANTS[domain] ?? null);
+  }
 
   function submit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -33,71 +83,111 @@ export function PortalLogin({
     onSuccess(session);
   }
 
-  const isAlex = variant === "alex";
+  function simulate(domain: string) {
+    const sample = domain === "chapman.com" ? "producer@chapman.com" : "operaciones@joffroy.com";
+    setEmail(sample);
+    setTenant(TENANTS[domain] ?? null);
+  }
 
   return (
-    <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-[#0D1527] px-6 py-16">
-      <div className="pointer-events-none absolute left-1/2 top-1/2 size-[900px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgba(26,86,219,0.35),transparent_65%)] blur-3xl" />
-      <div className="relative w-full max-w-md">
-        <div className="mb-8 flex items-center justify-center gap-3">
-          {!isAlex && (
-            <>
-              <img
-                src={joffroyLogo.url}
-                alt="Grupo Joffroy"
-                className="h-6 w-auto brightness-0 invert"
-              />
-              <span className="text-white/30">×</span>
-            </>
+    <div className="flex min-h-screen items-center justify-center bg-[#F8FAFC] px-6 py-16">
+      <div className="w-full max-w-md">
+        {/* Brand header — generic → co-branded */}
+        <div className="mb-8 flex min-h-12 items-center justify-center">
+          {tenant ? (
+            <div key={tenant.id} className="flex animate-fade-in items-center gap-4">
+              {tenant.logo === "joffroy" ? (
+                <img src={joffroyLogo.url} alt={tenant.name} className="h-8 w-auto" />
+              ) : (
+                <span
+                  className={`text-xl font-extrabold tracking-[0.18em] ${tenant.wordmarkClass ?? ""}`}
+                >
+                  {tenant.wordmark}
+                </span>
+              )}
+              <span className="h-8 w-px bg-slate-300" aria-hidden="true" />
+              <img src={alexLogo.url} alt="Alex AI Insurtech" className="h-7 w-auto" />
+            </div>
+          ) : (
+            <img src={alexLogo.url} alt="Alex AI Insurtech" className="h-9 w-auto" />
           )}
-          <img src={alexLogo.url} alt="Alex AI Insurtech" className="h-5 w-auto opacity-90" />
         </div>
 
-        <div className="rounded-2xl border border-slate-200 bg-white p-8 shadow-2xl">
+        <div className="rounded-2xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-200/60">
           <div className="flex size-11 items-center justify-center rounded-xl bg-blue-50 text-[#1A56DB]">
             <Lock className="size-5" />
           </div>
-          <h1 className="mt-5 text-xl font-bold tracking-tight text-[#0D1527]">
-            {isAlex ? "Alex AI Back-Office" : "Sign in to the B2B Portal"}
+          <h1 className="mt-5 text-xl font-bold tracking-tight text-slate-900">
+            {tenant ? `Sign in to ${tenant.workspace} Partners` : "Sign in to the Partner Portal"}
           </h1>
           <p className="mt-1 text-sm text-slate-500">
-            {isAlex
-              ? "Internal underwriting desk. Alex AI staff accounts only."
-              : "Access is restricted to authorized Grupo Joffroy operations staff."}
+            {tenant
+              ? "Your workspace has been recognized. Continue with your credentials."
+              : "Access is restricted to authorized partner operations staff."}
           </p>
+
+          {/* Welcome badge */}
+          {tenant && (
+            <div
+              key={`badge-${tenant.id}`}
+              className={`mt-4 flex animate-scale-in items-center gap-2 rounded-lg border px-3 py-2 text-xs font-semibold ${tenant.chipClass}`}
+            >
+              <Sparkles className="size-3.5 shrink-0" />
+              {tenant.badge}
+            </div>
+          )}
 
           <form onSubmit={submit} className="mt-6 space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="portal-email">Work email</Label>
+              <Label htmlFor="portal-email" className="text-slate-700">
+                Work email
+              </Label>
               <Input
                 id="portal-email"
                 type="email"
                 autoComplete="username"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder={isAlex ? "desk@alexai.cloud" : "operaciones@joffroy.com"}
-                className="border-slate-200"
+                onBlur={(e) => detectTenant(e.target.value)}
+                placeholder="you@yourcompany.com"
+                className="rounded-md border-slate-200 focus-visible:ring-[#1A56DB]"
                 required
               />
+              <p className="flex items-center gap-1.5 text-[11px] text-slate-400">
+                <Globe className="size-3" />
+                We automatically recognize your partner workspace by domain.
+              </p>
             </div>
             <div className="space-y-2">
-              <Label htmlFor="portal-password">Password</Label>
+              <Label htmlFor="portal-password" className="text-slate-700">
+                Password
+              </Label>
               <Input
                 id="portal-password"
                 type="password"
                 autoComplete="current-password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="border-slate-200"
+                className="rounded-md border-slate-200 focus-visible:ring-[#1A56DB]"
                 required
               />
             </div>
             {error && <p className="text-sm font-medium text-red-600">{error}</p>}
             <Button
               type="submit"
-              className="w-full bg-gradient-to-r from-[#0048FF] to-[#07D6A0] text-white hover:opacity-90"
+              className={
+                tenant
+                  ? `w-full transition-colors duration-300 ${tenant.buttonClass}`
+                  : "w-full bg-gradient-to-r from-[#0048FF] to-[#07D6A0] text-white hover:opacity-90"
+              }
             >
-              Sign in
+              {tenant ? (
+                <>
+                  Continue as {tenant.name} <ArrowRight className="ml-1 size-4" />
+                </>
+              ) : (
+                "Sign in"
+              )}
             </Button>
           </form>
 
@@ -109,8 +199,26 @@ export function PortalLogin({
           </p>
         </div>
 
-        <p className="mt-6 text-center text-xs text-white/40">
-          joffroy.alexai.cloud · Protected operations environment
+        {/* Domain simulation toggles (preview aid) */}
+        <div className="mt-6 flex flex-col items-center gap-2">
+          <button
+            type="button"
+            onClick={() => simulate("chapman.com")}
+            className="text-xs font-medium text-[#1A56DB] underline-offset-4 transition hover:underline"
+          >
+            Simular entrada de dominio @chapman.com
+          </button>
+          <button
+            type="button"
+            onClick={() => simulate("joffroy.com")}
+            className="text-xs font-medium text-slate-500 underline-offset-4 transition hover:text-[#1A56DB] hover:underline"
+          >
+            Simular entrada de dominio @joffroy.com
+          </button>
+        </div>
+
+        <p className="mt-6 text-center text-xs text-slate-400">
+          partners.alexai.cloud · Protected operations environment
         </p>
       </div>
     </div>
