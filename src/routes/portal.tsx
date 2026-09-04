@@ -7,6 +7,8 @@ import {
   CalendarDays,
   CheckCircle2,
   ClipboardList,
+  Compass,
+  Database,
   Download,
   ExternalLink,
   FileText,
@@ -18,6 +20,7 @@ import {
   Moon,
   Settings,
   ShieldCheck,
+  Truck,
   UploadCloud,
   Users,
   X,
@@ -35,6 +38,10 @@ import { PortalUserManagement } from "@/components/portal-user-management";
 import { PortalClients } from "@/components/portal-clients";
 import { PortalCRM } from "@/components/portal-crm";
 import { PortalMyAgency } from "@/components/portal-my-agency";
+import { PortalAppetite } from "@/components/portal-appetite";
+import { PortalBIIngestion } from "@/components/portal-bi-ingestion";
+import { PortalAgencies } from "@/components/portal-agencies";
+import { PortalCarriers } from "@/components/portal-carriers";
 import { PortalLogin } from "@/components/portal-login";
 import { SiteFooter } from "@/components/site-footer";
 import { Badge } from "@/components/ui/badge";
