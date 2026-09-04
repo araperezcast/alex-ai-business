@@ -372,7 +372,7 @@ function PortalPage() {
 
           {view === "carriers" && session.role !== "chapman" && <PortalCarriers />}
 
-          {view === "admin-users" && session.role === "alex" && <PortalUserManagement />}
+          {view === "admin-users" && <PortalUserManagement />}
         </main>
 
         <footer className="border-t border-[#E2E8F0] bg-white/60 px-4 py-4 sm:px-6 lg:px-8">
