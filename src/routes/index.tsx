@@ -11,6 +11,16 @@ import coterieLogo from "@/assets/carriers/coterie.png.asset.json";
 import coverWhaleLogo from "@/assets/carriers/cover-whale.png.asset.json";
 import dieselLogo from "@/assets/carriers/diesel-insurance.png.asset.json";
 import ergoNextLogo from "@/assets/carriers/ergo-next.png.asset.json";
+import foremostLogo from "@/assets/carriers/foremost.png.asset.json";
+import foxquiltLogo from "@/assets/carriers/foxquilt.png.asset.json";
+import hippoLogo from "@/assets/carriers/hippo.png.asset.json";
+import hiscoxLogo from "@/assets/carriers/hiscox.png.asset.json";
+import kemperLogo from "@/assets/carriers/kemper.png.asset.json";
+import lioLogo from "@/assets/carriers/lio.png.asset.json";
+import msiLogo from "@/assets/carriers/msi.png.asset.json";
+import pathpointLogo from "@/assets/carriers/pathpoint.png.asset.json";
+import simplyLogo from "@/assets/carriers/simply.png.asset.json";
+import steadilyLogo from "@/assets/carriers/steadily.png.asset.json";
 
 const partnerLogos = [
   { src: bristolWestLogo.url, alt: "Bristol West Insurance Group" },
@@ -21,6 +31,16 @@ const partnerLogos = [
   { src: coverWhaleLogo.url, alt: "Cover Whale" },
   { src: dieselLogo.url, alt: "Diesel Insurance Solutions" },
   { src: ergoNextLogo.url, alt: "ERGO Next" },
+  { src: foremostLogo.url, alt: "Foremost Insurance Group" },
+  { src: foxquiltLogo.url, alt: "Foxquilt" },
+  { src: hippoLogo.url, alt: "Hippo Insurance" },
+  { src: hiscoxLogo.url, alt: "Hiscox" },
+  { src: kemperLogo.url, alt: "Kemper" },
+  { src: lioLogo.url, alt: "Lio" },
+  { src: msiLogo.url, alt: "MSI" },
+  { src: pathpointLogo.url, alt: "Pathpoint" },
+  { src: simplyLogo.url, alt: "Simply" },
+  { src: steadilyLogo.url, alt: "Steadily" },
 ];
 import alexLogo from "@/assets/alex-logo.png.asset.json";
 import {
