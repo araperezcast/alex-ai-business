@@ -29,6 +29,7 @@ import { toast } from "sonner";
 
 import alexaiLogo from "@/assets/logo-alexai.png.asset.json";
 import joffroyLogo from "@/assets/joffroy-logo.png.asset.json";
+import chapmanLogo from "@/assets/chapman-logo.png.asset.json";
 import { QuoteCaptureModal } from "@/components/admin-modules";
 import { PortalDashboard } from "@/components/portal-dashboard";
 import { PortalQuotes } from "@/components/portal-quotes";
@@ -259,7 +260,11 @@ function PortalPage() {
         <div className="flex h-16 items-center gap-2.5 px-5">
           <img src={alexaiLogo.url} alt="Alex AI" className="h-6 w-auto" />
           <span className="text-[#06D6A0]">×</span>
-          <img src={joffroyLogo.url} alt="Grupo Joffroy" className="h-5 w-auto" />
+          {session.role === "chapman" ? (
+            <img src={chapmanLogo.url} alt="Chapman" className="h-6 w-auto" />
+          ) : (
+            <img src={joffroyLogo.url} alt="Grupo Joffroy" className="h-5 w-auto" />
+          )}
         </div>
 
         <nav className="flex-1 space-y-1 overflow-y-auto px-3 py-4">
