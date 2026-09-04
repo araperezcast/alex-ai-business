@@ -217,14 +217,21 @@ function Hero() {
       <div className="relative overflow-hidden pb-8">
         <div className="animate-marquee flex w-max [mask-image:linear-gradient(90deg,transparent,black_8%,black_92%,transparent)]">
           {[0, 1].map((copy) => (
-            <img
-              key={copy}
-              src={carrierLogos.url}
-              alt="Carrier partners: Nirvana, RLI Transportation, Canal Insurance, Chubb, Sentry, Northland Insurance"
-              aria-hidden={copy === 1}
-              className="h-16 w-auto shrink-0"
-              draggable={false}
-            />
+            <div key={copy} aria-hidden={copy === 1} className="flex shrink-0 items-center">
+              {partnerLogos.map((logo) => (
+                <div
+                  key={logo.alt}
+                  className="mx-6 flex h-16 w-44 shrink-0 items-center justify-center"
+                >
+                  <img
+                    src={logo.src}
+                    alt={logo.alt}
+                    className="max-h-full w-full object-contain"
+                    draggable={false}
+                  />
+                </div>
+              ))}
+            </div>
           ))}
         </div>
       </div>
