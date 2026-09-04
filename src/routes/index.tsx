@@ -408,17 +408,17 @@ const valueCards = [
 function ValueCards() {
   return (
     <section className="bg-background px-6 py-20">
-      <div className="mx-auto grid max-w-6xl gap-6 md:grid-cols-3">
+      <div className="mx-auto grid max-w-6xl gap-8 md:grid-cols-3">
         {valueCards.map((c) => (
           <div
             key={c.number}
-            className="group border-border bg-card rounded-2xl border p-8 transition-shadow hover:shadow-card"
+            className="group border-border bg-card rounded-3xl border p-11 min-h-[320px] transition-shadow hover:shadow-card"
           >
-            <span className="text-gradient-brand text-sm font-extrabold tracking-[0.18em]">
+            <span className="text-gradient-brand text-xl font-extrabold tracking-[0.18em]">
               {c.number}
             </span>
-            <h3 className="mt-4 text-xl font-extrabold tracking-tight">{c.title}</h3>
-            <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{c.body}</p>
+            <h3 className="mt-6 text-3xl font-extrabold tracking-tight">{c.title}</h3>
+            <p className="mt-4 text-base leading-relaxed text-muted-foreground">{c.body}</p>
           </div>
         ))}
       </div>
