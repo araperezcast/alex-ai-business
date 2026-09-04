@@ -3,6 +3,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 
 import alexLogo from "@/assets/logo-alexai.png.asset.json";
+import chapmanLogo from "@/assets/chapman-logo.png.asset.json";
 import joffroyLogo from "@/assets/joffroy-logo.png.asset.json";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
