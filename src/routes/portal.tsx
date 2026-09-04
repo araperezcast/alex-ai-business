@@ -3,6 +3,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import {
   ArrowRight,
   Bell,
+  Building2,
   CalendarDays,
   CheckCircle2,
   ClipboardList,
@@ -12,11 +13,13 @@ import {
   LayoutDashboard,
   Languages,
   LogOut,
+  MapPin,
   Menu,
   Moon,
   Settings,
   ShieldCheck,
   UploadCloud,
+  Users,
   X,
 } from "lucide-react";
 import { toast } from "sonner";
@@ -29,6 +32,9 @@ import { PortalQuotes } from "@/components/portal-quotes";
 import { PortalProposals } from "@/components/portal-proposals";
 import { PortalCalendar } from "@/components/portal-calendar";
 import { PortalUserManagement } from "@/components/portal-user-management";
+import { PortalClients } from "@/components/portal-clients";
+import { PortalCRM } from "@/components/portal-crm";
+import { PortalMyAgency } from "@/components/portal-my-agency";
 import { PortalLogin } from "@/components/portal-login";
 import { SiteFooter } from "@/components/site-footer";
 import { Badge } from "@/components/ui/badge";
@@ -127,7 +133,15 @@ const TABS: { key: Status | "all"; label: string }[] = [
   { key: "paid", label: "COIs Issued / Active" },
 ];
 
-type ModuleKey = "dashboard" | "operations" | "proposals" | "calendar" | "admin-users";
+type ModuleKey =
+  | "dashboard"
+  | "operations"
+  | "proposals"
+  | "calendar"
+  | "clients"
+  | "crm"
+  | "my-agency"
+  | "admin-users";
 
 type NavItem = { key: ModuleKey; label: string; icon: typeof LayoutDashboard };
 
@@ -136,6 +150,9 @@ const MODULES: NavItem[] = [
   { key: "operations", label: "My Quotes & Policies", icon: ClipboardList },
   { key: "proposals", label: "Proposals", icon: FileText },
   { key: "calendar", label: "Calendar", icon: CalendarDays },
+  { key: "clients", label: "Clients", icon: Users },
+  { key: "crm", label: "CRM / Visits", icon: MapPin },
+  { key: "my-agency", label: "My Agency", icon: Building2 },
 ];
 
 const ADMIN_MODULES: NavItem[] = [
@@ -325,6 +342,12 @@ function PortalPage() {
           {view === "proposals" && <PortalProposals />}
 
           {view === "calendar" && <PortalCalendar />}
+
+          {view === "clients" && <PortalClients />}
+
+          {view === "crm" && <PortalCRM />}
+
+          {view === "my-agency" && <PortalMyAgency />}
 
           {view === "admin-users" && session.role === "alex" && <PortalUserManagement />}
         </main>
