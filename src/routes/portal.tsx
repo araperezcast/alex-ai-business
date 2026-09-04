@@ -33,6 +33,7 @@ import chapmanLogo from "@/assets/chapman-logo.png.asset.json";
 import { QuoteCaptureModal } from "@/components/admin-modules";
 import { PortalDashboard } from "@/components/portal-dashboard";
 import { PortalQuotes } from "@/components/portal-quotes";
+import { PortalQuotesJoffroy } from "@/components/portal-quotes-joffroy";
 import { PortalProposals } from "@/components/portal-proposals";
 import { PortalCalendar } from "@/components/portal-calendar";
 import { PortalUserManagement } from "@/components/portal-user-management";
@@ -168,7 +169,9 @@ const CHAPMAN_MODULES: NavItem[] = [
 ];
 
 const FULL_MODULES: NavItem[] = [
-  ...CHAPMAN_MODULES,
+  ...CHAPMAN_MODULES.map((m) =>
+    m.key === "operations" ? { ...m, label: "Quotes" } : m,
+  ),
   { key: "appetite", label: "Appetite Finder", icon: Compass },
   { key: "bi-ingestion", label: "BI Ingestion", icon: Database },
   { key: "agencies", label: "Agencies", icon: Building2 },
@@ -357,7 +360,8 @@ function PortalPage() {
             <PortalDashboard isSeller={session.email.endsWith("@chapman.com")} />
           )}
 
-          {view === "operations" && <PortalQuotes />}
+          {view === "operations" &&
+            (session.role === "chapman" ? <PortalQuotes /> : <PortalQuotesJoffroy />)}
 
           {view === "proposals" && <PortalProposals />}
 
