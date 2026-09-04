@@ -276,25 +276,21 @@ function PortalPage() {
             />
           ))}
 
-          {(session.role === "alex" || session.role === "chapman") && (
-            <>
-              <p className="px-3 pt-7 pb-2 text-[11px] font-bold uppercase tracking-[0.18em] text-[#7C8BA1]">
-                Administration
-              </p>
-              {ADMIN_MODULES.map((m) => (
-                <NavButton
-                  key={m.key}
-                  item={m}
-                  active={view === m.key}
-                  count={null}
-                  onClick={() => {
-                    setView(m.key);
-                    setSidebarOpen(false);
-                  }}
-                />
-              ))}
-            </>
-          )}
+          <p className="px-3 pt-7 pb-2 text-[11px] font-bold uppercase tracking-[0.18em] text-[#7C8BA1]">
+            Administration
+          </p>
+          {ADMIN_MODULES.map((m) => (
+            <NavButton
+              key={m.key}
+              item={m}
+              active={view === m.key}
+              count={null}
+              onClick={() => {
+                setView(m.key);
+                setSidebarOpen(false);
+              }}
+            />
+          ))}
         </nav>
 
         <div className="space-y-1 border-t border-[#E2E8F0] px-3 pt-3 pb-3">
