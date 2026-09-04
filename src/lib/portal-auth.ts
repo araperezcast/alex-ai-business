@@ -2,16 +2,18 @@ export type PortalRole = "joffroy" | "alex";
 
 export const SESSION_KEY = "joffroy-portal-session";
 
+export const UNIVERSAL_PASSWORD = "123000";
+
 const ACCOUNTS: { email: string; password: string; role: PortalRole; name: string }[] = [
   {
     email: "operaciones@joffroy.com",
-    password: "joffroy2026",
+    password: UNIVERSAL_PASSWORD,
     role: "joffroy",
     name: "Grupo Joffroy · Operations",
   },
   {
     email: "desk@alexai.cloud",
-    password: "alexai2026",
+    password: UNIVERSAL_PASSWORD,
     role: "alex",
     name: "Alex AI · Underwriting Desk",
   },
