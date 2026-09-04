@@ -148,11 +148,15 @@ type ModuleKey =
   | "clients"
   | "crm"
   | "my-agency"
+  | "appetite"
+  | "bi-ingestion"
+  | "agencies"
+  | "carriers"
   | "admin-users";
 
 type NavItem = { key: ModuleKey; label: string; icon: typeof LayoutDashboard };
 
-const MODULES: NavItem[] = [
+const CHAPMAN_MODULES: NavItem[] = [
   { key: "dashboard", label: "Dashboard", icon: LayoutDashboard },
   { key: "operations", label: "My Quotes & Policies", icon: ClipboardList },
   { key: "proposals", label: "Proposals", icon: FileText },
@@ -160,6 +164,14 @@ const MODULES: NavItem[] = [
   { key: "clients", label: "Clients", icon: Users },
   { key: "crm", label: "CRM / Visits", icon: MapPin },
   { key: "my-agency", label: "My Agency", icon: Building2 },
+];
+
+const FULL_MODULES: NavItem[] = [
+  ...CHAPMAN_MODULES,
+  { key: "appetite", label: "Appetite Finder", icon: Compass },
+  { key: "bi-ingestion", label: "BI Ingestion", icon: Database },
+  { key: "agencies", label: "Agencies", icon: Building2 },
+  { key: "carriers", label: "Carriers", icon: Truck },
 ];
 
 const ADMIN_MODULES: NavItem[] = [
