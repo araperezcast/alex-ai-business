@@ -364,6 +364,14 @@ function PortalPage() {
 
           {view === "my-agency" && <PortalMyAgency />}
 
+          {view === "appetite" && session.role !== "chapman" && <PortalAppetite />}
+
+          {view === "bi-ingestion" && session.role !== "chapman" && <PortalBIIngestion />}
+
+          {view === "agencies" && session.role !== "chapman" && <PortalAgencies />}
+
+          {view === "carriers" && session.role !== "chapman" && <PortalCarriers />}
+
           {view === "admin-users" && session.role === "alex" && <PortalUserManagement />}
         </main>
 
